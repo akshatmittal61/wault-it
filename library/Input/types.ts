@@ -6,8 +6,10 @@ export interface InputDropdownOption {
 	label: string;
 }
 
-export interface InputProps
-	extends Omit<React.HTMLProps<HTMLInputElement>, "size"> {
+export interface InputProps extends Omit<
+	React.HTMLProps<HTMLInputElement>,
+	"size"
+> {
 	styles?: {
 		box?: React.CSSProperties;
 		label?: React.CSSProperties;

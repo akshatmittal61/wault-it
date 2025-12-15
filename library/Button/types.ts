@@ -4,11 +4,10 @@ export type ButtonVariant = "filled" | "outlined" | "text";
 export type ButtonTheme = "default" | "success" | "error" | "warning" | "info";
 export type ButtonSize = "small" | "medium" | "large";
 
-export interface IButtonProps
-	extends React.DetailedHTMLProps<
-		React.ButtonHTMLAttributes<HTMLButtonElement>,
-		HTMLButtonElement
-	> {
+export interface IButtonProps extends React.DetailedHTMLProps<
+	React.ButtonHTMLAttributes<HTMLButtonElement>,
+	HTMLButtonElement
+> {
 	children: React.ReactNode;
 	className?: string;
 	variant?: ButtonVariant;

@@ -3,9 +3,14 @@ const message = Object.freeze({
 	ERROR: "Error",
 	NOT_FOUND: "Not Found",
 	BAD_REQUEST: "Bad Request",
-	UNAUTHORIZED: "Unauthorized",
+	UNAUTHORIZED: "Please login to continue",
 	FORBIDDEN: "Forbidden",
 	INTERNAL_SERVER_ERROR: "Internal Server Error",
+	SERVICE_UNAVAILABLE: "Service Unavailable",
+	HEALTHY_API: "API is healthy",
+	HEALTHY_DB: "DB is healthy",
+	DB_CONNECTION_ERROR: "Unable to connect to database",
+	HEARTBEAT: "Heartbeat success",
 });
 
 const status = Object.freeze({
@@ -22,6 +27,7 @@ const status = Object.freeze({
 	GONE: 410,
 	CONFLICT: 409,
 	INTERNAL_SERVER_ERROR: 500,
+	SERVICE_UNAVAILABLE: 503,
 });
 
 export const HTTP = Object.freeze({ message, status });

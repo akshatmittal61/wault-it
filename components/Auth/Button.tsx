@@ -1,10 +1,9 @@
 import React from "react";
 
-interface IButtonProps
-	extends React.DetailedHTMLProps<
-		React.ButtonHTMLAttributes<HTMLButtonElement>,
-		HTMLButtonElement
-	> {}
+interface IButtonProps extends React.DetailedHTMLProps<
+	React.ButtonHTMLAttributes<HTMLButtonElement>,
+	HTMLButtonElement
+> {}
 
 const GoogleOAuthButton: React.FC<IButtonProps> = (props) => {
 	return (
