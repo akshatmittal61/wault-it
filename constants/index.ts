@@ -1,4 +1,5 @@
 export * from "./enum";
+export * from "./cache";
 export * from "./http";
 export * from "./navigation";
 export * from "./regex";
