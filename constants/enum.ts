@@ -1,4 +1,9 @@
-import { T_API_METHODS, T_NODE_ENV, T_USER_ROLE } from "@/types";
+import {
+	T_API_METHODS,
+	T_AUTH_MAPPING_PROVIDER,
+	T_NODE_ENV,
+	T_USER_ROLE,
+} from "@/types";
 import { getEnumeration } from "@/utils";
 
 export const apiMethods = getEnumeration<T_API_METHODS>([
@@ -19,4 +24,8 @@ export const NODE_ENV = getEnumeration<T_NODE_ENV>([
 	"development",
 	"test",
 	"production",
+]);
+
+export const authMappingProvider = getEnumeration<T_AUTH_MAPPING_PROVIDER>([
+	"google",
 ]);
