@@ -1,3 +1,5 @@
+import { StringUtils } from "@/utils";
+
 export const routes = Object.freeze({
 	ROOT: "/",
 	HOME: "/home",
@@ -23,3 +25,30 @@ export const routes = Object.freeze({
 	HELP: "/help",
 	CONTACT: "/contact",
 });
+
+export const protectedRoutes: Array<String | Function> = [
+	routes.ADMIN,
+	routes.CACHE,
+	routes.LOGS,
+	routes.LOG_FILE,
+	routes.PROFILE,
+];
+
+export const routesSupportingContainer: Array<string | Function> = [
+	routes.HOME,
+	routes.ADMIN,
+	routes.CACHE,
+	routes.PROFILE,
+];
+
+export const routesSupportingFooter: Array<string> = [
+	routes.ROOT,
+	routes.PRIVACY_POLICY,
+	routes.ABOUT,
+	routes.REPORT,
+	routes.CONTACT,
+];
+
+export const redirectToLogin = (currentPath: string = StringUtils.EMPTY) => {
+	return routes.LOGIN + `?redirect=${currentPath}`;
+};

@@ -1,13 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { IUser } from "./models";
+import { IUser } from "@/types";
 
-export interface ApiRequest extends NextApiRequest {
+export type ApiRequest<T = any> = Omit<NextApiRequest, "body"> & {
+	body: T;
 	user?: IUser;
-}
-
-export interface ApiResponse extends NextApiResponse {
-	user?: IUser;
-}
+};
+export type ApiResponse = NextApiResponse;
 
 export type ApiRes<T> = { message: string; data: T };
 
