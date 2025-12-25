@@ -1,4 +1,4 @@
-import { http } from "@/connections";
+import { http } from "@/client";
 import { ApiRes, IUser } from "@/types";
 
 export class AuthApi {

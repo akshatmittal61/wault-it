@@ -1,4 +1,4 @@
-import { server } from "@/connections";
+import { server } from "@/client";
 import { apiMethods, HTTP } from "@/constants";
 import { Logger } from "@/log";
 import { ApiRequest, ApiResponse, T_API_METHODS } from "@/types";

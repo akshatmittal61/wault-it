@@ -1,4 +1,4 @@
-import { http } from "@/connections";
+import { http } from "@/client";
 import { ApiRes, IArtifact, ICreateArtifact, IUpdateArtifact } from "@/types";
 
 export class LibraryApi {

@@ -4,6 +4,7 @@ import {
 	HTTP,
 	protectedRoutes,
 	redirectToLogin,
+	serverBaseUrl,
 } from "@/constants";
 import { Logger } from "@/log";
 import { T_API_METHODS } from "@/types";
@@ -174,3 +175,13 @@ export const http = new HttpWrapper(
 		timeout: 15000,
 	})
 );
+
+export const server = axios.create({
+	baseURL: serverBaseUrl + "/api/v1",
+	headers: {
+		"Content-Type": "application/json",
+	},
+	withCredentials: true,
+	timeout: 10000,
+	timeoutErrorMessage: "Server Request timed out",
+});

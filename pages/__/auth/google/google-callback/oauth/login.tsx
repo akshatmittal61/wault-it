@@ -3,7 +3,7 @@ import { routes } from "@/constants";
 import { useStore } from "@/hooks";
 import { Logger } from "@/log";
 import styles from "@/styles/pages/Auth.module.scss";
-import { genericParse, getNonEmptyString, Notify, stylesConfig } from "@/utils";
+import { Notify, StringUtils, stylesConfig } from "@/utils";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -52,7 +52,7 @@ export default GoogleOAuthRedirectedPage;
 export const getServerSideProps = async (context: any) => {
 	const { query } = context;
 	try {
-		const code = genericParse(getNonEmptyString, query.code);
+		const code = StringUtils.getNonEmptyString(query.code);
 		const verificationRes = await AuthApi.verifyOAuthSignIn(code);
 		return { props: { token: verificationRes.data } };
 	} catch (error) {

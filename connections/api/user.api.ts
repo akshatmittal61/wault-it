@@ -1,4 +1,4 @@
-import { http } from "@/connections";
+import { http } from "@/client";
 import { ApiRes, IUpdateUser, IUser } from "@/types";
 
 export class UserApi {
