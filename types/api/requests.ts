@@ -1,4 +1,4 @@
-import { IUser } from "@/types";
+import { IUpdateUser, IUser } from "@/types";
 
 // Auth
 export type VerifyGoogleOAuth = { code: string };
@@ -7,3 +7,6 @@ export type VerifyUser = IUser;
 export type RequestOtp = { email: string };
 export type VerifyOtp = { email: string; otp: string };
 export type Logout = null;
+
+// User
+export type UpdateUser = IUpdateUser;
