@@ -1,4 +1,4 @@
-import { LibraryApi } from "@/connections";
+import { LibraryApi } from "@/api";
 import { ICreateArtifact, IUpdateArtifact } from "@/types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 

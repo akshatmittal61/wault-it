@@ -5,9 +5,9 @@ export type IUser = User;
 export type IUpdateUser = Omit<UpdateModel<IUser>, "email">;
 export type IAuthMapping = Omit<AuthMapping, "user"> & { user: IUser | null };
 
-export type IArtifact = Artifact;
 export type IConcealedArtifact = Omit<Artifact, "author" | "password">;
 export type IRevealedArtifact = Omit<Artifact, "author">;
+export type IArtifact = IConcealedArtifact;
 
 export type ISensitiveInfo = { password: string; privateKey: string };
 

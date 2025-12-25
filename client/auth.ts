@@ -1,4 +1,4 @@
-import { AuthApi } from "@/connections";
+import { AuthApi } from "@/api";
 import { Logger } from "@/log";
 import { ServerSideAuthMiddleware } from "@/types";
 

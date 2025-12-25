@@ -1,5 +1,5 @@
 import { InputPrivateKey } from "@/components";
-import { LibraryApi } from "@/connections";
+import { LibraryApi } from "@/api";
 import { useHttpClient } from "@/hooks";
 import { Button, MaterialIcon, Popup } from "@/library";
 import { IRevealedArtifact } from "@/types";

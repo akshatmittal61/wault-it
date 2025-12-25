@@ -1,4 +1,4 @@
-import { AuthApi } from "@/connections";
+import { AuthApi } from "@/api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const fetchAuthenticatedUser = createAsyncThunk(

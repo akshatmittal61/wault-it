@@ -1,4 +1,4 @@
-import { AuthApi } from "@/connections";
+import { AuthApi } from "@/api";
 import { routes } from "@/constants";
 import { useStore } from "@/hooks";
 import { Logger } from "@/log";
