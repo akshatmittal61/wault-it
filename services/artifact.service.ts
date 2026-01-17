@@ -1,15 +1,9 @@
 import { HTTP } from "@/constants";
 import { ApiError } from "@/errors";
 import { artifactRepo } from "@/repo";
-import {
-	CreateArtifactModel,
-	IArtifact,
-	IArtifactsBucket,
-	ICreateArtifact,
-	UpdateArtifact,
-} from "@/types";
-import { VaultService } from "./vault.service";
+import { CreateArtifactModel, IArtifactsBucket, UpdateArtifact } from "@/types";
 import { SafetyUtils, StringUtils } from "@/utils";
+import { VaultService } from "./vault.service";
 
 export class ArtifactService {
 	public static async getAllArtifactBucketsForUser(userId: string) {
@@ -73,41 +67,62 @@ export class ArtifactService {
 	}
 
 	public static async createNewArtifactForUser(
-		body: ICreateArtifact,
+		body: CreateArtifactModel,
 		privateKey: string,
 		userId: string
 	) {
-		const password = body.password;
+		const payload: CreateArtifactModel = {
+			...body,
+			author: userId,
+		};
+		const password = payload.password;
 		const encryptedPassword = VaultService.encrypt(password, privateKey);
-		body.password = JSON.stringify(encryptedPassword);
-		return await artifactRepo.createForUser(body, userId);
+		payload.password = JSON.stringify(encryptedPassword);
+		// for the same service and same identifier, multiple artifacts can't exists
+		// for example, for google.com, a@b.c can only have one password
+		const foundArtifact = await artifactRepo.findForUser(
+			{ service: body.service, identifier: body.identifier },
+			userId
+		);
+		if (SafetyUtils.isNonNull(foundArtifact)) {
+			throw new ApiError(
+				HTTP.status.BAD_REQUEST,
+				"Artifact already exists"
+			);
+		}
+		return await artifactRepo.createForUser(payload);
 	}
 
 	public static async updateArtifactForUser({
 		artifactId,
-		body,
-		privateKey,
+		payload,
 		userId,
 	}: {
 		artifactId: string;
-		body: UpdateArtifact;
-		privateKey: string;
+		payload: UpdateArtifact;
 		userId: string;
-	}): Promise<IArtifact | null> {
-		if (body.password) {
-			VaultService.validateKey(privateKey);
-			const password = body.password;
+	}) {
+		if (
+			StringUtils.isNotEmpty(payload.password) &&
+			StringUtils.isNotEmpty(payload.privateKey)
+		) {
+			VaultService.validateKey(payload.privateKey);
 			const encryptedPassword = VaultService.encrypt(
-				password,
-				privateKey
+				payload.password,
+				payload.privateKey
 			);
-			body.password = JSON.stringify(encryptedPassword);
+			payload.password = JSON.stringify(encryptedPassword);
 		}
-		return await artifactRepo.updateForUser(
+		const updatedArtifact = await artifactRepo.updateForUser(
 			{ id: artifactId },
-			body,
+			payload,
 			userId
 		);
+		if (SafetyUtils.isNonNull(updatedArtifact)) {
+			return updatedArtifact;
+		} else {
+			throw new ApiError(HTTP.status.NOT_FOUND, "Artifact not found");
+		}
 	}
 
 	public static async deleteArtifactForUser({
@@ -117,7 +132,15 @@ export class ArtifactService {
 		artifactId: string;
 		userId: string;
 	}) {
-		return await artifactRepo.removeForUser({ id: artifactId }, userId);
+		const deletedArtifact = await artifactRepo.removeForUser(
+			{ id: artifactId },
+			userId
+		);
+		if (SafetyUtils.isNonNull(deletedArtifact)) {
+			return deletedArtifact;
+		} else {
+			throw new ApiError(HTTP.status.NOT_FOUND, "Artifact not found");
+		}
 	}
 
 	public static async getServicesForUser(userId: string) {

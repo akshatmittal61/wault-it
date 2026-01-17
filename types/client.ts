@@ -23,7 +23,8 @@ export type ICreateArtifact = Omit<UnModel<Artifact>, "author"> &
 	ISensitiveInfo;
 // User can update the artifact normally, but for changing the key or the password, they need to specify both
 export type IUpdateArtifact = UpdateModel<UnModel<IConcealedArtifact>> &
-	(ISensitiveInfo | null);
+	// eslint-disable-next-line no-unused-vars
+	(ISensitiveInfo | { [K in keyof ISensitiveInfo]?: never });
 export type UpdateArtifact = IUpdateArtifact;
 
 // sorts Artifacts on service-level

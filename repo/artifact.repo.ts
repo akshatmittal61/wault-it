@@ -1,17 +1,16 @@
 import { FilterQuery } from "@/db";
 import { InaccessibleMethodError } from "@/errors";
 import { ArtifactModel } from "@/models";
-import { BaseRepo } from "./base";
 import {
 	Artifact,
 	CreateArtifactModel,
 	IArtifact,
 	IConcealedArtifact,
-	ICreateArtifact,
 	IRevealedArtifact,
 	UpdateArtifact,
 } from "@/types";
 import { CollectionUtils, omitKeys, SafetyUtils } from "@/utils";
+import { BaseRepo } from "./base";
 
 class ArtifactRepo extends BaseRepo<Artifact, IArtifact> {
 	protected model = ArtifactModel;
@@ -201,11 +200,9 @@ class ArtifactRepo extends BaseRepo<Artifact, IArtifact> {
 	 * @returns The created artifact object.
 	 */
 	public async createForUser(
-		body: ICreateArtifact,
-		userId: string
+		body: CreateArtifactModel
 	): Promise<IConcealedArtifact> {
-		const payload = { ...body, author: userId };
-		const res = await this.model.create(payload);
+		const res = await this.model.create(body);
 		return SafetyUtils.getNonNullValue(this.parser(res));
 	}
 
