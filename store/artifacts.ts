@@ -31,7 +31,7 @@ type Extras = {
 	// store sync util
 	sync: () => Promise<void>;
 	// loading states
-	gettingAllServices: boolean;
+	isGettingAllServices: boolean;
 	isCreatingArtifact: boolean;
 	isUpdatingArtifact: boolean;
 	isDeletingArtifact: boolean;
@@ -72,7 +72,7 @@ export const useArtifactsStore = createBaseStore<
 		setIsSyncing: (state: boolean) => set({ isSyncing: state }),
 	}),
 	useSetup: ({ store, options }) => {
-		const { trigger: getAllServices, loading: gettingAllServices } =
+		const { trigger: getAllServices, loading: isGettingAllServices } =
 			useHttpClient({
 				trigger: ArtifactsApi.getAllServices,
 				onSuccess: store.getState().setServices,
@@ -152,7 +152,7 @@ export const useArtifactsStore = createBaseStore<
 
 		return {
 			sync,
-			gettingAllServices,
+			isGettingAllServices,
 			isCreatingArtifact,
 			isUpdatingArtifact,
 			isDeletingArtifact,
