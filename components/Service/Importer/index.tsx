@@ -27,20 +27,22 @@ const ArtifactsImporter: React.FC<IArtifactsImporterProps> = ({
 
 	const handleImport = async (file: File) => {
 		try {
-			if (!file) throw new Error("No file found");
-			if (file.size > 40000000) {
-				throw new Error("File size should not exceed 40MB");
+			if (!file) {
+				return Notify.error("No file found");
 			}
-			const resumeFileDataUrl = await readFile(file);
-			Logger.debug("resumeFileDataUrl", resumeFileDataUrl);
+			if (file.size > 40000000) {
+				return Notify.error("File size should not exceed 40MB");
+			}
+			const fileDataUrl = await readFile(file);
+			Logger.debug("fileDataUrl", fileDataUrl);
 			const updatedServices = await ArtifactsApi.importArtifactsFromCsv(
-				resumeFileDataUrl,
+				fileDataUrl,
 				privateKey
 			);
-			Notify.success("Resume uploaded successfully");
+			Notify.success("File uploaded successfully");
 			onImport(updatedServices.data);
 		} catch (error: any) {
-			Notify.error(error, "Failed to upload resume");
+			Notify.error(error, "Failed to upload file");
 		}
 	};
 
@@ -103,7 +105,7 @@ const ArtifactsImporter: React.FC<IArtifactsImporterProps> = ({
 					<Form
 						file={file}
 						setFile={(f: any) => setFile(f)}
-						handleUploadResume={handleImport}
+						handleUpload={handleImport}
 						handleDragOver={handleDragOver}
 						handleDrop={handleDrop}
 						handleDragStart={handleDragStart}

@@ -1,7 +1,6 @@
 import { fallbackAssets, routes } from "@/constants";
-import { useStore } from "@/hooks";
 import { Avatar, Button, IconButton, MaterialIcon } from "@/library";
-import { stylesConfig } from "@/utils";
+import { SafetyUtils, stylesConfig } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,6 +8,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FiLogIn } from "react-icons/fi";
 import Search from "./search";
 import styles from "./styles.module.scss";
+import { useAuthStore, useUiStore } from "@/store";
 
 interface IHeaderProps {}
 
@@ -16,28 +16,21 @@ const classes = stylesConfig(styles, "header");
 
 const Header: React.FC<IHeaderProps> = () => {
 	const router = useRouter();
-	const {
-		user,
-		toggleSidebar,
-		isLoggedIn,
-		isSyncing,
-		syncEverything,
-		theme,
-		toggleAppTheme,
-		dispatch,
-	} = useStore();
+	const { toggleSidebar, theme, toggleTheme, sync: syncUi } = useUiStore();
+	const { isLoggedIn, user, isSyncing, sync: syncAuthStore } = useAuthStore();
 	const lastScrollTop = useRef<any>(0);
 	const [isNavbarVisible, setIsNavbarVisible] = useState(true);
+
+	const syncEverything = () => {
+		syncUi();
+		void syncAuthStore();
+	};
 
 	const handleScroll = () => {
 		const { pageYOffset } = window;
 		if (pageYOffset > lastScrollTop.current) setIsNavbarVisible(false);
 		else if (pageYOffset < lastScrollTop.current) setIsNavbarVisible(true);
 		lastScrollTop.current = pageYOffset;
-	};
-
-	const toggleSideBar = () => {
-		dispatch(toggleSidebar());
 	};
 
 	useEffect(() => {
@@ -62,7 +55,7 @@ const Header: React.FC<IHeaderProps> = () => {
 					<div className={classes("-left-burger")}>
 						<IconButton
 							className={classes("-left-burger__button")}
-							onClick={toggleSideBar}
+							onClick={toggleSidebar}
 							icon={<MaterialIcon icon="menu" />}
 							size="large"
 						/>
@@ -86,7 +79,7 @@ const Header: React.FC<IHeaderProps> = () => {
 					<Search />
 				) : null}
 				<IconButton
-					onClick={toggleAppTheme}
+					onClick={toggleTheme}
 					icon={
 						<MaterialIcon
 							icon={
@@ -104,7 +97,7 @@ const Header: React.FC<IHeaderProps> = () => {
 						icon={<MaterialIcon icon="sync" />}
 					/>
 				) : null}
-				{isLoggedIn ? (
+				{isLoggedIn && SafetyUtils.isNonNull(user) ? (
 					<Avatar
 						src={user.avatar || fallbackAssets.avatar}
 						alt={user.name}
@@ -115,7 +108,7 @@ const Header: React.FC<IHeaderProps> = () => {
 				) : (
 					<Button
 						onClick={() => {
-							router.push(routes.LOGIN);
+							void router.push(routes.LOGIN);
 						}}
 						icon={<FiLogIn />}
 					>

@@ -1,13 +1,12 @@
 import { InputPrivateKey } from "@/components";
-import { libraryHelpers } from "@/context/helpers";
-import { useHttpClient, useStore } from "@/hooks";
 import { Responsive } from "@/layouts";
 import { Button, Input, MaterialIcon, Pane } from "@/library";
 import { IArtifact, IUpdateArtifact } from "@/types";
-import { Notify } from "@/utils";
+import { CollectionUtils, Notify } from "@/utils";
 import { stylesConfig } from "@/utils/functions";
 import React, { useState } from "react";
 import styles from "./styles.module.scss";
+import { useArtifactsStore } from "@/store";
 
 interface IUpdateArtifactProps {
 	id: string;
@@ -24,8 +23,8 @@ const UpdateArtifact: React.FC<IUpdateArtifactProps> = ({
 	onClose,
 	onUpdate,
 }) => {
-	const { services } = useStore();
-	const { data, loading, dispatch } = useHttpClient<IArtifact>();
+	const { services, updateArtifact, isUpdatingArtifact } =
+		useArtifactsStore();
 	const [artifactDetails, setArtifactDetails] = useState<IUpdateArtifact>({
 		service: artifact.service,
 		identifier: artifact.identifier,
@@ -40,22 +39,28 @@ const UpdateArtifact: React.FC<IUpdateArtifactProps> = ({
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		try {
-			const payload: IUpdateArtifact = {};
-			if (artifactDetails.service !== artifact.service)
+			let payload: IUpdateArtifact = {};
+			if (artifactDetails.service !== artifact.service) {
 				payload.service = artifactDetails.service;
-			if (artifactDetails.comment !== artifact.comment)
+			}
+			if (artifactDetails.comment !== artifact.comment) {
 				payload.comment = artifactDetails.comment;
-			if (artifactDetails.identifier !== artifact.identifier)
+			}
+			if (artifactDetails.identifier !== artifact.identifier) {
 				payload.identifier = artifactDetails.identifier;
-			if (artifactDetails.password)
-				payload.password = artifactDetails.password;
-			if (Object.keys(payload).length === 0) throw "Nothing to update";
-			payload.privateKey = artifactDetails.privateKey;
-			await dispatch(libraryHelpers.updateArtifact, {
-				id,
-				data: payload,
-			});
-			onUpdate(data);
+			}
+			if (artifactDetails.password && artifactDetails.privateKey) {
+				payload = {
+					...payload,
+					password: artifactDetails.password,
+					privateKey: artifactDetails.privateKey,
+				};
+			}
+			if (CollectionUtils.isEmpty(Object.keys(payload))) {
+				return Notify.error("Nothing to update");
+			}
+			const updated = await updateArtifact(id, payload);
+			onUpdate(updated);
 		} catch (error) {
 			Notify.error(error);
 		}
@@ -136,6 +141,7 @@ const UpdateArtifact: React.FC<IUpdateArtifactProps> = ({
 							onChange={(value) => {
 								setArtifactDetails((prev) => ({
 									...prev,
+									password: prev.password || "",
 									privateKey: value,
 								}));
 							}}
@@ -151,7 +157,7 @@ const UpdateArtifact: React.FC<IUpdateArtifactProps> = ({
 						<Button
 							type="submit"
 							variant="outlined"
-							loading={loading}
+							loading={isUpdatingArtifact}
 						>
 							Update
 						</Button>

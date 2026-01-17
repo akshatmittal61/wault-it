@@ -2,7 +2,6 @@ import { InputPrivateKey } from "@/components";
 import { ArtifactsApi } from "@/api";
 import { useHttpClient } from "@/hooks";
 import { Button, MaterialIcon, Popup } from "@/library";
-import { IRevealedArtifact } from "@/types";
 import { Notify } from "@/utils";
 import { stylesConfig } from "@/utils/functions";
 import React, { useState } from "react";
@@ -22,18 +21,21 @@ const ArtifactRevealer: React.FC<IArtifactRevealerProps> = ({
 	identifier,
 	onClose,
 }) => {
-	const { data, loading, call } = useHttpClient<IRevealedArtifact>();
+	const {
+		trigger: revealArtifact,
+		data: revealedArtifact,
+		loading: revealingArtifact,
+	} = useHttpClient({
+		trigger: ArtifactsApi.getRevealedArtifact,
+		onError: Notify.error,
+	});
 	const [privateKey, setPrivateKey] = useState("");
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		try {
-			await call(ArtifactsApi.getRevealedArtifact, {
-				artifactId: id,
-				privateKey,
-			});
-		} catch (error) {
-			Notify.error(error);
-		}
+		await revealArtifact({
+			artifactId: id,
+			privateKey,
+		});
 	};
 	return (
 		<Popup
@@ -44,8 +46,12 @@ const ArtifactRevealer: React.FC<IArtifactRevealerProps> = ({
 		>
 			<div className={classes("")}>
 				<Block label="Identifier" value={identifier} showCopy />
-				{data.password ? (
-					<Block label="Password" value={data.password} showCopy />
+				{revealedArtifact.password ? (
+					<Block
+						label="Password"
+						value={revealedArtifact.password}
+						showCopy
+					/>
 				) : (
 					<form className={classes("-form")} onSubmit={handleSubmit}>
 						<InputPrivateKey
@@ -56,7 +62,7 @@ const ArtifactRevealer: React.FC<IArtifactRevealerProps> = ({
 						<Button
 							type="submit"
 							variant="outlined"
-							loading={loading}
+							loading={revealingArtifact}
 							icon={<MaterialIcon icon="visibility" />}
 						>
 							Reveal

@@ -1,17 +1,17 @@
 import { routes } from "@/constants";
-import { useStore } from "@/hooks";
 import { MaterialIcon, Typography } from "@/library";
 import { stylesConfig } from "@/utils/functions";
 import { useRouter } from "next/router";
 import React from "react";
 import styles from "./styles.module.scss";
+import { useArtifactsStore } from "@/store";
 
 interface IHomeServicesProps {}
 
 const classes = stylesConfig(styles, "home-services");
 
 const HomeServices: React.FC<IHomeServicesProps> = () => {
-	const { services } = useStore();
+	const { services } = useArtifactsStore();
 	const router = useRouter();
 	return (
 		<section id="home-services" className={classes("")}>
@@ -20,7 +20,7 @@ const HomeServices: React.FC<IHomeServicesProps> = () => {
 					key={`home-services-${service.toString()}`}
 					className={classes("-service")}
 					onClick={() => {
-						router.push(routes.ROOM(service));
+						void router.push(routes.ROOM(service));
 					}}
 				>
 					<Typography size="s">{service}</Typography>

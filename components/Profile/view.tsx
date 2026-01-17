@@ -1,11 +1,11 @@
 import { routes } from "@/constants";
-import { useStore } from "@/hooks";
 import { Avatar, Button, MaterialIcon, Typography } from "@/library";
-import { Notify } from "@/utils";
+import { Notify, SafetyUtils, UserUtils } from "@/utils";
 import { copyToClipboard, stylesConfig } from "@/utils/functions";
 import { useRouter } from "next/router";
 import React from "react";
 import styles from "./styles.module.scss";
+import { useAuthStore } from "@/store";
 
 interface IViewProfileProps {}
 
@@ -13,17 +13,23 @@ const classes = stylesConfig(styles, "view-profile");
 
 const ViewProfile: React.FC<IViewProfileProps> = () => {
 	const router = useRouter();
-	const { user, logout } = useStore();
+	const { user, logout } = useAuthStore();
 
 	const logoutUser = async () => {
 		await logout();
-		router.push(routes.LOGIN);
+		void router.push(routes.LOGIN);
 	};
+
+	if (!SafetyUtils.isNonNull(user)) return null;
 	return (
 		<section id="profile" className={classes("")}>
-			<Avatar src={user.avatar || ""} alt={user.name} size="large" />
+			<Avatar
+				src={UserUtils.getUserAvatar(user)}
+				alt={UserUtils.getNameOfUser(user)}
+				size="large"
+			/>
 			<Typography as="h1" size="xxxl" className={classes("-name")}>
-				Hi, {user.name}
+				Hi, {UserUtils.getNameOfUser(user)}
 			</Typography>
 			<Typography size="lg" className={classes("-email")}>
 				{user.email}{" "}

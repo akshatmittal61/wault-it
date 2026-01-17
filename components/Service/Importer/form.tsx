@@ -7,7 +7,7 @@ import styles from "./styles.module.scss";
 interface IArtifactsImporterFormProps {
 	file: any;
 	setFile: (_: any) => void;
-	handleUploadResume: (_: any) => void;
+	handleUpload: (_: any) => void;
 	handleDragOver: (_: any) => void;
 	handleDrop: (_: any) => void;
 	handleDragStart: (_: any) => void;
@@ -18,7 +18,7 @@ const classes = stylesConfig(styles, "artifacts-importer");
 const ArtifactsImporterForm: React.FC<IArtifactsImporterFormProps> = ({
 	file,
 	setFile,
-	handleUploadResume,
+	handleUpload,
 	handleDragOver,
 	handleDrop,
 	handleDragStart,
@@ -28,10 +28,10 @@ const ArtifactsImporterForm: React.FC<IArtifactsImporterFormProps> = ({
 			className={classes("-form")}
 			onDragOver={handleDragOver}
 			onDrop={handleDrop}
-			id="upload-resume"
+			id="upload-file"
 			onSubmit={(e) => {
 				e.preventDefault();
-				handleUploadResume(file);
+				handleUpload(file);
 			}}
 		>
 			<div
@@ -47,8 +47,8 @@ const ArtifactsImporterForm: React.FC<IArtifactsImporterFormProps> = ({
 			</div>
 			<input
 				type="file"
-				name="resume"
-				id="resume"
+				name="file"
+				id="file"
 				onChange={(e) => {
 					setFile(e.target.files?.[0]);
 				}}
@@ -56,7 +56,7 @@ const ArtifactsImporterForm: React.FC<IArtifactsImporterFormProps> = ({
 			/>
 			<label
 				className={classes("-form__label")}
-				htmlFor="resume"
+				htmlFor="file"
 				title={"Upload File"}
 			>
 				Browse Files

@@ -1,13 +1,12 @@
 import { InputPrivateKey } from "@/components";
-import { libraryHelpers } from "@/context/helpers";
-import { useHttpClient, useStore } from "@/hooks";
 import { Responsive } from "@/layouts";
 import { Button, Input, MaterialIcon, Pane } from "@/library";
-import { IArtifact, ICreateArtifact } from "@/types";
+import { ICreateArtifact } from "@/types";
 import { Notify } from "@/utils";
 import { stylesConfig } from "@/utils/functions";
 import React, { useState } from "react";
 import styles from "./styles.module.scss";
+import { useArtifactsStore } from "@/store";
 
 interface IAddNewArtifactProps {
 	onClose: () => void;
@@ -17,8 +16,8 @@ interface IAddNewArtifactProps {
 const classes = stylesConfig(styles, "artifact-add");
 
 const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose, onAdd }) => {
-	const { services } = useStore();
-	const { loading, dispatch } = useHttpClient<IArtifact>();
+	const { services, createArtifact, isCreatingArtifact } =
+		useArtifactsStore();
 	const [artifactDetails, setArtifactDetails] = useState<ICreateArtifact>({
 		service: "",
 		identifier: "",
@@ -33,7 +32,7 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose, onAdd }) => {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		try {
-			await dispatch(libraryHelpers.createArtifact, artifactDetails);
+			await createArtifact(artifactDetails);
 			onAdd();
 		} catch (error) {
 			Notify.error(error);
@@ -130,7 +129,7 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose, onAdd }) => {
 						<Button
 							type="submit"
 							variant="outlined"
-							loading={loading}
+							loading={isCreatingArtifact}
 						>
 							Add
 						</Button>

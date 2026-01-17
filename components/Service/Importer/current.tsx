@@ -14,10 +14,10 @@ const ArtifactsImporterCurrent: React.FC<
 	return (
 		<>
 			<Typography as="h3" size="lg">
-				View Current Resume
+				View Current File
 			</Typography>
 			<a
-				href="https://akshatmittal61.vercel.app/resume"
+				href="https://akshatmittal61.vercel.app"
 				target="_blank"
 				rel="noreferrer"
 				className={classes("-header-link")}

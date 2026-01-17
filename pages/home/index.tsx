@@ -1,10 +1,11 @@
 import { withAuthPage } from "@/client";
-import { Home as Components, Loader, Placeholder, Service } from "@/components";
+import { Home as Components, Placeholder, Service } from "@/components";
 import styles from "@/styles/pages/Home.module.scss";
 import { IUser } from "@/types";
 import { CollectionUtils, StringUtils, stylesConfig } from "@/utils";
 import React, { useState } from "react";
 import { useArtifactsStore } from "@/store";
+import { Loader } from "@/library";
 
 const classes = stylesConfig(styles, "home");
 
