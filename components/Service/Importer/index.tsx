@@ -1,4 +1,4 @@
-import { LibraryApi } from "@/api";
+import { ArtifactsApi } from "@/api";
 import { Popup, Typography } from "@/library";
 import { Logger } from "@/log";
 import { Notify, readFile } from "@/utils";
@@ -33,7 +33,7 @@ const ArtifactsImporter: React.FC<IArtifactsImporterProps> = ({
 			}
 			const resumeFileDataUrl = await readFile(file);
 			Logger.debug("resumeFileDataUrl", resumeFileDataUrl);
-			const updatedServices = await LibraryApi.importArtifactsFromCsv(
+			const updatedServices = await ArtifactsApi.importArtifactsFromCsv(
 				resumeFileDataUrl,
 				privateKey
 			);

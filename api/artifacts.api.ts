@@ -7,7 +7,7 @@ import {
 	IUpdateArtifact,
 } from "@/types";
 
-export class LibraryApi {
+export class ArtifactsApi {
 	public static async getAllServices(headers?: any) {
 		const response = await http.get<
 			ApiRes<ApiResponses.GetServicesForUser>

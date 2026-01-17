@@ -8,5 +8,4 @@ export * from "./payload";
 export * from "./schema";
 export * from "./seo";
 export * from "./server";
-export * from "./store";
 export * from "./ui";

@@ -1,5 +1,5 @@
 import { InputPrivateKey } from "@/components";
-import { LibraryApi } from "@/api";
+import { ArtifactsApi } from "@/api";
 import { useHttpClient } from "@/hooks";
 import { Button, MaterialIcon, Popup } from "@/library";
 import { IRevealedArtifact } from "@/types";
@@ -27,7 +27,7 @@ const ArtifactRevealer: React.FC<IArtifactRevealerProps> = ({
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		try {
-			await call(LibraryApi.getRevealedArtifact, {
+			await call(ArtifactsApi.getRevealedArtifact, {
 				artifactId: id,
 				privateKey,
 			});
