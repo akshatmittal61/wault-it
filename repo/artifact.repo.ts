@@ -1,20 +1,22 @@
-import { BaseRepo } from "@/repo/base";
+import { FilterQuery } from "@/db";
+import { InaccessibleMethodError } from "@/errors";
+import { ArtifactModel } from "@/models";
+import { BaseRepo } from "./base";
 import {
 	Artifact,
+	CreateArtifactModel,
 	IArtifact,
+	IConcealedArtifact,
 	ICreateArtifact,
 	IRevealedArtifact,
-	IUpdateArtifact,
+	UpdateArtifact,
 } from "@/types";
-import { ArtifactModel } from "@/models";
-import { omitKeys, SafetyUtils } from "@/utils";
-import { InaccessibleMethodError } from "@/errors";
-import { FilterQuery } from "@/db";
+import { CollectionUtils, omitKeys, SafetyUtils } from "@/utils";
 
 class ArtifactRepo extends BaseRepo<Artifact, IArtifact> {
 	protected model = ArtifactModel;
 
-	public parser(input: Artifact | null): IArtifact | null {
+	public parser(input: Artifact | null): IConcealedArtifact | null {
 		const res = super.parser(input);
 		if (!res) return null;
 		return omitKeys(res, ["password", "author"]);
@@ -41,7 +43,7 @@ class ArtifactRepo extends BaseRepo<Artifact, IArtifact> {
 	 * Please use `findByIdForUser` instead.
 	 * Attempts to find an artifact but will throw an error.
 	 */
-	public async findById(): Promise<IArtifact | null> {
+	public async findById(_: string): Promise<IArtifact | null> {
 		throw new InaccessibleMethodError("findById", "findByIdForUser");
 	}
 
@@ -124,7 +126,7 @@ class ArtifactRepo extends BaseRepo<Artifact, IArtifact> {
 	public async findByIdForUser(
 		id: string,
 		userId: string
-	): Promise<IArtifact | null> {
+	): Promise<IConcealedArtifact | null> {
 		return await this.model
 			.findOne<Artifact>({ _id: id, author: userId })
 			.select("-password -author")
@@ -159,12 +161,12 @@ class ArtifactRepo extends BaseRepo<Artifact, IArtifact> {
 	public async findForUser(
 		query: FilterQuery<Artifact>,
 		userId: string
-	): Promise<Array<IArtifact> | null> {
+	): Promise<Array<IConcealedArtifact> | null> {
 		const res = await this.model
 			.find<Artifact>({ ...query, author: userId })
 			.select("-password -author");
-		const parsedRes = res.map(this.parser).filter((obj) => obj != null);
-		if (parsedRes.length === 0) return null;
+		const parsedRes = res.map(this.parser).filter(SafetyUtils.isNonNull);
+		if (CollectionUtils.isEmpty(parsedRes)) return null;
 		return parsedRes;
 	}
 
@@ -175,7 +177,9 @@ class ArtifactRepo extends BaseRepo<Artifact, IArtifact> {
 	 * @param userId - The ID of the user for whom the artifacts are being retrieved.
 	 * @returns An array of artifact objects without the password and author if found, otherwise an empty array.
 	 */
-	public async findAllForUser(userId: string): Promise<Array<IArtifact>> {
+	public async findAllForUser(
+		userId: string
+	): Promise<Array<IConcealedArtifact>> {
 		const res = await this.model
 			.find<Artifact>({ author: userId })
 			.select("-password -author")
@@ -199,7 +203,7 @@ class ArtifactRepo extends BaseRepo<Artifact, IArtifact> {
 	public async createForUser(
 		body: ICreateArtifact,
 		userId: string
-	): Promise<IArtifact> {
+	): Promise<IConcealedArtifact> {
 		const payload = { ...body, author: userId };
 		const res = await this.model.create(payload);
 		return SafetyUtils.getNonNullValue(this.parser(res));
@@ -219,9 +223,9 @@ class ArtifactRepo extends BaseRepo<Artifact, IArtifact> {
 	 */
 	public async updateForUser(
 		query: FilterQuery<Artifact>,
-		update: IUpdateArtifact,
+		update: UpdateArtifact,
 		userId: string
-	): Promise<IArtifact | null> {
+	): Promise<IConcealedArtifact | null> {
 		const filter = query.id
 			? { _id: query.id, author: userId }
 			: { ...query, author: userId };
@@ -244,7 +248,7 @@ class ArtifactRepo extends BaseRepo<Artifact, IArtifact> {
 	public async removeForUser(
 		query: FilterQuery<Artifact>,
 		userId: string
-	): Promise<IArtifact | null> {
+	): Promise<IConcealedArtifact | null> {
 		const filter = query.id
 			? { _id: query.id, author: userId }
 			: { ...query, author: userId };
@@ -273,17 +277,20 @@ class ArtifactRepo extends BaseRepo<Artifact, IArtifact> {
 	}
 
 	public async bulkCreateForUser(
-		body: ICreateArtifact[],
+		body: Array<CreateArtifactModel>,
 		userId: string
 	): Promise<Array<IArtifact>> {
-		const payload = body.map((b) => ({ ...b, author: userId }));
-		const res = await this.model.insertMany<ICreateArtifact>(payload);
+		const payload: Array<CreateArtifactModel> = body.map((b) => ({
+			...b,
+			author: userId,
+		}));
+		const res = await this.model.insertMany<CreateArtifactModel>(payload);
 		const populatedRes = await Promise.all(
 			res.map((r) => r.populate<Artifact>("author"))
 		);
 		const parsedRes = populatedRes
 			.map(this.parser)
-			.filter((obj) => obj != null);
+			.filter(SafetyUtils.isNonNull);
 		if (parsedRes.length > 0) return parsedRes;
 		return [];
 	}

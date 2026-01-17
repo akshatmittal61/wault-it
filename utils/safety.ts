@@ -50,8 +50,7 @@ export class SafetyUtils {
 		fallback: T
 	): T {
 		try {
-			const value = SafetyUtils.getNonNullValue<T>(input);
-			return value;
+			return SafetyUtils.getNonNullValue<T>(input);
 		} catch (e) {
 			if (e instanceof ParserSafetyError) {
 				return fallback;
