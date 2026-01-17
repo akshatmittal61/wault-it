@@ -82,7 +82,7 @@
 		gap: 0.75rem;
 		padding: 1rem;
 
-		@include theme(dark) {
+		@include _theme(dark) {
 			filter: invert(1);
 		}
 	}

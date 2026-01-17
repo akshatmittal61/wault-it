@@ -1,4 +1,6 @@
 import {
+	AppNetworkStatus,
+	AppTheme,
 	T_API_METHODS,
 	T_AUTH_MAPPING_PROVIDER,
 	T_NODE_ENV,
@@ -28,4 +30,10 @@ export const NODE_ENV = getEnumeration<T_NODE_ENV>([
 
 export const authMappingProvider = getEnumeration<T_AUTH_MAPPING_PROVIDER>([
 	"google",
+]);
+
+export const appTheme = getEnumeration<AppTheme>(["light", "dark"]);
+export const appNetworkStatus = getEnumeration<AppNetworkStatus>([
+	"online",
+	"offline",
 ]);

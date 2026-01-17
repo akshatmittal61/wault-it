@@ -1,12 +1,15 @@
+@import "./mixins";
+
 :root,
 :root::before,
 :root::after {
 	--transition-time: 0.3s;
-	--side-width: 22%;
-	--head-height: 4.5rem;
+	--side-width: 16rem;
+	--head-height: 2.5rem;
+	--border-radius: 0.5rem;
 
-	--side-width-collapsed: 5.5rem;
-	--side-width-expanded: 22%;
+	--side-width-collapsed: 4.5rem;
+	--side-width-expanded: 16rem;
 
 	--font-poppins:
 		Poppins, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -35,13 +38,15 @@
 	--mac-tcolor: #4fc2ee;
 
 	--theme-white: #ffffff;
-	--theme-black: #0d0d0d;
-	--theme-blue: #0511f2;
-	--theme-light-blue: #52b1f7;
-	--theme-grey: #6a84a6;
+	--theme-black: #090909;
+	--theme-purple: #7e48c9;
+	--theme-blue: #1f6feb;
+	--theme-yellow: #edcf63;
+	--theme-cyan: #87d4ff;
+	--theme-pink: #b363c7;
+	--theme-grey: #7d8590;
 	--theme-light-grey: #c4c4c4;
 	--theme-dark-grey: #617c8c;
-	--theme-green: #6fbfa2;
 	--theme-neon: #64ffda;
 
 	--theme-bg: #f9f9f9;
@@ -66,20 +71,28 @@
 	--back-shadow-dark: rgba(0, 0, 0, 0.25);
 	--back-shadow-light: rgba(0, 0, 0, 0.1);
 
+	// Brand Colors
+
+	--theme-green: #4aa63c;
+	--theme-green-light: #98bf45;
+	--theme-green-dark: #027333;
+	--theme-red: #bf5517;
+	--theme-orange: #f28c0f;
+
 	--theme-primary: var(--theme-green);
 	--theme-secondary: var(--theme-red);
+	--shadow-color: 0, 0, 0;
 
-	--accent-color: #bccbff;
-	--accent-color-heavy: #1f316f;
-	--accent-color-100: rgba(188, 203, 255, 0.1);
-	--accent-color-200: rgba(188, 203, 255, 0.2);
-	--accent-color-300: rgba(188, 203, 255, 0.3);
-	--accent-color-400: rgba(188, 203, 255, 0.4);
-	--accent-color-500: rgba(188, 203, 255, 0.5);
-	--accent-color-600: rgba(188, 203, 255, 0.6);
-	--accent-color-700: rgba(188, 203, 255, 0.7);
-	--accent-color-800: rgba(188, 203, 255, 0.8);
-	--accent-color-900: rgba(188, 203, 255, 0.9);
-
-	--theme-back-shadow: rgba(0, 0, 0, 0.05);
+	--accent-color: #4aa63c;
+	--accent-color-heavy: #027333;
+	--accent-color-light: #98bf45;
+	--accent-color-100: #eef5eb;
+	--accent-color-200: #ddeed9;
+	--accent-color-300: #cbe5c7;
+	--accent-color-400: #badcb4;
+	--accent-color-500: #a9d2a1;
+	--accent-color-600: #96c98d;
+	--accent-color-700: #84c179;
+	--accent-color-800: #72b866;
+	--accent-color-900: #5eaf52;
 }

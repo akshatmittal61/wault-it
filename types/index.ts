@@ -6,6 +6,7 @@ export * from "./files";
 export * from "./parser";
 export * from "./payload";
 export * from "./schema";
+export * from "./seo";
 export * from "./server";
 export * from "./store";
 export * from "./ui";

@@ -9,5 +9,7 @@ export * as Landing from "./Landing";
 export * as Loader from "./Loader";
 export { default as Placeholder } from "./Placeholder";
 export * as Profile from "./Profile";
+export * from "./Seo";
 export * as Service from "./Service";
 export { default as SideBar } from "./Side";
+export * from "./Wrapper";

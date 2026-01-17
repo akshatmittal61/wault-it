@@ -14,7 +14,7 @@
 		align-items: center;
 		gap: 24px;
 
-		@include theme(dark) {
+		@include _theme(dark) {
 			filter: invert(1);
 		}
 	}

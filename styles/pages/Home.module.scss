@@ -45,7 +45,7 @@
 		padding: 24px;
 
 		& > *:last-child {
-			@include theme(dark) {
+			@include _theme(dark) {
 				filter: invert(1);
 			}
 		}
