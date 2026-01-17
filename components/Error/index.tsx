@@ -1,5 +1,5 @@
 import { frontendBaseUrl } from "@/constants";
-import { Seo } from "@/layouts";
+import { Seo } from "@/components";
 import { Button, Typography } from "@/library";
 import styles from "@/styles/pages/Error.module.scss";
 import { stylesConfig } from "@/utils";

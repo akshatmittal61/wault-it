@@ -1,29 +1,22 @@
-import { authenticatedPage } from "@/client";
 import { Auth as Components } from "@/components";
 import { routes } from "@/constants";
-import { useStore } from "@/hooks";
 import { Typography } from "@/library";
 import styles from "@/styles/pages/Auth.module.scss";
 import { IUser, ServerSideResult } from "@/types";
-import { stylesConfig } from "@/utils";
+import { StringUtils, stylesConfig } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
+import { authRouterInterceptor } from "@/client";
+import { GetServerSidePropsContext } from "next";
 
 const classes = stylesConfig(styles, "login");
 
 type LoginPageProps = { user: IUser | null };
 
-const LoginPage: React.FC<LoginPageProps> = (props) => {
+const LoginPage: React.FC<LoginPageProps> = () => {
 	const router = useRouter();
-	const { dispatch, setUser } = useStore();
-	useEffect(() => {
-		if (props.user) {
-			dispatch(setUser(props.user));
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	return (
 		<main className={classes("")}>
@@ -80,13 +73,18 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
 export default LoginPage;
 
 export const getServerSideProps = (
-	context: any
+	context: GetServerSidePropsContext
 ): Promise<ServerSideResult<LoginPageProps>> => {
-	return authenticatedPage(context, {
-		async onLoggedInAndOnboarded() {
+	return authRouterInterceptor(context, {
+		onLoggedInAndOnboarded() {
+			const { redirect } = context.query;
+			const redirectPath = StringUtils.getNonEmptyStringOrElse(
+				redirect,
+				routes.HOME
+			);
 			return {
 				redirect: {
-					destination: routes.HOME,
+					destination: redirectPath,
 					permanent: false,
 				},
 			};

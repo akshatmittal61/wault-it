@@ -1,27 +1,20 @@
-import { authenticatedPage } from "@/client";
 import { Profile } from "@/components";
 import { routes } from "@/constants";
-import { useStore } from "@/hooks";
 import { Button, MaterialIcon } from "@/library";
 import styles from "@/styles/pages/Home.module.scss";
 import { IUser, ServerSideResult } from "@/types";
 import { stylesConfig } from "@/utils";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { authRouterInterceptor } from "@/client";
 
 const classes = stylesConfig(styles, "profile");
 
 type ProfilePageProps = { user: IUser };
 
-const ProfilePage: React.FC<ProfilePageProps> = (props) => {
+const ProfilePage: React.FC<ProfilePageProps> = () => {
 	const router = useRouter();
-	const { dispatch, setUser } = useStore();
 	const [mode, setMode] = useState<"view" | "edit">("view");
-
-	useEffect(() => {
-		dispatch(setUser(props.user));
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	return (
 		<main id="profile" className={classes("")}>
@@ -61,7 +54,7 @@ export default ProfilePage;
 export const getServerSideProps = async (
 	context: any
 ): Promise<ServerSideResult<ProfilePageProps>> => {
-	return await authenticatedPage(context, {
+	return await authRouterInterceptor(context, {
 		onLoggedInAndOnboarded(user) {
 			return {
 				props: { user },

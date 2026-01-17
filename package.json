@@ -17,7 +17,8 @@
 		"format:check": "prettier --check .",
 		"prepare": "husky install",
 		"test": "echo \"Error: no test specified\" && exit 0",
-		"clean": "rm -rf .next/ && rm -rf node_modules && yarn"
+		"clean": "rm -rf .next/ && rm -rf dist/ && rm -rf .cache/ && rm -rf .yarn/ && rm -rf coverage/",
+		"reset": "yarn clean && rm -rf node_modules/ && rm -rf logs/"
 	},
 	"dependencies": {
 		"aos": "^2.3.4",

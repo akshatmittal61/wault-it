@@ -78,7 +78,10 @@ export const useAuthStore = createBaseStore<State, Action, Options, Extras>({
 		});
 		const { trigger: logout } = useHttpClient({
 			trigger: AuthApi.logout,
-			onSuccess: () => store.getState().setUser(null),
+			onSuccess: () => {
+				store.getState().setUser(null);
+				void router.push(redirectToLogin(router.pathname));
+			},
 			onError: Notify.error,
 		});
 
