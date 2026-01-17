@@ -32,6 +32,7 @@ export type ApiWrapperOptions = {
 	db?: boolean;
 	auth?: boolean;
 	admin?: boolean;
+	validatePrivateKey?: boolean;
 };
 
 export type T_API_METHODS = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";

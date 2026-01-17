@@ -20,6 +20,7 @@ export class ApiRoute {
 	private readonly useDatabase: boolean = false;
 	private readonly isAdmin: boolean = false;
 	private readonly isAuthenticated: boolean = false;
+	private readonly needToValidatePrivateKey: boolean = false;
 	private dbContainer: DbContainer;
 
 	// API Controllers
@@ -43,7 +44,7 @@ export class ApiRoute {
 	 */
 	constructor(
 		{ GET, POST, PUT, PATCH, DELETE }: ApiControllers,
-		{ db, auth, admin }: ApiWrapperOptions = {}
+		{ db, auth, admin, validatePrivateKey }: ApiWrapperOptions = {}
 	) {
 		this.allowedMethods = [];
 		this.dbContainer = DatabaseManager.createContainer(dbUri);
@@ -60,6 +61,12 @@ export class ApiRoute {
 			this.useDatabase = true;
 			this.isAuthenticated = true;
 			this.isAdmin = true;
+		}
+
+		if (validatePrivateKey === true) {
+			this.isAuthenticated = true;
+			this.useDatabase = true;
+			this.needToValidatePrivateKey = true;
 		}
 
 		if (GET) {
@@ -99,6 +106,10 @@ export class ApiRoute {
 		if (this.isAdmin) {
 			return ServerMiddleware.authenticatedRoute(
 				ServerMiddleware.adminRoute(controller)
+			);
+		} else if (this.needToValidatePrivateKey) {
+			return ServerMiddleware.authenticatedRoute(
+				ServerMiddleware.validatePrivateKey(controller)
 			);
 		} else if (this.isAuthenticated) {
 			return ServerMiddleware.authenticatedRoute(controller);

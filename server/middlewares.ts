@@ -1,6 +1,6 @@
 import { AuthConstants, HTTP } from "@/constants";
 import { Logger } from "@/log";
-import { AuthService } from "@/services";
+import { AuthService, VaultService } from "@/services";
 import { ApiController, ApiRequest, ApiResponse } from "@/types";
 import { SafetyUtils, StringUtils } from "@/utils";
 import { ApiFailure, ApiSuccess } from "./payload";
@@ -96,6 +96,15 @@ export class ServerMiddleware {
 					.message(HTTP.message.FORBIDDEN)
 					.send();
 			}
+			return next(req, res);
+		};
+	}
+	public static validatePrivateKey(next: ApiController): ApiController {
+		return async (req: ApiRequest, res: ApiResponse) => {
+			const privateKey = StringUtils.getNonEmptyString(
+				req.body.privateKey
+			);
+			VaultService.validateKey(privateKey);
 			return next(req, res);
 		};
 	}
