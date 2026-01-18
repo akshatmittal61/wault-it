@@ -1,8 +1,8 @@
-import crypto from "crypto";
 import { HTTP, regex } from "@/constants";
 import { ApiError } from "@/errors";
 import { EncryptedData } from "@/types";
 import { CollectionUtils } from "@/utils";
+import crypto from "crypto";
 
 export class VaultService {
 	public static validateKey(key: string) {

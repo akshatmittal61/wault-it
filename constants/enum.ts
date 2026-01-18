@@ -6,7 +6,7 @@ import {
 	T_NODE_ENV,
 	T_USER_ROLE,
 } from "@/types";
-import { getEnumeration } from "@/utils";
+import { getEnumeration } from "@/utils/functions";
 
 export const apiMethods = getEnumeration<T_API_METHODS>([
 	"GET",

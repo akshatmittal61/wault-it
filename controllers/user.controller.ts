@@ -6,7 +6,7 @@ import {
 	IUpdateUser,
 } from "@/types";
 import { SafetyUtils, StringUtils } from "@/utils";
-import { UserService } from "@/services/user.service";
+import { UserService } from "@/services";
 import { ApiSuccess } from "@/server";
 
 export class UserController {

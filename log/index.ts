@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import { nodeEnv } from "../config";
-import { NODE_ENV, serviceName } from "../constants";
+import { nodeEnv } from "@/config";
+import { NODE_ENV, serviceName } from "@/constants";
 
 type LOG_LEVEL =
 	| "log"
@@ -77,8 +77,7 @@ export class Logger {
 		const logLevel = Logger.getLevel(level);
 		const message = Logger.getMessage(...messages);
 		const service = `${serviceName}-${nodeEnv}`;
-		const messageToLog = `[${service}] [${timestamp}] [${logLevel}] [${message}]\n`;
-		return messageToLog;
+		return `[${service}] [${timestamp}] [${logLevel}] [${message}]\n`;
 	}
 	private static writeToConsole(level: LOG_LEVEL, message: string) {
 		const color = Logger.getConsoleColor(level);

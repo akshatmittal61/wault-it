@@ -1,5 +1,5 @@
 import { CacheParameter } from "@/types";
-import { getEnumeration } from "@/utils";
+import { getEnumeration } from "@/utils/functions";
 
 // Maximum TTL for cache in seconds - 24 hours
 export const TTL_SECONDS = 60 * 60 * 24;

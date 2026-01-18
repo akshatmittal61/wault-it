@@ -10,13 +10,13 @@ import {
 import { ApiError } from "@/errors";
 import { Logger } from "@/log";
 import { authRepo } from "@/repo";
-import { CacheService } from "@/services/cache.service";
 import { AuthResponse } from "@/types";
 import { BooleanUtils, SafetyUtils, StringUtils } from "@/utils";
 import axios from "axios";
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import { AuthService } from "./auth.service";
+import { CacheService } from "./cache.service";
 import { UserService } from "./user.service";
 
 export class OAuthService {
@@ -83,6 +83,10 @@ export class OAuthService {
 				authMapping
 			);
 		}
+		Logger.debug(
+			"Attempting to create oauth validator token",
+			authMapping.id
+		);
 		const oauthValidatorToken = jwt.sign(
 			{ id: authMapping.id },
 			jwtSecret.oauthValidator,

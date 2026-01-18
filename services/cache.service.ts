@@ -1,6 +1,6 @@
 import { Cache } from "@/cache";
-import { Logger } from "@/log";
 import { cacheParameter, TTL_SECONDS } from "@/constants";
+import { Logger } from "@/log";
 import { CacheParameter, CachePayloadGenerator, IUser } from "@/types";
 
 export class CacheService {

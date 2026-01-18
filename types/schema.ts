@@ -1,4 +1,4 @@
-import { Model } from "@/types";
+import { Model } from "./parser";
 
 /**
  * Auth Mapping Model

@@ -124,7 +124,12 @@ export class ApiRoute {
 	 * @param {ApiResponse} res - The API response object.
 	 * @param {number} startTime - The start time of the request execution.
 	 */
-	private log(req: ApiRequest, res: ApiResponse, startTime: number): void {
+	private log(
+		status: "success" | "failure",
+		req: ApiRequest,
+		res: ApiResponse,
+		startTime: number
+	): void {
 		const executionTime = Date.now() - startTime;
 		const request = {
 			method: req.method,
@@ -152,9 +157,9 @@ export class ApiRoute {
 		Logger.info(
 			`${request.method} ${response.status} ${request.uri} - ${response.time}ms`
 		);
-		Logger.debug("Request", request);
-		Logger.debug("Request Curl", requestCurl);
-		Logger.debug("Response", response);
+		Logger.debug(status.toUpperCase(), "Request", request);
+		Logger.debug(status.toUpperCase(), "Request Curl", requestCurl);
+		Logger.debug(status.toUpperCase(), "Response", response);
 	}
 
 	/**
@@ -211,10 +216,10 @@ export class ApiRoute {
 						.message(`Method ${method} Not Allowed`)
 						.send();
 				}
-				this.log(req, res, startTime);
+				this.log("success", req, res, startTime);
 				return result;
 			} catch (error: any) {
-				this.log(req, res, startTime);
+				this.log("failure", req, res, startTime);
 				if (error instanceof ApiError) {
 					return new ApiFailure(res)
 						.status(error.status)

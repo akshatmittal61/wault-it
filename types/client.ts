@@ -1,5 +1,5 @@
+import { CreateModel, UnModel, UpdateModel } from "./parser";
 import { Artifact, AuthMapping, User } from "./schema";
-import { CreateModel, UnModel, UpdateModel } from "@/types/parser";
 
 // Types prefixed with `I` are client-specific models
 
