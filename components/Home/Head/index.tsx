@@ -1,5 +1,5 @@
 import { IconButton } from "@/library";
-import { stylesConfig } from "@/utils/functions";
+import { stylesConfig } from "@/utils";
 import React from "react";
 import { FiDownload, FiPlus } from "react-icons/fi";
 import styles from "./styles.module.scss";

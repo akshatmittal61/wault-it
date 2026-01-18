@@ -1,10 +1,12 @@
 import { routes } from "@/constants";
-import { MaterialIcon, Typography } from "@/library";
-import { stylesConfig } from "@/utils/functions";
+import { Masonry } from "@/layouts";
+import { Typography } from "@/library";
+import { useArtifactsStore } from "@/store";
+import { stylesConfig } from "@/utils";
 import { useRouter } from "next/router";
 import React from "react";
+import { FiArrowRight } from "react-icons/fi";
 import styles from "./styles.module.scss";
-import { useArtifactsStore } from "@/store";
 
 interface IHomeServicesProps {}
 
@@ -15,18 +17,32 @@ const HomeServices: React.FC<IHomeServicesProps> = () => {
 	const router = useRouter();
 	return (
 		<section id="home-services" className={classes("")}>
-			{services.map((service) => (
-				<div
-					key={`home-services-${service.toString()}`}
-					className={classes("-service")}
-					onClick={() => {
-						void router.push(routes.ROOM(service));
-					}}
-				>
-					<Typography size="s">{service}</Typography>
-					<MaterialIcon icon="chevron_right" />
-				</div>
-			))}
+			<Masonry
+				className={classes("-masonry")}
+				xlg={4}
+				lg={4}
+				md={3}
+				sm={2}
+				xsm={2}
+			>
+				{services.map((service) => (
+					<div
+						key={`home-services-${service.toString()}`}
+						className={classes("-service")}
+						onClick={() => {
+							void router.push(routes.ROOM(service));
+						}}
+					>
+						<Typography
+							size="s"
+							className={classes("-service__text")}
+						>
+							{service}
+						</Typography>
+						<FiArrowRight className={classes("-service__icon")} />
+					</div>
+				))}
+			</Masonry>
 		</section>
 	);
 };

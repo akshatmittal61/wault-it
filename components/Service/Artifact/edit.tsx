@@ -1,12 +1,12 @@
 import { InputPrivateKey } from "@/components";
 import { Responsive } from "@/layouts";
-import { Button, Input, MaterialIcon, Pane } from "@/library";
+import { Button, Input, Pane } from "@/library";
+import { HiddenInput } from "@/library/";
+import { useArtifactsStore } from "@/store";
 import { IArtifact, IUpdateArtifact } from "@/types";
-import { CollectionUtils, Notify } from "@/utils";
-import { stylesConfig } from "@/utils/functions";
+import { CollectionUtils, Notify, stylesConfig } from "@/utils";
 import React, { useState } from "react";
 import styles from "./styles.module.scss";
-import { useArtifactsStore } from "@/store";
 
 interface IUpdateArtifactProps {
 	id: string;
@@ -117,15 +117,19 @@ const UpdateArtifact: React.FC<IUpdateArtifactProps> = ({
 						/>
 					</Responsive.Col>
 					<Responsive.Col xlg={50} lg={50} md={50} sm={100} xsm={100}>
-						<Input
+						<HiddenInput
 							className={classes("-input")}
-							type="password"
 							name="password"
 							label="Password"
 							placeholder="Enter your password"
-							leftIcon={<MaterialIcon icon="lock" />}
-							value={artifactDetails.password}
-							onChange={handleChange}
+							value={artifactDetails.password || ""}
+							onChange={(value) => {
+								setArtifactDetails((prev) => ({
+									...prev,
+									password: value,
+									privateKey: prev.privateKey || "",
+								}));
+							}}
 						/>
 					</Responsive.Col>
 					<Responsive.Col

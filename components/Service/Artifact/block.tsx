@@ -1,7 +1,7 @@
-import { MaterialIcon, Typography } from "@/library";
-import { Notify } from "@/utils";
-import { copyToClipboard, stylesConfig } from "@/utils/functions";
-import React from "react";
+import { Typography } from "@/library";
+import { copyToClipboard, Notify, stylesConfig } from "@/utils";
+import React, { useState } from "react";
+import { FiCheck, FiCopy } from "react-icons/fi";
 import styles from "./styles.module.scss";
 
 interface IServiceArtifactBlockProps {
@@ -19,6 +19,7 @@ const ServiceArtifactBlock: React.FC<IServiceArtifactBlockProps> = ({
 	style,
 	showCopy = false,
 }) => {
+	const [icon, setIcon] = useState(<FiCopy />);
 	return (
 		<div className={classes("")} style={style}>
 			<Typography size="sm" className={classes("-label")}>
@@ -32,9 +33,13 @@ const ServiceArtifactBlock: React.FC<IServiceArtifactBlockProps> = ({
 						onClick={() => {
 							copyToClipboard(value);
 							Notify.success("Copied to clipboard");
+							setIcon(<FiCheck />);
+							setTimeout(() => {
+								setIcon(<FiCopy />);
+							}, 1000);
 						}}
 					>
-						<MaterialIcon icon="content_copy" />
+						{icon}
 					</button>
 				) : null}
 			</Typography>

@@ -9,6 +9,7 @@ import {
 	stylesConfig,
 	UserUtils,
 } from "@/utils";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
@@ -21,7 +22,6 @@ import {
 	FiUser,
 } from "react-icons/fi";
 import styles from "./styles.module.scss";
-import Image from "next/image";
 
 interface ISideBarProps {}
 
@@ -88,7 +88,11 @@ export const SideBar: React.FC<ISideBarProps> = () => {
 					>
 						<Image
 							className={classes("-logo__image")}
-							src={AppSeo.fullLogo}
+							src={
+								BooleanUtils.valueOf(getSidebarExpanded())
+									? AppSeo.fullLogo
+									: AppSeo.favicon
+							}
 							alt="logo"
 							width={512}
 							height={512}

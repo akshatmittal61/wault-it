@@ -1,3 +1,5 @@
+@import "./shadows";
+
 @mixin responsive($breakpoint) {
 	@if $breakpoint ==phone {
 		@media (min-width: 320px) and (max-width: 671.5px) {
@@ -148,6 +150,7 @@
 	overflow-y: auto;
 	background-color: var(--theme-bg);
 	color: var(--color-black);
+	@include shadow(2);
 	@include hide-scrollbar();
 
 	&:active,

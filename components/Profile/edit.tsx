@@ -1,10 +1,15 @@
 import { Avatar, Button, Input } from "@/library";
+import { useAuthStore } from "@/store";
 import { IUpdateUser } from "@/types";
-import { Notify, SafetyUtils, StringUtils, UserUtils } from "@/utils";
-import { stylesConfig } from "@/utils/functions";
+import {
+	Notify,
+	SafetyUtils,
+	StringUtils,
+	stylesConfig,
+	UserUtils,
+} from "@/utils";
 import React, { useState } from "react";
 import styles from "./styles.module.scss";
-import { useAuthStore } from "@/store";
 
 interface IEditProfileProps {
 	onEdit: () => void;

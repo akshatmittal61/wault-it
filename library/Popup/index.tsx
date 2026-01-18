@@ -1,7 +1,7 @@
 import { Typography } from "@/library";
 import { stylesConfig } from "@/utils";
 import React, { useEffect, useRef, useState } from "react";
-import { CloseIcon, EditIcon, TrashIcon } from "./assets";
+import { FiEdit2, FiTrash, FiX } from "react-icons/fi";
 import styles from "./styles.module.scss";
 import { PopupProps } from "./types";
 
@@ -74,7 +74,7 @@ export const Popup: React.FC<PopupProps> = ({
 									className={classes("-header-edit")}
 									onClick={onEdit}
 								>
-									<EditIcon />
+									<FiEdit2 />
 								</button>
 							) : null}
 							{onDelete ? (
@@ -82,14 +82,14 @@ export const Popup: React.FC<PopupProps> = ({
 									className={classes("-header-delete")}
 									onClick={onDelete}
 								>
-									<TrashIcon />
+									<FiTrash />
 								</button>
 							) : null}
 							<button
 								className={classes("-header-close")}
 								onClick={handleClose}
 							>
-								<CloseIcon />
+								<FiX />
 							</button>
 						</div>
 					</div>

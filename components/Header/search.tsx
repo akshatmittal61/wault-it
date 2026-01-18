@@ -1,8 +1,7 @@
 import { useDebounce } from "@/hooks";
 import { Input, MaterialIcon } from "@/library";
 import { useArtifactsStore } from "@/store";
-import { Notify } from "@/utils";
-import { stylesConfig } from "@/utils/functions";
+import { Notify, stylesConfig } from "@/utils";
 import React, { useEffect } from "react";
 import styles from "./styles.module.scss";
 

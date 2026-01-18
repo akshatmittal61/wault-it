@@ -1,11 +1,11 @@
 import { withAuthPage } from "@/client";
 import { Home as Components, Placeholder, Service } from "@/components";
+import { Loader } from "@/library";
+import { useArtifactsStore, useUiStore } from "@/store";
 import styles from "@/styles/pages/Home.module.scss";
 import { IUser } from "@/types";
 import { CollectionUtils, StringUtils, stylesConfig } from "@/utils";
 import React, { useState } from "react";
-import { useArtifactsStore, useUiStore } from "@/store";
-import { Loader } from "@/library";
 
 const classes = stylesConfig(styles, "home");
 
@@ -81,9 +81,6 @@ const HomePage: React.FC<HomePageProps> = () => {
 			{openAddArtifactPopup ? (
 				<Service.AddArtifact
 					onClose={() => setOpenAddArtifactPopup(false)}
-					onAdd={() => {
-						setOpenAddArtifactPopup(false);
-					}}
 				/>
 			) : null}
 		</>

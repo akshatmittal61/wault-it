@@ -1,21 +1,19 @@
 import { InputPrivateKey } from "@/components";
 import { Responsive } from "@/layouts";
-import { Button, Input, MaterialIcon, Pane } from "@/library";
+import { Button, HiddenInput, Input, Pane } from "@/library";
+import { useArtifactsStore } from "@/store";
 import { ICreateArtifact } from "@/types";
-import { Notify } from "@/utils";
-import { stylesConfig } from "@/utils/functions";
+import { Notify, stylesConfig } from "@/utils";
 import React, { useState } from "react";
 import styles from "./styles.module.scss";
-import { useArtifactsStore } from "@/store";
 
 interface IAddNewArtifactProps {
 	onClose: () => void;
-	onAdd: () => void;
 }
 
 const classes = stylesConfig(styles, "artifact-add");
 
-const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose, onAdd }) => {
+const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose }) => {
 	const { services, createArtifact, isCreatingArtifact } =
 		useArtifactsStore();
 	const [artifactDetails, setArtifactDetails] = useState<ICreateArtifact>({
@@ -33,7 +31,7 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose, onAdd }) => {
 		e.preventDefault();
 		try {
 			await createArtifact(artifactDetails);
-			onAdd();
+			onClose();
 		} catch (error) {
 			Notify.error(error);
 		}
@@ -90,15 +88,18 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose, onAdd }) => {
 						/>
 					</Responsive.Col>
 					<Responsive.Col xlg={50} lg={50} md={50} sm={100} xsm={100}>
-						<Input
+						<HiddenInput
 							className={classes("-input")}
-							type="password"
 							name="password"
 							label="Password"
 							placeholder="Enter your password"
-							leftIcon={<MaterialIcon icon="lock" />}
 							value={artifactDetails.password}
-							onChange={handleChange}
+							onChange={(value) => {
+								setArtifactDetails((prev) => ({
+									...prev,
+									password: value,
+								}));
+							}}
 						/>
 					</Responsive.Col>
 					<Responsive.Col

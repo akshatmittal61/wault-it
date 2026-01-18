@@ -1,11 +1,16 @@
 import { routes } from "@/constants";
 import { Avatar, Button, MaterialIcon, Typography } from "@/library";
-import { Notify, SafetyUtils, UserUtils } from "@/utils";
-import { copyToClipboard, stylesConfig } from "@/utils/functions";
+import { useAuthStore } from "@/store";
+import {
+	copyToClipboard,
+	Notify,
+	SafetyUtils,
+	stylesConfig,
+	UserUtils,
+} from "@/utils";
 import { useRouter } from "next/router";
 import React from "react";
 import styles from "./styles.module.scss";
-import { useAuthStore } from "@/store";
 
 interface IViewProfileProps {}
 

@@ -1,14 +1,14 @@
 import { useConfirmationModal } from "@/hooks";
-import { Button, MaterialIcon } from "@/library";
+import { Button } from "@/library";
+import { useArtifactsStore } from "@/store";
 import { IArtifact } from "@/types";
-import { Notify } from "@/utils";
-import { stylesConfig } from "@/utils/functions";
+import { Notify, stylesConfig } from "@/utils";
 import React, { useState } from "react";
+import { FiEdit2, FiEye, FiTrash } from "react-icons/fi";
 import Block from "./block";
 import Updater from "./edit";
 import Revealer from "./revealer";
 import styles from "./styles.module.scss";
-import { useArtifactsStore } from "@/store";
 
 interface IServiceArtifactProps {
 	artifact: IArtifact;
@@ -67,7 +67,7 @@ const ServiceArtifact: React.FC<IServiceArtifactProps> = ({
 					<Button
 						size="small"
 						variant="outlined"
-						icon={<MaterialIcon icon="visibility" />}
+						icon={<FiEye />}
 						onClick={() => setShowRevealer(true)}
 					>
 						Reveal
@@ -75,7 +75,7 @@ const ServiceArtifact: React.FC<IServiceArtifactProps> = ({
 					<Button
 						size="small"
 						variant="outlined"
-						icon={<MaterialIcon icon="edit" />}
+						icon={<FiEdit2 />}
 						onClick={() => setShowUpdater(true)}
 					>
 						Edit
@@ -83,7 +83,7 @@ const ServiceArtifact: React.FC<IServiceArtifactProps> = ({
 					<Button
 						size="small"
 						variant="outlined"
-						icon={<MaterialIcon icon="delete" />}
+						icon={<FiTrash />}
 						onClick={deleteArtifactConfirmation.openPopup}
 					>
 						Delete

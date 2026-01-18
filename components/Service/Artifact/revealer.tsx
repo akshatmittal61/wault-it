@@ -1,10 +1,10 @@
-import { InputPrivateKey } from "@/components";
 import { ArtifactsApi } from "@/api";
+import { InputPrivateKey } from "@/components";
 import { useHttpClient } from "@/hooks";
-import { Button, MaterialIcon, Popup } from "@/library";
-import { Notify } from "@/utils";
-import { stylesConfig } from "@/utils/functions";
+import { Button, Popup } from "@/library";
+import { Notify, stylesConfig } from "@/utils";
 import React, { useState } from "react";
+import { FiEye } from "react-icons/fi";
 import Block from "./block";
 import styles from "./styles.module.scss";
 
@@ -63,7 +63,7 @@ const ArtifactRevealer: React.FC<IArtifactRevealerProps> = ({
 							type="submit"
 							variant="outlined"
 							loading={revealingArtifact}
-							icon={<MaterialIcon icon="visibility" />}
+							icon={<FiEye />}
 						>
 							Reveal
 						</Button>

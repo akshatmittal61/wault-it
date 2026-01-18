@@ -1,14 +1,13 @@
 import { ArtifactsApi } from "@/api";
+import { useHttpClient } from "@/hooks";
 import { Popup, Typography } from "@/library";
 import { Logger } from "@/log";
-import { Notify, readFile } from "@/utils";
-import { stylesConfig } from "@/utils/functions";
+import { Notify, readFile, stylesConfig } from "@/utils";
 import React, { useState } from "react";
 import Form from "./form";
 import styles from "./styles.module.scss";
 import Submit from "./submit";
 import Uploading from "./uploading";
-import { useHttpClient } from "@/hooks";
 
 interface IArtifactsImporterProps {
 	onClose: () => void;

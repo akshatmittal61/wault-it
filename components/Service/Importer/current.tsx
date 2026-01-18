@@ -1,5 +1,5 @@
 import { Typography } from "@/library";
-import { stylesConfig } from "@/utils/functions";
+import { stylesConfig } from "@/utils";
 import React from "react";
 import { LuFileSymlink } from "react-icons/lu";
 import styles from "./styles.module.scss";

@@ -1,5 +1,5 @@
 import { Typography } from "@/library";
-import { stylesConfig } from "@/utils/functions";
+import { stylesConfig } from "@/utils";
 import React from "react";
 import { FiUpload } from "react-icons/fi";
 import styles from "./styles.module.scss";
