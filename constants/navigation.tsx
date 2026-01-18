@@ -1,6 +1,6 @@
 import { Navigation } from "@/types";
+import { FiHome, FiSearch, FiUser } from "react-icons/fi";
 import { routes } from "./routes";
-import { FiHome, FiUser } from "react-icons/fi";
 
 export const sideBarNavigationLinks: Array<Navigation> = [
 	{
@@ -8,6 +8,12 @@ export const sideBarNavigationLinks: Array<Navigation> = [
 		title: "Home",
 		icon: <FiHome />,
 		route: routes.HOME,
+	},
+	{
+		id: "search",
+		title: "Search",
+		icon: <FiSearch />,
+		route: routes.SEARCH,
 	},
 	{
 		id: "profile",

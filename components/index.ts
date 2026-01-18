@@ -2,7 +2,7 @@ export * as Auth from "./Auth";
 export * from "./Confirmation";
 export { default as Error } from "./Error";
 export { default as Footer } from "./Footer";
-export { default as Header } from "./Header";
+export * from "./Header";
 export * as Home from "./Home";
 export { default as InputPrivateKey } from "./InputPrivateKey";
 export * as Landing from "./Landing";

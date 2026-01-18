@@ -1,10 +1,10 @@
 import { useDebounce } from "@/hooks";
 import { Input, MaterialIcon } from "@/library";
+import { useArtifactsStore } from "@/store";
 import { Notify } from "@/utils";
 import { stylesConfig } from "@/utils/functions";
 import React, { useEffect } from "react";
 import styles from "./styles.module.scss";
-import { useArtifactsStore } from "@/store";
 
 interface ISearchProps {}
 

@@ -4,6 +4,7 @@ export const routes = Object.freeze({
 	ROOT: "/",
 	HOME: "/home",
 	ABOUT: "/about",
+	SEARCH: "/search",
 	LOGIN: "/login",
 	LOGOUT: "/logout",
 	ONBOARDING: "/onboarding",
@@ -32,6 +33,8 @@ export const protectedRoutes: Array<String | Function> = [
 	routes.LOGS,
 	routes.LOG_FILE,
 	routes.PROFILE,
+	routes.ROOM(""),
+	routes.SEARCH,
 ];
 
 export const routesSupportingContainer: Array<string | Function> = [
@@ -39,6 +42,8 @@ export const routesSupportingContainer: Array<string | Function> = [
 	routes.ADMIN,
 	routes.CACHE,
 	routes.PROFILE,
+	routes.ROOM(""),
+	routes.SEARCH,
 ];
 
 export const routesSupportingFooter: Array<string> = [

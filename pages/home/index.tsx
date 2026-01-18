@@ -4,7 +4,7 @@ import styles from "@/styles/pages/Home.module.scss";
 import { IUser } from "@/types";
 import { CollectionUtils, StringUtils, stylesConfig } from "@/utils";
 import React, { useState } from "react";
-import { useArtifactsStore } from "@/store";
+import { useArtifactsStore, useUiStore } from "@/store";
 import { Loader } from "@/library";
 
 const classes = stylesConfig(styles, "home");
@@ -19,13 +19,23 @@ const HomePage: React.FC<HomePageProps> = () => {
 		syncOnMount: true,
 	});
 
-	return (
-		<>
-			<main id="home" className={classes("")}>
+	const { setHeaderContent } = useUiStore({
+		onMount: () => {
+			setHeaderContent(
 				<Components.Head
 					onAdd={() => setOpenAddArtifactPopup(true)}
 					onImport={() => setOpenImporterPopup(true)}
 				/>
+			);
+		},
+		onUnmount: () => {
+			setHeaderContent(null);
+		},
+	});
+
+	return (
+		<>
+			<main id="home" className={classes("")}>
 				{isGettingAllServices && CollectionUtils.isEmpty(services) ? (
 					<Loader.Spinner />
 				) : CollectionUtils.isNotEmpty(services) ? (

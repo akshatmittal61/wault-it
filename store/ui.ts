@@ -48,6 +48,8 @@ type Actions = {
 
 export type Options = {
 	syncOnMount?: boolean;
+	onMount?: () => void;
+	onUnmount?: () => void;
 };
 
 export type Extras = {
@@ -192,6 +194,14 @@ export const useUiStore = createBaseStore<State, Actions, Options, Extras>({
 			if (BooleanUtils.True.equals(options.syncOnMount)) {
 				sync();
 			}
+			if (options.onMount) {
+				options.onMount();
+			}
+			return () => {
+				if (options.onUnmount) {
+					options.onUnmount();
+				}
+			};
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		}, [options.syncOnMount]);
 
