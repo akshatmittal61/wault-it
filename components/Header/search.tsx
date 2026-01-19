@@ -1,8 +1,9 @@
 import { useDebounce } from "@/hooks";
-import { Input, MaterialIcon } from "@/library";
+import { Input } from "@/library";
 import { useArtifactsStore } from "@/store";
 import { Notify, stylesConfig } from "@/utils";
 import React, { useEffect } from "react";
+import { FiSearch } from "react-icons/fi";
 import styles from "./styles.module.scss";
 
 interface ISearchProps {}
@@ -45,7 +46,7 @@ const Search: React.FC<ISearchProps> = () => {
 				name="search"
 				placeholder="Search"
 				value={searchStr}
-				leftIcon={<MaterialIcon icon="search" />}
+				leftIcon={<FiSearch />}
 				onChange={(e: any) => setSearchStr(e.target.value)}
 			/>
 		</form>

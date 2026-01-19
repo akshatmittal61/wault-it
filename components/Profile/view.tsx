@@ -1,5 +1,5 @@
 import { routes } from "@/constants";
-import { Avatar, Button, MaterialIcon, Typography } from "@/library";
+import { Avatar, Button, Typography } from "@/library";
 import { useAuthStore } from "@/store";
 import {
 	copyToClipboard,
@@ -10,6 +10,7 @@ import {
 } from "@/utils";
 import { useRouter } from "next/router";
 import React from "react";
+import { FiCopy, FiLogOut } from "react-icons/fi";
 import styles from "./styles.module.scss";
 
 interface IViewProfileProps {}
@@ -45,14 +46,10 @@ const ViewProfile: React.FC<IViewProfileProps> = () => {
 						Notify.success("Email copied to clipboard");
 					}}
 				>
-					<MaterialIcon icon="content_copy" />
+					<FiCopy />
 				</button>
 			</Typography>
-			<Button
-				onClick={logoutUser}
-				size="large"
-				icon={<MaterialIcon icon="logout" />}
-			>
+			<Button onClick={logoutUser} size="large" icon={<FiLogOut />}>
 				Logout
 			</Button>
 		</section>

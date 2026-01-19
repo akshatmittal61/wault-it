@@ -1,12 +1,13 @@
+import { authRouterInterceptor } from "@/client";
 import { Profile } from "@/components";
 import { routes } from "@/constants";
-import { Button, MaterialIcon } from "@/library";
+import { Button } from "@/library";
 import styles from "@/styles/pages/Home.module.scss";
 import { IUser, ServerSideResult } from "@/types";
 import { stylesConfig } from "@/utils";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { authRouterInterceptor } from "@/client";
+import { FiEdit2, FiEye, FiHome } from "react-icons/fi";
 
 const classes = stylesConfig(styles, "profile");
 
@@ -23,16 +24,12 @@ const ProfilePage: React.FC<ProfilePageProps> = () => {
 					className={classes("-home")}
 					onClick={() => router.push(routes.HOME)}
 				>
-					<MaterialIcon icon="home" />
+					<FiHome />
 				</button>
 				<Button
 					className={classes("-button")}
 					variant="outlined"
-					icon={
-						<MaterialIcon
-							icon={mode === "view" ? "edit" : "visibility"}
-						/>
-					}
+					icon={mode === "view" ? <FiEdit2 /> : <FiEye />}
 					onClick={() =>
 						setMode((p) => (p === "view" ? "edit" : "view"))
 					}
