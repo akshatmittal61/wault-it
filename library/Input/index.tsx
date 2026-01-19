@@ -79,7 +79,11 @@ const Input: React.FC<InputProps> = ({
 	return (
 		<div className={classes("") + ` ${className}`} style={styles?.box}>
 			{label ? (
-				<label className={classes("__label")} style={styles?.label}>
+				<label
+					htmlFor={props.id || props.name}
+					className={classes("__label")}
+					style={styles?.label}
+				>
 					{label}
 				</label>
 			) : null}

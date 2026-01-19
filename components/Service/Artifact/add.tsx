@@ -38,7 +38,11 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose }) => {
 	};
 	return (
 		<Pane title="Add New Artifact" onClose={onClose}>
-			<form className={classes("")} onSubmit={handleSubmit}>
+			<form
+				autoComplete="off"
+				className={classes("")}
+				onSubmit={handleSubmit}
+			>
 				<Responsive.Row>
 					<Responsive.Col xlg={50} lg={50} md={50} sm={100} xsm={100}>
 						<Input
@@ -47,6 +51,8 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose }) => {
 							name="service"
 							label="Service"
 							placeholder="Enter service name"
+							autoComplete="off"
+							id="add-new-artifact-service"
 							value={artifactDetails.service}
 							onChange={handleChange}
 							dropdown={{
@@ -72,6 +78,7 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose }) => {
 							name="comment"
 							label="Comment"
 							placeholder="Enter comment"
+							id="add-new-artifact-comment"
 							value={artifactDetails.comment}
 							onChange={handleChange}
 						/>
@@ -83,6 +90,8 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose }) => {
 							name="identifier"
 							label="Identifier"
 							placeholder="myemail@example.com or label(My iPhone)"
+							autoComplete="off"
+							id="add-new-artifact-identifier"
 							value={artifactDetails.identifier}
 							onChange={handleChange}
 						/>
@@ -93,6 +102,8 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose }) => {
 							name="password"
 							label="Password"
 							placeholder="Enter your password"
+							autoComplete="new-password"
+							id="add-new-artifact-password"
 							value={artifactDetails.password}
 							onChange={(value) => {
 								setArtifactDetails((prev) => ({
@@ -111,6 +122,8 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose }) => {
 					>
 						<InputPrivateKey
 							className={classes("-input", "-input--full")}
+							autoComplete="new-password"
+							id="add-new-artifact-private-key"
 							value={artifactDetails.privateKey}
 							onChange={(value) => {
 								setArtifactDetails((prev) => ({

@@ -67,15 +67,21 @@ const UpdateArtifact: React.FC<IUpdateArtifactProps> = ({
 	};
 	return (
 		<Pane title="Update Artifact" onClose={onClose}>
-			<form className={classes("")} onSubmit={handleSubmit}>
+			<form
+				autoComplete="off"
+				className={classes("")}
+				onSubmit={handleSubmit}
+			>
 				<Responsive.Row>
 					<Responsive.Col xlg={50} lg={50} md={50} sm={100} xsm={100}>
 						<Input
 							className={classes("-input")}
 							type="text"
 							name="service"
+							id="update-artifact-service"
 							label="Service"
 							placeholder="Enter service name"
+							autoComplete="off"
 							value={artifactDetails.service}
 							onChange={handleChange}
 							dropdown={{
@@ -99,8 +105,10 @@ const UpdateArtifact: React.FC<IUpdateArtifactProps> = ({
 							className={classes("-input")}
 							type="text"
 							name="comment"
+							id="update-artifact-comment"
 							label="Comment"
 							placeholder="Enter comment"
+							autoComplete="off"
 							value={artifactDetails.comment}
 							onChange={handleChange}
 						/>
@@ -110,8 +118,10 @@ const UpdateArtifact: React.FC<IUpdateArtifactProps> = ({
 							className={classes("-input")}
 							type="text"
 							name="identifier"
+							id="update-artifact-identifier"
 							label="Identifier"
 							placeholder="myemail@example.com or label(My iPhone)"
+							autoComplete="off"
 							value={artifactDetails.identifier}
 							onChange={handleChange}
 						/>
@@ -120,8 +130,10 @@ const UpdateArtifact: React.FC<IUpdateArtifactProps> = ({
 						<HiddenInput
 							className={classes("-input")}
 							name="password"
+							id="update-artifact-password"
 							label="Password"
 							placeholder="Enter your password"
+							autoComplete="new-password"
 							value={artifactDetails.password || ""}
 							onChange={(value) => {
 								setArtifactDetails((prev) => ({
@@ -141,7 +153,12 @@ const UpdateArtifact: React.FC<IUpdateArtifactProps> = ({
 					>
 						<InputPrivateKey
 							className={classes("-input", "-input--full")}
+							name="privateKey"
+							id="update-artifact-private-key"
+							label="Private Key"
+							placeholder="Enter your private key"
 							value={artifactDetails.privateKey || ""}
+							autoComplete="new-password"
 							onChange={(value) => {
 								setArtifactDetails((prev) => ({
 									...prev,

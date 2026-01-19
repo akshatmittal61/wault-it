@@ -20,6 +20,7 @@ export const HiddenInput: React.FC<HiddenInputProps> = ({
 			value={value}
 			onChange={(e: any) => onChange(e.target.value)}
 			leftIcon={<FiLock />}
+			autoComplete="new-password"
 			rightIcon={
 				reveal ? (
 					<FiEye onClick={() => setReveal((p) => !p)} />
