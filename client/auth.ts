@@ -1,7 +1,7 @@
 import { AuthApi } from "@/api";
 import { redirectToLogin } from "@/constants";
 import { IUser, ServerSideAuthInterceptor, ServerSideResult } from "@/types";
-import { UserUtils } from "@/utils";
+import { StringUtils, UserUtils } from "@/utils";
 import { GetServerSidePropsContext } from "next";
 
 export const authRouterInterceptor: ServerSideAuthInterceptor = async (
@@ -10,7 +10,10 @@ export const authRouterInterceptor: ServerSideAuthInterceptor = async (
 ) => {
 	const { req } = context;
 	const cookies = req.cookies;
-	if (!cookies.accessToken || !cookies.refreshToken) {
+	if (
+		StringUtils.isEmpty(cookies.accessToken) ||
+		StringUtils.isEmpty(cookies.refreshToken)
+	) {
 		return actions.onLoggedOut();
 	}
 	try {

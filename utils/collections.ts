@@ -58,6 +58,6 @@ export class CollectionUtils {
 		subset: Array<T>,
 		superset: Array<T>
 	): boolean {
-		return subset.every((value) => this.includes(subset, value));
+		return superset.every((value) => this.includes(subset, value));
 	}
 }

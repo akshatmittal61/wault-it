@@ -14,6 +14,7 @@ export class ArtifactsApi {
 		>("/services", { headers });
 		return response.data;
 	}
+
 	public static async getArtifactsForService(service: string, headers?: any) {
 		const response = await http.post<
 			ApiRes<ApiResponses.GetArtifactsForService>,
@@ -21,6 +22,7 @@ export class ArtifactsApi {
 		>("/services/artifacts", { service }, { headers });
 		return response.data;
 	}
+
 	public static async getRevealedArtifact(
 		{ artifactId, privateKey }: { artifactId: string; privateKey: string },
 		headers?: any
@@ -31,6 +33,7 @@ export class ArtifactsApi {
 		>(`/artifact/reveal?id=${artifactId}`, { privateKey }, { headers });
 		return response.data;
 	}
+
 	public static async searchForServices(query: string) {
 		const res = await http.post<
 			ApiRes<ApiResponses.SearchByService>,
@@ -38,6 +41,7 @@ export class ArtifactsApi {
 		>("/services/search", { query });
 		return res.data;
 	}
+
 	public static async createArtifact(
 		artifact: ICreateArtifact,
 		headers?: any
@@ -48,6 +52,7 @@ export class ArtifactsApi {
 		>("/artifact", artifact, { headers });
 		return response.data;
 	}
+
 	public static async updateArtifact(
 		id: string,
 		artifact: IUpdateArtifact,
@@ -59,6 +64,7 @@ export class ArtifactsApi {
 		>(`/artifact?id=${id}`, artifact, { headers });
 		return response.data;
 	}
+
 	public static async deleteArtifact(id: string, headers?: any) {
 		const response = await http.delete<
 			ApiRes<ApiResponses.DeleteArtifact>,
@@ -66,6 +72,7 @@ export class ArtifactsApi {
 		>(`/artifact?id=${id}`, { headers });
 		return response.data;
 	}
+
 	public static async importArtifactsFromCsv(
 		dataUri: string,
 		privateKey: string,

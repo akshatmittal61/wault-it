@@ -99,6 +99,7 @@ export class ServerMiddleware {
 			return next(req, res);
 		};
 	}
+
 	public static validatePrivateKey(next: ApiController): ApiController {
 		return async (req: ApiRequest, res: ApiResponse) => {
 			const privateKey = StringUtils.getNonEmptyString(

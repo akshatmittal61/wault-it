@@ -10,7 +10,7 @@ export class CacheService {
 	 * and stores it in the cache for the specified time-to-live.
 	 *
 	 * @param {string} key - The cache key to fetch the value for.
-	 * @param {(_?: any) => Promise<T>} callback - A callback function to execute if the value is not cached.
+	 * @param {() => Promise<T>} callback - A callback function to execute if the value is not cached.
 	 * @param {number} ttl - The time-to-live for the cache entry in seconds.
 	 * @return {Promise<T>} The cached or newly retrieved value.
 	 */

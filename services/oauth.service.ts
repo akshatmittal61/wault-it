@@ -39,8 +39,6 @@ export class OAuthService {
 			);
 		}
 		Logger.debug("User from OAuth", userFromOAuth);
-		// const email = genericParse(getNonEmptyString, userFromOAuth.email);
-		// const name = safeParse(getNonEmptyString, userFromOAuth.name) || "";
 		const email = StringUtils.getNonEmptyString(userFromOAuth.email);
 		const name = SafetyUtils.safeParse(
 			StringUtils.getNonEmptyString,

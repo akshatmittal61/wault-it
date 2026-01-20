@@ -13,6 +13,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 export class HttpWrapper {
 	public http: AxiosInstance;
+	// in case of service timeouts, we retry the request
 	private retryConfig: {
 		retryCount: number;
 		retryDelay: number;
@@ -27,6 +28,14 @@ export class HttpWrapper {
 		this.retryConfig = this.defaultRetryConfig;
 	}
 
+	/**
+	 * @param url
+	 * @param config
+	 * @type T - Type of the response data
+	 * @type D - Type of the request data
+	 * @type H - Type of the response headers
+	 * @returns Promise<AxiosResponse<T, D, H>>
+	 */
 	public async get<T = any, D = any, H = any>(
 		url: string,
 		config?: AxiosRequestConfig<D>
@@ -36,6 +45,15 @@ export class HttpWrapper {
 		});
 	}
 
+	/**
+	 * @param url
+	 * @param data
+	 * @param config
+	 * @type T - Type of the response data
+	 * @type D - Type of the request data
+	 * @type H - Type of the response headers
+	 * @returns Promise<AxiosResponse<T, D, H>>
+	 */
 	public async post<T = any, D = any, H = any>(
 		url: string,
 		data?: D,
@@ -47,6 +65,15 @@ export class HttpWrapper {
 		});
 	}
 
+	/**
+	 * @param url
+	 * @param data
+	 * @param config
+	 * @type T - Type of the response data
+	 * @type D - Type of the request data
+	 * @type H - Type of the response headers
+	 * @returns Promise<AxiosResponse<T, D, H>>
+	 */
 	public async put<T = any, D = any, H = any>(
 		url: string,
 		data?: D,
@@ -58,6 +85,15 @@ export class HttpWrapper {
 		});
 	}
 
+	/**
+	 * @param url
+	 * @param data
+	 * @param config
+	 * @type T - Type of the response data
+	 * @type D - Type of the request data
+	 * @type H - Type of the response headers
+	 * @returns Promise<AxiosResponse<T, D, H>>
+	 */
 	public async patch<T = any, D = any, H = any>(
 		url: string,
 		data?: D,
@@ -69,6 +105,14 @@ export class HttpWrapper {
 		});
 	}
 
+	/**
+	 * @param url
+	 * @param config
+	 * @type T - Type of the response data
+	 * @type D - Type of the request data
+	 * @type H - Type of the response headers
+	 * @returns Promise<AxiosResponse<T, D, H>>
+	 */
 	public async delete<T = any, D = any, H = any>(
 		url: string,
 		config?: AxiosRequestConfig<D>
