@@ -25,8 +25,10 @@ const ServiceArtifactBlock: React.FC<IServiceArtifactBlockProps> = ({
 			<Typography size="sm" className={classes("-label")}>
 				{label}
 			</Typography>
-			<Typography size="s" className={classes("-value")}>
-				{value}
+			<div className={classes("-container")}>
+				<Typography size="s" className={classes("-value")}>
+					{value}
+				</Typography>
 				{showCopy ? (
 					<button
 						className={classes("-icon")}
@@ -42,7 +44,7 @@ const ServiceArtifactBlock: React.FC<IServiceArtifactBlockProps> = ({
 						{icon}
 					</button>
 				) : null}
-			</Typography>
+			</div>
 		</div>
 	);
 };
