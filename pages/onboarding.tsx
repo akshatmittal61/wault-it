@@ -1,5 +1,8 @@
-import { routes } from "@/constants";
+import { authRouterInterceptor } from "@/client";
+import { Routes } from "@/constants";
+import { Page } from "@/layouts";
 import { Avatar, Button, Input } from "@/library";
+import { useAuthStore } from "@/store";
 import styles from "@/styles/pages/Auth.module.scss";
 import { IUpdateUser, IUser, ServerSideResult } from "@/types";
 import {
@@ -11,8 +14,6 @@ import {
 } from "@/utils";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { authRouterInterceptor } from "@/client";
-import { useAuthStore } from "@/store";
 
 const classes = stylesConfig(styles, "onboarding");
 
@@ -37,11 +38,11 @@ const OnboardingPage: React.FC<OnboardingPageProps> = (props) => {
 		if (StringUtils.isEmpty(userDetails.name))
 			return Notify.error("Name is required");
 		await updateProfile(userDetails);
-		void router.push(routes.HOME);
+		void router.push(Routes.HOME);
 	};
 
 	return (
-		<main id="onboarding" className={classes("")}>
+		<Page id="onboarding" className={classes("")}>
 			<form onSubmit={handleSubmit}>
 				{SafetyUtils.isNonNull(user) ? (
 					<Avatar
@@ -69,7 +70,7 @@ const OnboardingPage: React.FC<OnboardingPageProps> = (props) => {
 					Save
 				</Button>
 			</form>
-		</main>
+		</Page>
 	);
 };
 
@@ -82,7 +83,7 @@ export const getServerSideProps = async (
 		onLoggedInAndOnboarded() {
 			return {
 				redirect: {
-					destination: routes.HOME,
+					destination: Routes.HOME,
 					permanent: false,
 				},
 			};
@@ -95,7 +96,7 @@ export const getServerSideProps = async (
 		onLoggedOut() {
 			return {
 				redirect: {
-					destination: routes.LOGIN,
+					destination: Routes.LOGIN,
 					permanent: false,
 				},
 			};

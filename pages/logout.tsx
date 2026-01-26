@@ -1,11 +1,12 @@
-import { routes } from "@/constants";
+import { authRouterInterceptor } from "@/client";
+import { Routes } from "@/constants";
+import { Page } from "@/layouts";
 import { Typography } from "@/library";
+import { useAuthStore } from "@/store";
 import styles from "@/styles/pages/Auth.module.scss";
 import { IUser, ServerSideResult } from "@/types";
 import { stylesConfig } from "@/utils";
 import React, { useEffect } from "react";
-import { useAuthStore } from "@/store";
-import { authRouterInterceptor } from "@/client";
 
 const classes = stylesConfig(styles, "oauth");
 
@@ -18,7 +19,7 @@ const LogoutPage: React.FC<LogoutPageProps> = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	return (
-		<div className={classes("")}>
+		<Page className={classes("")}>
 			<Typography
 				as="h1"
 				family="montserrat"
@@ -28,7 +29,7 @@ const LogoutPage: React.FC<LogoutPageProps> = () => {
 			>
 				Logout
 			</Typography>
-		</div>
+		</Page>
 	);
 };
 
@@ -47,7 +48,7 @@ export const getServerSideProps = async (
 		onLoggedOut() {
 			return {
 				redirect: {
-					destination: routes.LOGIN,
+					destination: Routes.LOGIN,
 					permanent: false,
 				},
 			};

@@ -100,18 +100,26 @@ body {
 	word-spacing: 0.25rem;
 	line-height: 1.25rem;
 	position: relative;
-
-	&.light,
-	&[data-theme="light"] {
-		background-color: var(--accent-color-100);
-	}
-
-	&.dark,
-	&[data-theme="dark"] {
-		background-color: var(--bgcolor-400);
-	}
+	background-color: var(--theme-bg);
 }
 
 .dispn {
 	display: none !important;
+}
+
+#__next > main[data-app-container="true"] {
+	width: 100%;
+	padding-left: var(--side-width);
+	padding-top: var(--head-height);
+	overflow-y: auto;
+	overflow-x: hidden;
+	z-index: 30;
+	border-right: 1px solid var(--grey-600);
+	box-shadow: -4px 0px 4px -4px rgba(0, 0, 0, 0.1);
+
+	@include responsive(phone) {
+		padding-left: 0;
+		border-right: 0;
+		box-shadow: none;
+	}
 }

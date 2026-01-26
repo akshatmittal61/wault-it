@@ -1,6 +1,7 @@
 import { authRouterInterceptor } from "@/client";
 import { Profile } from "@/components";
-import { routes } from "@/constants";
+import { Routes } from "@/constants";
+import { Page } from "@/layouts";
 import { Button } from "@/library";
 import styles from "@/styles/pages/Home.module.scss";
 import { IUser, ServerSideResult } from "@/types";
@@ -18,11 +19,11 @@ const ProfilePage: React.FC<ProfilePageProps> = () => {
 	const [mode, setMode] = useState<"view" | "edit">("view");
 
 	return (
-		<main id="profile" className={classes("")}>
+		<Page id="profile" className={classes("")}>
 			<div className={classes("-actions")}>
 				<button
 					className={classes("-home")}
-					onClick={() => router.push(routes.HOME)}
+					onClick={() => router.push(Routes.HOME)}
 				>
 					<FiHome />
 				</button>
@@ -42,7 +43,7 @@ const ProfilePage: React.FC<ProfilePageProps> = () => {
 			) : (
 				<Profile.Edit onEdit={() => setMode("view")} />
 			)}
-		</main>
+		</Page>
 	);
 };
 
@@ -60,7 +61,7 @@ export const getServerSideProps = async (
 		onLoggedInAndNotOnboarded() {
 			return {
 				redirect: {
-					destination: routes.ONBOARDING,
+					destination: Routes.ONBOARDING,
 					permanent: false,
 				},
 			};
@@ -68,7 +69,7 @@ export const getServerSideProps = async (
 		onLoggedOut() {
 			return {
 				redirect: {
-					destination: routes.LOGIN,
+					destination: Routes.LOGIN,
 					permanent: false,
 				},
 			};

@@ -1,11 +1,11 @@
 import { AuthApi, UserApi } from "@/api";
-import { redirectToLogin } from "@/constants";
+import { Routes } from "@/constants";
 import { useHttpClient } from "@/hooks";
-import { IUser, IUpdateUser } from "@/types";
+import { IUpdateUser, IUser } from "@/types";
 import { BooleanUtils, Notify, SafetyUtils, UserUtils } from "@/utils";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { createBaseStore, Getter, Setter } from "./base";
-import { useRouter } from "next/router";
 
 type State = {
 	user: IUser | null;
@@ -63,7 +63,7 @@ export const useAuthStore = createBaseStore<State, Action, Options, Extras>({
 			onSuccess: store.getState().setUser,
 			onError: () => {
 				store.getState().setUser(null);
-				void router.push(redirectToLogin(router.pathname));
+				void router.push(Routes.redirectToLogin(router.pathname));
 			},
 		});
 		const { trigger: updateProfile, loading: isUpdatingProfile } =
@@ -80,7 +80,7 @@ export const useAuthStore = createBaseStore<State, Action, Options, Extras>({
 			trigger: AuthApi.logout,
 			onSuccess: () => {
 				store.getState().setUser(null);
-				void router.push(redirectToLogin(router.pathname));
+				void router.push(Routes.redirectToLogin(router.pathname));
 			},
 			onError: Notify.error,
 		});

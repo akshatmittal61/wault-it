@@ -1,14 +1,14 @@
+import { ArtifactsApi } from "@/api";
 import { withAuthPage } from "@/client";
 import { Service } from "@/components";
 import { useHttpClient } from "@/hooks";
-import { Masonry } from "@/layouts";
+import { Masonry, Page } from "@/layouts";
 import { Loader, Typography } from "@/library";
+import { useArtifactsStore } from "@/store";
 import styles from "@/styles/pages/Room.module.scss";
 import { IUser } from "@/types";
 import { CollectionUtils, Notify, StringUtils, stylesConfig } from "@/utils";
 import React, { useEffect } from "react";
-import { ArtifactsApi } from "@/api";
-import { useArtifactsStore } from "@/store";
 
 const classes = stylesConfig(styles, "room");
 
@@ -39,7 +39,7 @@ const RoomPage: React.FC<RoomPageProps> = (props) => {
 	}, [serviceName]);
 
 	return (
-		<main id="room" className={classes("")}>
+		<Page id="room" className={classes("")}>
 			<Typography
 				as="h1"
 				family="montserrat"
@@ -73,7 +73,7 @@ const RoomPage: React.FC<RoomPageProps> = (props) => {
 					))}
 				</Masonry>
 			)}
-		</main>
+		</Page>
 	);
 };
 

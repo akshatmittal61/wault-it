@@ -13,9 +13,5 @@
 		justify-content: flex-end;
 		align-items: center;
 		gap: 12px;
-
-		@include _theme(dark) {
-			filter: invert(1);
-		}
 	}
 }

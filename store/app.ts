@@ -56,7 +56,7 @@ export type Extras = {
 	toggleSidebar: () => void;
 };
 
-export const useUiStore = createBaseStore<State, Actions, Options, Extras>({
+export const useAppStore = createBaseStore<State, Actions, Options, Extras>({
 	createState: (set, get) => ({
 		vh: 0,
 		theme: appTheme.light,

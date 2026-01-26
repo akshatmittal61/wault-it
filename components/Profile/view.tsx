@@ -1,4 +1,4 @@
-import { routes } from "@/constants";
+import { Routes } from "@/constants";
 import { Avatar, Button, Typography } from "@/library";
 import { useAuthStore } from "@/store";
 import {
@@ -23,7 +23,7 @@ const ViewProfile: React.FC<IViewProfileProps> = () => {
 
 	const logoutUser = async () => {
 		await logout();
-		void router.push(routes.LOGIN);
+		void router.push(Routes.LOGIN);
 	};
 
 	if (!SafetyUtils.isNonNull(user)) return null;

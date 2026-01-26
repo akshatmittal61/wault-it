@@ -1,10 +1,11 @@
 import { Auth } from "@/components";
 import { oauth_google } from "@/config";
+import { Page } from "@/layouts";
 import React from "react";
 
 const GoogleOAuthRedirectPage: React.FC = () => {
 	return (
-		<main
+		<Page
 			style={{
 				width: "100vw",
 				height: "100vh",
@@ -26,7 +27,7 @@ const GoogleOAuthRedirectPage: React.FC = () => {
 					window.location.href = url.toString();
 				}}
 			/>
-		</main>
+		</Page>
 	);
 };
 

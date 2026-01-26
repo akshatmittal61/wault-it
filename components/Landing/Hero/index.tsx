@@ -1,4 +1,4 @@
-import { AppSeo, routes } from "@/constants";
+import { AppSeo, Routes } from "@/constants";
 import { Button, Typography } from "@/library";
 import { stylesConfig } from "@/utils";
 import Image from "next/image";
@@ -32,7 +32,7 @@ const LandingHero: React.FC<ILandingHeroProps> = () => {
 					icon={<FiLogIn />}
 					iconPosition="right"
 					size="large"
-					onClick={() => router.push(routes.LOGIN)}
+					onClick={() => router.push(Routes.LOGIN)}
 				>
 					Get Started
 				</Button>

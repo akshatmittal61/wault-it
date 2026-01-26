@@ -1,6 +1,7 @@
 import { authRouterInterceptor } from "@/client";
 import { Landing } from "@/components";
-import { routes } from "@/constants";
+import { Routes } from "@/constants";
+import { Page } from "@/layouts";
 import styles from "@/styles/pages/Home.module.scss";
 import { stylesConfig } from "@/utils";
 import { GetServerSidePropsContext } from "next";
@@ -10,9 +11,9 @@ const classes = stylesConfig(styles, "groups");
 
 const HomePage: React.FC = () => {
 	return (
-		<main id="landing" className={classes("")}>
+		<Page id="landing" className={classes("")}>
 			<Landing.Hero />
-		</main>
+		</Page>
 	);
 };
 
@@ -23,7 +24,7 @@ export const getServerSideProps = (context: GetServerSidePropsContext) => {
 		onLoggedIn() {
 			return {
 				redirect: {
-					destination: routes.HOME,
+					destination: Routes.HOME,
 					permanent: false,
 				},
 			};

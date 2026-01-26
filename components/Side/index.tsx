@@ -1,7 +1,7 @@
-import { AppSeo, appTheme, redirectToLogin, routes } from "@/constants";
+import { AppSeo, appTheme, Routes } from "@/constants";
 import { useOnClickOutside } from "@/hooks";
 import { Avatar, Typography } from "@/library";
-import { useArtifactsStore, useAuthStore, useUiStore } from "@/store";
+import { useAppStore, useArtifactsStore, useAuthStore } from "@/store";
 import {
 	BooleanUtils,
 	SafetyUtils,
@@ -43,7 +43,7 @@ export const SideBar: React.FC<ISideBarProps> = () => {
 		getSidebarExpanded,
 		toggleTheme,
 		sync: syncUiState,
-	} = useUiStore();
+	} = useAppStore();
 	const bottomContainerRef = useRef<HTMLDivElement>(null);
 	const [expandOptionsMenu, setExpandOptionsMenu] = useState(false);
 	const [isSyncing, setIsSyncing] = useState(false);
@@ -57,12 +57,6 @@ export const SideBar: React.FC<ISideBarProps> = () => {
 			Promise.resolve(syncUiState),
 		]);
 		setIsSyncing(false);
-	};
-
-	const logoutUser = async () => {
-		await logout();
-		const routeToNavigate = redirectToLogin(router.pathname);
-		void router.push(routeToNavigate);
 	};
 
 	useEffect(() => {
@@ -82,8 +76,8 @@ export const SideBar: React.FC<ISideBarProps> = () => {
 						className={classes("-logo")}
 						href={
 							BooleanUtils.True.equals(getIsLoggedIn())
-								? routes.HOME
-								: routes.ROOT
+								? Routes.HOME
+								: Routes.ROOT
 						}
 					>
 						<Image
@@ -174,11 +168,11 @@ export const SideBar: React.FC<ISideBarProps> = () => {
 										: "Light Mode"}
 								</Typography>
 							</div>
-							{router.pathname !== routes.PROFILE ? (
+							{router.pathname !== Routes.PROFILE ? (
 								<div
 									className={classes("-option")}
 									onClick={() => {
-										void router.push(routes.PROFILE);
+										void router.push(Routes.PROFILE);
 									}}
 								>
 									<FiUser
@@ -194,7 +188,7 @@ export const SideBar: React.FC<ISideBarProps> = () => {
 							) : null}
 							<div
 								className={classes("-option")}
-								onClick={logoutUser}
+								onClick={logout}
 							>
 								<FiLogOut className={classes("-option-icon")} />
 								<Typography
@@ -218,7 +212,7 @@ export const SideBar: React.FC<ISideBarProps> = () => {
 								) {
 									setExpandOptionsMenu(BooleanUtils.invert);
 								} else {
-									void router.push(routes.PROFILE);
+									void router.push(Routes.PROFILE);
 								}
 							}}
 						>
