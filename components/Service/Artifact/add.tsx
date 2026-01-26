@@ -29,12 +29,8 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose }) => {
 	};
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		try {
-			await createArtifact(artifactDetails);
-			onClose();
-		} catch (error) {
-			Notify.error(error);
-		}
+		await createArtifact(artifactDetails);
+		onClose();
 	};
 	return (
 		<Pane title="Add New Artifact" onClose={onClose}>

@@ -61,6 +61,7 @@ const UpdateArtifact: React.FC<IUpdateArtifactProps> = ({
 			}
 			const updated = await updateArtifact(id, payload);
 			onUpdate(updated);
+			onClose();
 		} catch (error) {
 			Notify.error(error);
 		}

@@ -63,7 +63,7 @@ export const useHttpClient = <
 				setError(err);
 				if (options.onError) {
 					await options.onError(err);
-					throw err;
+					return undefined as unknown as T;
 				} else {
 					throw err;
 				}

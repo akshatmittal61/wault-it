@@ -50,7 +50,14 @@ const RoomPage: React.FC<RoomPageProps> = (props) => {
 			) : CollectionUtils.isEmpty(artifactsForService) ? (
 				<Typography>No artifacts found for {serviceName}</Typography>
 			) : (
-				<Masonry xlg={3} className={classes("-listing")}>
+				<Masonry
+					xlg={4}
+					lg={4}
+					md={3}
+					sm={2}
+					xsm={1}
+					className={classes("-listing")}
+				>
 					{artifactsForService.map((artifact) => (
 						<Service.Artifact
 							key={`room-${serviceName}-${artifact.id}`}

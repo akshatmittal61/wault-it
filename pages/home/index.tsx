@@ -36,10 +36,10 @@ const HomePage: React.FC<HomePageProps> = () => {
 	return (
 		<>
 			<main id="home" className={classes("")}>
-				{isGettingAllServices && CollectionUtils.isEmpty(services) ? (
-					<Loader.Spinner />
-				) : CollectionUtils.isNotEmpty(services) ? (
+				{CollectionUtils.isNotEmpty(services) ? (
 					<Components.Services />
+				) : isGettingAllServices ? (
+					<Loader.Spinner />
 				) : (
 					<Placeholder
 						title={(() => {

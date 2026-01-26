@@ -1,7 +1,12 @@
 import { ArtifactsApi } from "@/api";
 import { useHttpClient } from "@/hooks";
 import { createBaseStore, Getter, Setter } from "@/store/base";
-import { IConcealedArtifact, ICreateArtifact, IUpdateArtifact } from "@/types";
+import {
+	IArtifactsBucket,
+	IConcealedArtifact,
+	ICreateArtifact,
+	IUpdateArtifact,
+} from "@/types";
 import { BooleanUtils, Notify, StringUtils } from "@/utils";
 import { useEffect } from "react";
 
@@ -32,12 +37,14 @@ type Extras = {
 	sync: () => Promise<void>;
 	// loading states
 	isGettingAllServices: boolean;
+	isGettingAllArtifacts: boolean;
 	isCreatingArtifact: boolean;
 	isUpdatingArtifact: boolean;
 	isDeletingArtifact: boolean;
 	isSearchingServices: boolean;
 	// handlers
 	getAllServices: () => Promise<Array<string>>;
+	getAllArtifacts: () => Promise<Array<IArtifactsBucket>>;
 	createArtifact: (_artifact: ICreateArtifact) => Promise<IConcealedArtifact>;
 	updateArtifact: (
 		_id: string,
@@ -79,8 +86,22 @@ export const useArtifactsStore = createBaseStore<
 				onError: Notify.error,
 			});
 
+		const { trigger: getAllArtifacts, loading: isGettingAllArtifacts } =
+			useHttpClient({
+				trigger: ArtifactsApi.getAllArtifacts,
+				onSuccess: (buckets) => {
+					const artifacts = buckets.flatMap(
+						(bucket) => bucket.artifacts
+					);
+					store.getState().setArtifacts(artifacts);
+				},
+				onError: Notify.error,
+			});
+
 		const sync = async () => {
-			await Promise.all([getAllServices()]);
+			store.getState().setIsSyncing(true);
+			await Promise.all([getAllServices(), getAllArtifacts()]);
+			store.getState().setIsSyncing(false);
 		};
 
 		const { trigger: createArtifact, loading: isCreatingArtifact } =
@@ -90,7 +111,7 @@ export const useArtifactsStore = createBaseStore<
 					store
 						.getState()
 						.setArtifacts([
-							...store.getState().artifacts,
+							...store.getState().getArtifacts(),
 							createdArtifact,
 						]);
 				},
@@ -153,12 +174,14 @@ export const useArtifactsStore = createBaseStore<
 		return {
 			sync,
 			isGettingAllServices,
+			isGettingAllArtifacts,
 			isCreatingArtifact,
 			isUpdatingArtifact,
 			isDeletingArtifact,
 			isSearchingServices,
 			isImportingArtifactsFromCsv,
 			getAllServices,
+			getAllArtifacts,
 			createArtifact,
 			updateArtifact,
 			deleteArtifact,

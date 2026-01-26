@@ -15,6 +15,14 @@ export class ArtifactsApi {
 		return response.data;
 	}
 
+	public static async getAllArtifacts(headers?: any) {
+		const response = await http.get<ApiRes<ApiResponses.GetAllArtifacts>>(
+			"/artifacts",
+			{ headers }
+		);
+		return response.data;
+	}
+
 	public static async getArtifactsForService(service: string, headers?: any) {
 		const response = await http.post<
 			ApiRes<ApiResponses.GetArtifactsForService>,
