@@ -116,7 +116,9 @@
 		margin: 0.5rem auto;
 
 		&--full {
-			width: 97.5%;
+			@include responsive(desktop) {
+				width: 97.5%;
+			}
 		}
 	}
 

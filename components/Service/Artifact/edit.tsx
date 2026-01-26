@@ -4,7 +4,13 @@ import { Button, Input, Pane } from "@/library";
 import { HiddenInput } from "@/library/";
 import { useArtifactsStore } from "@/store";
 import { IArtifact, IUpdateArtifact } from "@/types";
-import { CollectionUtils, Notify, stylesConfig } from "@/utils";
+import {
+	CollectionUtils,
+	Notify,
+	SafetyUtils,
+	StringUtils,
+	stylesConfig,
+} from "@/utils";
 import React, { useState } from "react";
 import styles from "./styles.module.scss";
 
@@ -38,32 +44,52 @@ const UpdateArtifact: React.FC<IUpdateArtifactProps> = ({
 	};
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		try {
-			let payload: IUpdateArtifact = {};
-			if (artifactDetails.service !== artifact.service) {
-				payload.service = artifactDetails.service;
-			}
-			if (artifactDetails.comment !== artifact.comment) {
-				payload.comment = artifactDetails.comment;
-			}
-			if (artifactDetails.identifier !== artifact.identifier) {
-				payload.identifier = artifactDetails.identifier;
-			}
-			if (artifactDetails.password && artifactDetails.privateKey) {
-				payload = {
-					...payload,
-					password: artifactDetails.password,
-					privateKey: artifactDetails.privateKey,
-				};
-			}
-			if (CollectionUtils.isEmpty(Object.keys(payload))) {
-				return Notify.error("Nothing to update");
-			}
-			const updated = await updateArtifact(id, payload);
+		let payload: IUpdateArtifact = {};
+		if (StringUtils.notEquals(artifactDetails.service, artifact.service)) {
+			payload.service = artifactDetails.service;
+		}
+		if (StringUtils.notEquals(artifactDetails.comment, artifact.comment)) {
+			payload.comment = artifactDetails.comment;
+		}
+		if (
+			StringUtils.notEquals(
+				artifactDetails.identifier,
+				artifact.identifier
+			)
+		) {
+			payload.identifier = artifactDetails.identifier;
+		}
+		if (
+			StringUtils.isNotEmpty(artifactDetails.password) &&
+			StringUtils.isNotEmpty(artifactDetails.privateKey)
+		) {
+			payload = {
+				...payload,
+				password: artifactDetails.password,
+				privateKey: artifactDetails.privateKey,
+			};
+		} else if (
+			StringUtils.isEmpty(artifactDetails.password) &&
+			StringUtils.isNotEmpty(artifactDetails.privateKey)
+		) {
+			return Notify.error(
+				"Password is required when private key is provided"
+			);
+		} else if (
+			StringUtils.isNotEmpty(artifactDetails.password) &&
+			StringUtils.isEmpty(artifactDetails.privateKey)
+		) {
+			return Notify.error(
+				"Private key is required when password is provided"
+			);
+		}
+		if (CollectionUtils.isEmpty(Object.keys(payload))) {
+			return Notify.error("Nothing to update");
+		}
+		const updated = await updateArtifact(id, payload);
+		if (SafetyUtils.isNonNull(updated)) {
 			onUpdate(updated);
 			onClose();
-		} catch (error) {
-			Notify.error(error);
 		}
 	};
 	return (

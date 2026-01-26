@@ -140,6 +140,17 @@ export class ArtifactController {
 		);
 		let payload: UpdateArtifact = {};
 		if (
+			(StringUtils.isEmpty(password) &&
+				StringUtils.isNotEmpty(privateKey)) ||
+			(StringUtils.isNotEmpty(password) &&
+				StringUtils.isEmpty(privateKey))
+		) {
+			return new ApiFailure(res).send(
+				"Password and private key must be updated together",
+				HTTP.status.BAD_REQUEST
+			);
+		}
+		if (
 			StringUtils.isNotEmpty(password) &&
 			StringUtils.isNotEmpty(privateKey)
 		) {

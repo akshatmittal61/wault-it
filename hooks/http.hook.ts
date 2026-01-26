@@ -33,7 +33,7 @@ export const useHttpClient = <
 >(
 	options: Options<T, F> = {}
 ): Return<T, F> => {
-	const [identifier, setIdentifier] = useState(
+	const [identifier, setIdentifier] = useState<string>(
 		StringUtils.getNonEmptyStringOrElse(options?.id, StringUtils.EMPTY)
 	);
 	const [loading, setLoading] = useState<boolean>(false);

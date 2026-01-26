@@ -29,10 +29,15 @@ const RoomPage: React.FC<RoomPageProps> = (props) => {
 		),
 	});
 
-	useEffect(() => {
+	const refreshArtifactsForService = () => {
 		void getArtifacts(serviceName);
+	};
+
+	useEffect(() => {
+		refreshArtifactsForService();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [serviceName]);
+
 	return (
 		<main id="room" className={classes("")}>
 			<Typography
@@ -62,8 +67,8 @@ const RoomPage: React.FC<RoomPageProps> = (props) => {
 						<Service.Artifact
 							key={`room-${serviceName}-${artifact.id}`}
 							artifact={artifact}
-							onUpdate={() => getArtifacts(serviceName)}
-							onDelete={() => getArtifacts(serviceName)}
+							onUpdate={refreshArtifactsForService}
+							onDelete={refreshArtifactsForService}
 						/>
 					))}
 				</Masonry>
