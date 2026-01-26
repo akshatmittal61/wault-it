@@ -3,7 +3,7 @@ import { Responsive } from "@/layouts";
 import { Button, HiddenInput, Input, Pane } from "@/library";
 import { useArtifactsStore } from "@/store";
 import { ICreateArtifact } from "@/types";
-import { Notify, stylesConfig } from "@/utils";
+import { Notify, SafetyUtils, stylesConfig } from "@/utils";
 import React, { useState } from "react";
 import styles from "./styles.module.scss";
 
@@ -29,8 +29,11 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose }) => {
 	};
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		await createArtifact(artifactDetails);
-		onClose();
+		const createdArtifact = await createArtifact(artifactDetails);
+		if (SafetyUtils.isNonNull(createdArtifact)) {
+			Notify.success("Artifact added successfully");
+			onClose();
+		}
 	};
 	return (
 		<Pane title="Add New Artifact" onClose={onClose}>

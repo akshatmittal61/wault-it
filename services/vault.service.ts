@@ -1,5 +1,6 @@
 import { HTTP, regex } from "@/constants";
 import { ApiError } from "@/errors";
+import { Logger } from "@/log";
 import { EncryptedData } from "@/types";
 import { CollectionUtils } from "@/utils";
 import crypto from "crypto";
@@ -7,6 +8,7 @@ import crypto from "crypto";
 export class VaultService {
 	public static validateKey(key: string) {
 		const errors: Array<string> = CollectionUtils.EMPTY;
+		Logger.debug("In starting, Key: ", key, " | Errors: ", errors);
 		if (!regex.key.test(key)) {
 			if (key.length !== 32) {
 				errors.push("Key must be 32 characters long");
@@ -29,6 +31,7 @@ export class VaultService {
 				errors.push("Key must not contain spaces");
 			}
 		}
+		Logger.debug("In ending, Key: ", key, " | Errors: ", errors);
 		if (CollectionUtils.isNotEmpty(errors)) {
 			throw new ApiError(HTTP.status.BAD_REQUEST, errors.join(", "));
 		}

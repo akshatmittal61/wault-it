@@ -87,7 +87,7 @@ export class ArtifactService {
 		if (SafetyUtils.isNonNull(foundArtifact)) {
 			throw new ApiError(
 				HTTP.status.BAD_REQUEST,
-				"Artifact already exists"
+				"Similar artifact already exists"
 			);
 		}
 		return await artifactRepo.createForUser(payload);
