@@ -1,5 +1,10 @@
 import { fallbackAssets } from "@/constants";
-import { getImageUrlFromDriveLink, StringUtils, stylesConfig } from "@/utils";
+import {
+	BooleanUtils,
+	getImageUrlFromDriveLink,
+	StringUtils,
+	stylesConfig,
+} from "@/utils";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
@@ -45,7 +50,9 @@ export const Avatar: React.FC<IAvatarProps> = ({
 
 	useEffect(() => {
 		setIsImageValid(
-			!!(src && (src.startsWith("https://") || src.startsWith("/")))
+			BooleanUtils.valueOf(
+				src && (src.startsWith("https://") || src.startsWith("/"))
+			)
 		);
 	}, [src, fallback]);
 
