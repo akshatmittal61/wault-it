@@ -28,28 +28,4 @@
 	align-items: center;
 	flex-direction: column;
 	position: relative;
-
-	&-actions {
-		width: 100%;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 24px;
-
-		& > *:last-child {
-			@include _theme(dark) {
-				filter: invert(1);
-			}
-		}
-	}
-
-	&-home {
-		@include init-button;
-		padding: 8px;
-		border-radius: 500px;
-
-		&:hover {
-			background-color: var(--theme-back-shadow);
-		}
-	}
 }
