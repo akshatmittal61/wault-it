@@ -1,4 +1,4 @@
-import { routes, socials } from "@/constants";
+import { Routes, socials } from "@/constants";
 import { stylesConfig } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
 					/>
 				</div>
 				<nav className={classes("-navigation")}>
-					<Link href={routes.PRIVACY_POLICY}>Privacy Policy</Link>
+					<Link href={Routes.PRIVACY_POLICY}>Privacy Policy</Link>
 				</nav>
 			</div>
 			<hr className={classes("-divider")} />

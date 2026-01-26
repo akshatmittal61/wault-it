@@ -1,5 +1,5 @@
 import { AuthApi } from "@/api";
-import { redirectToLogin } from "@/constants";
+import { Routes } from "@/constants";
 import { IUser, ServerSideAuthInterceptor, ServerSideResult } from "@/types";
 import { StringUtils, UserUtils } from "@/utils";
 import { GetServerSidePropsContext } from "next";
@@ -46,7 +46,7 @@ export const withAuthPage = <T = any>(
 			onLoggedIn: (user) => handler(user, context),
 			onLoggedOut: () => ({
 				redirect: {
-					destination: redirectToLogin(context.req.url),
+					destination: Routes.redirectToLogin(context.req.url),
 					permanent: false,
 				},
 			}),

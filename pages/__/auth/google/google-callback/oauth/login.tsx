@@ -1,12 +1,13 @@
 import { AuthApi } from "@/api";
-import { routes } from "@/constants";
+import { Routes } from "@/constants";
+import { Page } from "@/layouts";
 import { Logger } from "@/log";
 import { useAuthStore } from "@/store";
 import styles from "@/styles/pages/Auth.module.scss";
 import { Notify, StringUtils, stylesConfig } from "@/utils";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import Image from "next/image";
 
 const classes = stylesConfig(styles, "oauth");
 
@@ -19,13 +20,13 @@ const GoogleOAuthRedirectedPage: GoogleOAuthRedirectedPageProps = (props) => {
 		try {
 			await continueOAuthWithGoogle(props.token);
 			if (getIsOnboarded()) {
-				void router.push(routes.HOME);
+				void router.push(Routes.HOME);
 			} else {
-				void router.push(routes.ONBOARDING);
+				void router.push(Routes.ONBOARDING);
 			}
 		} catch {
 			Notify.error("Something went wrong, please try again");
-			void router.push(routes.HOME);
+			void router.push(Routes.HOME);
 		}
 	};
 	useEffect(() => {
@@ -34,7 +35,7 @@ const GoogleOAuthRedirectedPage: GoogleOAuthRedirectedPageProps = (props) => {
 	}, []);
 
 	return (
-		<main className={classes("")}>
+		<Page className={classes("")}>
 			<Image
 				src="/favicon.svg"
 				alt="logo"
@@ -42,7 +43,7 @@ const GoogleOAuthRedirectedPage: GoogleOAuthRedirectedPageProps = (props) => {
 				height={400}
 				className={classes("-loader")}
 			/>
-		</main>
+		</Page>
 	);
 };
 
@@ -58,7 +59,7 @@ export const getServerSideProps = async (context: any) => {
 		Logger.error(error);
 		return {
 			redirect: {
-				destination: routes.HOME,
+				destination: Routes.HOME,
 				permanent: false,
 			},
 		};

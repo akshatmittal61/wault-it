@@ -1,4 +1,4 @@
-import { useUiStore } from "@/store";
+import { useAppStore } from "@/store";
 import { CollectionUtils, stylesConfig } from "@/utils";
 import { useRouter } from "next/router";
 import React from "react";
@@ -12,7 +12,7 @@ const classes = stylesConfig(styles, "header");
 export const Header: React.FC<IHeaderProps> = () => {
 	const router = useRouter();
 	const { toggleSidebar, getHeaderNavigation, getHeaderContent } =
-		useUiStore();
+		useAppStore();
 	return (
 		<div className={classes("")}>
 			<button onClick={toggleSidebar} className={classes("-button")}>

@@ -1,15 +1,15 @@
 import { withAuthPage } from "@/client";
 import { Home as Components, Placeholder, Service } from "@/components";
+import { Page, ProtectedPageProps } from "@/layouts";
 import { Loader } from "@/library";
-import { useArtifactsStore, useUiStore } from "@/store";
+import { useArtifactsStore, useAppStore } from "@/store";
 import styles from "@/styles/pages/Home.module.scss";
-import { IUser } from "@/types";
 import { CollectionUtils, StringUtils, stylesConfig } from "@/utils";
 import React, { useState } from "react";
 
 const classes = stylesConfig(styles, "home");
 
-type HomePageProps = { user: IUser };
+type HomePageProps = ProtectedPageProps;
 
 const HomePage: React.FC<HomePageProps> = () => {
 	const [openAddArtifactPopup, setOpenAddArtifactPopup] = useState(false);
@@ -19,7 +19,7 @@ const HomePage: React.FC<HomePageProps> = () => {
 		syncOnMount: true,
 	});
 
-	const { setHeaderContent } = useUiStore({
+	const { setHeaderContent } = useAppStore({
 		onMount: () => {
 			setHeaderContent(
 				<Components.Head
@@ -35,7 +35,7 @@ const HomePage: React.FC<HomePageProps> = () => {
 
 	return (
 		<>
-			<main id="home" className={classes("")}>
+			<Page id="home" className={classes("")}>
 				{CollectionUtils.isNotEmpty(services) ? (
 					<Components.Services />
 				) : isGettingAllServices ? (
@@ -69,7 +69,7 @@ const HomePage: React.FC<HomePageProps> = () => {
 						})()}
 					/>
 				)}
-			</main>
+			</Page>
 			{openImporterPopup ? (
 				<Service.Importer
 					onClose={() => setOpenImporterPopup(false)}

@@ -73,7 +73,9 @@ export const useArtifactsStore = createBaseStore<
 		setArtifacts: (artifacts: Array<IConcealedArtifact>) => {
 			const allServices = artifacts.map((artifact) => artifact.service);
 			const distinctServices = Array.from(new Set(allServices));
-			set({ artifacts, services: distinctServices });
+			// sort them alphatebically
+			const sortedServices = distinctServices.sort();
+			set({ artifacts, services: sortedServices });
 		},
 		setSearchQuery: (query: string) => set({ searchQuery: query }),
 		setIsSyncing: (state: boolean) => set({ isSyncing: state }),

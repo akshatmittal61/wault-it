@@ -11,4 +11,3 @@ export * as Profile from "./Profile";
 export * from "./Seo";
 export * as Service from "./Service";
 export * from "./Side";
-export * from "./Wrapper";

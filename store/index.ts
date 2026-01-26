@@ -1,3 +1,3 @@
 export * from "./artifacts";
 export * from "./auth";
-export * from "./ui";
+export * from "./app";

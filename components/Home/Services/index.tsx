@@ -1,4 +1,4 @@
-import { routes } from "@/constants";
+import { Routes } from "@/constants";
 import { Masonry } from "@/layouts";
 import { Typography } from "@/library";
 import { useArtifactsStore } from "@/store";
@@ -30,7 +30,7 @@ const HomeServices: React.FC<IHomeServicesProps> = () => {
 						key={`home-services-${service.toString()}`}
 						className={classes("-service")}
 						onClick={() => {
-							void router.push(routes.ROOM(service));
+							void router.push(Routes.ROOM(service));
 						}}
 					>
 						<Typography

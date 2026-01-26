@@ -2,9 +2,10 @@ import React from "react";
 
 export type AppTheme = "light" | "dark";
 export type AppNetworkStatus = "online" | "offline";
+export type NavigationId = "home" | "search" | "profile";
 
 export type Navigation = {
-	id: string;
+	id: NavigationId;
 	title: string;
 	icon: React.ReactNode;
 	route: string;

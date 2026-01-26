@@ -1,4 +1,4 @@
-import { routes } from "@/constants";
+import { Routes } from "@/constants";
 import { Avatar, Button, Typography } from "@/library";
 import { useAuthStore } from "@/store";
 import {
@@ -10,20 +10,22 @@ import {
 } from "@/utils";
 import { useRouter } from "next/router";
 import React from "react";
-import { FiCopy, FiLogOut } from "react-icons/fi";
+import { FiCopy, FiEdit2, FiLogOut } from "react-icons/fi";
 import styles from "./styles.module.scss";
 
-interface IViewProfileProps {}
+interface IViewProfileProps {
+	onEdit: () => void;
+}
 
 const classes = stylesConfig(styles, "view-profile");
 
-const ViewProfile: React.FC<IViewProfileProps> = () => {
+const ViewProfile: React.FC<IViewProfileProps> = ({ onEdit }) => {
 	const router = useRouter();
 	const { user, logout } = useAuthStore();
 
 	const logoutUser = async () => {
 		await logout();
-		void router.push(routes.LOGIN);
+		void router.push(Routes.LOGIN);
 	};
 
 	if (!SafetyUtils.isNonNull(user)) return null;
@@ -49,9 +51,20 @@ const ViewProfile: React.FC<IViewProfileProps> = () => {
 					<FiCopy />
 				</button>
 			</Typography>
-			<Button onClick={logoutUser} size="large" icon={<FiLogOut />}>
-				Logout
-			</Button>
+			<div className={classes("-actions")}>
+				<Button
+					className={classes("-button")}
+					variant="outlined"
+					icon={<FiEdit2 />}
+					onClick={onEdit}
+					size="large"
+				>
+					Edit Profile
+				</Button>
+				<Button onClick={logoutUser} size="large" icon={<FiLogOut />}>
+					Logout
+				</Button>
+			</div>
 		</section>
 	);
 };

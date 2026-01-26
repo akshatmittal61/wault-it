@@ -1,15 +1,16 @@
+import { authRouterInterceptor } from "@/client";
 import { Auth as Components } from "@/components";
-import { routes } from "@/constants";
+import { Routes } from "@/constants";
+import { Page } from "@/layouts";
 import { Typography } from "@/library";
 import styles from "@/styles/pages/Auth.module.scss";
 import { IUser, ServerSideResult } from "@/types";
 import { StringUtils, stylesConfig } from "@/utils";
+import { GetServerSidePropsContext } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { authRouterInterceptor } from "@/client";
-import { GetServerSidePropsContext } from "next";
 
 const classes = stylesConfig(styles, "login");
 
@@ -19,7 +20,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 	const router = useRouter();
 
 	return (
-		<main className={classes("")}>
+		<Page className={classes("")}>
 			<Image
 				src="/favicon.png"
 				alt="logo"
@@ -54,10 +55,10 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 			<Typography size="sm" className={classes("-foot")}>
 				By continuing, you acknowledge that you understand and agree to
 				the{" "}
-				<Link href={routes.TERMS_AND_CONDITIONS}>
+				<Link href={Routes.TERMS_AND_CONDITIONS}>
 					Terms & Conditions
 				</Link>{" "}
-				and <Link href={routes.PRIVACY_POLICY}>Privacy Policy</Link>
+				and <Link href={Routes.PRIVACY_POLICY}>Privacy Policy</Link>
 			</Typography>
 			<Image
 				src="/favicon.svg"
@@ -66,7 +67,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 				height={1080}
 				className={classes("-background")}
 			/>
-		</main>
+		</Page>
 	);
 };
 
@@ -80,7 +81,7 @@ export const getServerSideProps = (
 			const { redirect } = context.query;
 			const redirectPath = StringUtils.getNonEmptyStringOrElse(
 				redirect,
-				routes.HOME
+				Routes.HOME
 			);
 			return {
 				redirect: {
@@ -92,7 +93,7 @@ export const getServerSideProps = (
 		onLoggedInAndNotOnboarded() {
 			return {
 				redirect: {
-					destination: routes.ONBOARDING,
+					destination: Routes.ONBOARDING,
 					permanent: false,
 				},
 			};

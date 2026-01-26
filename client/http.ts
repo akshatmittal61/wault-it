@@ -2,8 +2,7 @@ import {
 	apiMethods,
 	backendBaseUrl,
 	HTTP,
-	protectedRoutes,
-	redirectToLogin,
+	Routes,
 	serverBaseUrl,
 } from "@/constants";
 import { Logger } from "@/log";
@@ -195,9 +194,9 @@ export class HttpWrapper {
 			} else if (statusCode === HTTP.status.UNAUTHORIZED) {
 				if (typeof window !== "undefined") {
 					const currentPath = window.location.pathname;
-					if (protectedRoutes.includes(currentPath)) {
+					if (Routes.isProtected(currentPath)) {
 						Object.assign(window.location, {
-							href: redirectToLogin(currentPath),
+							href: Routes.redirectToLogin(currentPath),
 						});
 					}
 				}
