@@ -1,7 +1,7 @@
 import { ParserSafetyError } from "@/errors";
 
 export class StringUtils {
-	public static EMPTY = "";
+	public static readonly EMPTY = "";
 
 	public static equals<T extends string | null | undefined>(
 		str1: T,

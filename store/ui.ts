@@ -4,13 +4,7 @@ import {
 	sideBarNavigationLinks,
 } from "@/constants";
 import { AppNetworkStatus, AppTheme, DashboardHeader, Sidebar } from "@/types";
-import {
-	BooleanUtils,
-	CollectionUtils,
-	hexToRgb,
-	Notify,
-	StringUtils,
-} from "@/utils";
+import { BooleanUtils, hexToRgb, Notify, StringUtils } from "@/utils";
 import { useEffect } from "react";
 import { createBaseStore, Getter, Setter } from "./base";
 
@@ -73,11 +67,11 @@ export const useUiStore = createBaseStore<State, Actions, Options, Extras>({
 			// we have to consider initially sidebar is closed
 			expanded: BooleanUtils.False.value,
 			navigation: sideBarNavigationLinks,
-			options: CollectionUtils.EMPTY,
+			options: [],
 		},
 		header: {
 			content: null,
-			navigation: CollectionUtils.EMPTY,
+			navigation: [],
 		},
 		getTheme: () => get().theme,
 		setTheme: (theme) => {

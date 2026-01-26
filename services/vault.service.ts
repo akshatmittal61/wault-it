@@ -7,7 +7,7 @@ import crypto from "crypto";
 
 export class VaultService {
 	public static validateKey(key: string) {
-		const errors: Array<string> = CollectionUtils.EMPTY;
+		const errors: Array<string> = [];
 		Logger.debug("In starting, Key: ", key, " | Errors: ", errors);
 		if (!regex.key.test(key)) {
 			if (key.length !== 32) {

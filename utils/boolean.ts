@@ -1,23 +1,23 @@
 import { ParserSafetyError } from "@/errors";
 
 export class BooleanUtils {
-	public static True = {
+	public static readonly True = Object.freeze({
 		value: true,
 		toString: () => "true",
 		toNumber: () => 1,
 		toBoolean: () => true,
 		equals: (input: any) =>
 			input === true || input === "true" || input === 1,
-	};
+	});
 
-	public static False = {
+	public static readonly False = Object.freeze({
 		value: false,
 		toString: () => "false",
 		toNumber: () => 0,
 		toBoolean: () => false,
 		equals: (input: any) =>
 			input === false || input === "false" || input === 0,
-	};
+	});
 
 	public static valueOf(input: any): boolean {
 		if (

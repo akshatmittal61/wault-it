@@ -2,7 +2,7 @@ import { ParserSafetyError } from "@/errors";
 import { BooleanUtils } from "./boolean";
 
 export class CollectionUtils {
-	public static EMPTY = [];
+	public static readonly EMPTY = Object.freeze([]);
 
 	public static isEmpty<T>(
 		collection: T[] | null | undefined
