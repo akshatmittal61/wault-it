@@ -1,9 +1,9 @@
-import { server } from "@/connections";
+import { server } from "@/client";
 import { apiMethods, HTTP } from "@/constants";
 import { Logger } from "@/log";
 import { ApiRequest, ApiResponse, T_API_METHODS } from "@/types";
-import { genericParse, getNonEmptyString } from "@/utils";
 import { NextApiHandler } from "next";
+import { StringUtils } from "@/utils";
 
 const getCallMethod = (method: T_API_METHODS) => {
 	switch (method) {
@@ -73,11 +73,10 @@ const getCookiesToSet = (endpoint: string, headers: any) => {
 const handler: NextApiHandler = async (req: ApiRequest, res: ApiResponse) => {
 	try {
 		const headers = { cookie: req.headers.cookie };
-		const method = genericParse(
-			getNonEmptyString<T_API_METHODS>,
-			req.method
+		const method = StringUtils.getNonEmptyString<T_API_METHODS>(req.method);
+		const endpoint = StringUtils.getNonEmptyString(
+			req.headers["x-endpoint"]
 		);
-		const endpoint = getNonEmptyString(req.headers["x-endpoint"]);
 		const body = req.body || {};
 		const response = await callApi(method, endpoint, body, { headers });
 		const cookiesToSet = getCookiesToSet(endpoint, response.headers);

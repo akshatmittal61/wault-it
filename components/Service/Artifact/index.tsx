@@ -1,10 +1,10 @@
-import { libraryHelpers } from "@/context/helpers";
-import { useConfirmationModal, useHttpClient } from "@/hooks";
-import { Button, MaterialIcon } from "@/library";
+import { useConfirmationModal } from "@/hooks";
+import { Button } from "@/library";
+import { useArtifactsStore } from "@/store";
 import { IArtifact } from "@/types";
-import { Notify } from "@/utils";
-import { stylesConfig } from "@/utils/functions";
+import { Notify, stylesConfig } from "@/utils";
 import React, { useState } from "react";
+import { FiEdit2, FiEye, FiTrash } from "react-icons/fi";
 import Block from "./block";
 import Updater from "./edit";
 import Revealer from "./revealer";
@@ -25,10 +25,10 @@ const ServiceArtifact: React.FC<IServiceArtifactProps> = ({
 }) => {
 	const [showRevealer, setShowRevealer] = useState(false);
 	const [showUpdater, setShowUpdater] = useState(false);
-	const { loading: deleting, dispatch } = useHttpClient();
+	const { deleteArtifact, isDeletingArtifact } = useArtifactsStore();
 	const deleteArtifactHelper = async () => {
 		try {
-			await dispatch(libraryHelpers.deleteArtifact, artifact.id);
+			await deleteArtifact(artifact.id);
 			onDelete();
 		} catch (error) {
 			Notify.error(error);
@@ -47,7 +47,7 @@ const ServiceArtifact: React.FC<IServiceArtifactProps> = ({
 		() => {
 			deleteArtifactConfirmation.closePopup();
 		},
-		deleting
+		isDeletingArtifact
 	);
 	return (
 		<>
@@ -67,7 +67,7 @@ const ServiceArtifact: React.FC<IServiceArtifactProps> = ({
 					<Button
 						size="small"
 						variant="outlined"
-						icon={<MaterialIcon icon="visibility" />}
+						icon={<FiEye />}
 						onClick={() => setShowRevealer(true)}
 					>
 						Reveal
@@ -75,7 +75,7 @@ const ServiceArtifact: React.FC<IServiceArtifactProps> = ({
 					<Button
 						size="small"
 						variant="outlined"
-						icon={<MaterialIcon icon="edit" />}
+						icon={<FiEdit2 />}
 						onClick={() => setShowUpdater(true)}
 					>
 						Edit
@@ -83,7 +83,7 @@ const ServiceArtifact: React.FC<IServiceArtifactProps> = ({
 					<Button
 						size="small"
 						variant="outlined"
-						icon={<MaterialIcon icon="delete" />}
+						icon={<FiTrash />}
 						onClick={deleteArtifactConfirmation.openPopup}
 					>
 						Delete

@@ -7,7 +7,8 @@
 	z-index: 998;
 	min-width: min(95vw, 400px);
 	height: 100vh;
-	border-radius: 32px 0 0 32px;
+	border-radius: calc(2 * var(--border-radius)) 0 0
+		calc(2 * var(--border-radius));
 	animation: slide-left 0.3s ease-in-out forwards;
 	display: flex;
 	justify-content: flex-start;
@@ -18,7 +19,7 @@
 	box-shadow: var(--shadow-elevation-4dp);
 	@include hide-scrollbar();
 
-	@include theme(dark) {
+	@include _theme(dark) {
 		box-shadow: var(--shadow-elevation-4dp-dark);
 	}
 

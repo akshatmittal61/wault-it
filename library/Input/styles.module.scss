@@ -37,14 +37,14 @@
 		border-bottom: 2px solid rgba(0, 0, 0, 0.2);
 		transition: all var(--transition-time) ease-in-out;
 
-		@include theme(dark) {
+		@include _theme(dark) {
 			border-bottom: 2px solid rgba(255, 255, 255, 0.2);
 		}
 
 		&:hover {
 			border-bottom: 2px solid rgba(0, 0, 0, 0.2);
 
-			@include theme(dark) {
+			@include _theme(dark) {
 				border-bottom: 2px solid rgba(255, 255, 255, 0.2);
 			}
 		}
@@ -53,14 +53,14 @@
 		&:focus {
 			border-color: var(--accent-color);
 
-			@include theme(dark) {
+			@include _theme(dark) {
 				border-color: var(--accent-color);
 			}
 
 			& + label {
 				color: var(--accent-color);
 
-				@include theme(dark) {
+				@include _theme(dark) {
 					color: var(--accent-color);
 				}
 			}
@@ -71,7 +71,7 @@
 		&:disabled:focus {
 			border-bottom: 2px solid var(--transparent);
 
-			@include theme(dark) {
+			@include _theme(dark) {
 				border-bottom: 2px solid var(--transparent);
 			}
 		}
@@ -79,7 +79,7 @@
 		&:invalid {
 			border-bottom: 2px solid var(--material-red);
 
-			@include theme(dark) {
+			@include _theme(dark) {
 				border-bottom: 2px solid var(--material-red);
 			}
 		}

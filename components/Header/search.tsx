@@ -1,8 +1,9 @@
-import { useDebounce, useHttpClient, useStore } from "@/hooks";
-import { Input, MaterialIcon } from "@/library";
-import { Notify } from "@/utils";
-import { stylesConfig } from "@/utils/functions";
+import { useDebounce } from "@/hooks";
+import { Input } from "@/library";
+import { useArtifactsStore } from "@/store";
+import { Notify, stylesConfig } from "@/utils";
 import React, { useEffect } from "react";
+import { FiSearch } from "react-icons/fi";
 import styles from "./styles.module.scss";
 
 interface ISearchProps {}
@@ -10,15 +11,8 @@ interface ISearchProps {}
 const classes = stylesConfig(styles, "search");
 
 const Search: React.FC<ISearchProps> = () => {
-	const {
-		getAllServices,
-		searchForServices,
-		setSearchQuery,
-		setServices,
-		dispatch: dispatchToStore,
-	} = useStore();
-	const { dispatch } = useHttpClient<Array<string>>([]);
-	const client = useHttpClient<Array<string>>();
+	const { getAllServices, searchForServices, setSearchQuery, setServices } =
+		useArtifactsStore();
 	const [searchStr, debouncedSearchStr, setSearchStr] = useDebounce<string>(
 		"",
 		1000
@@ -26,32 +20,33 @@ const Search: React.FC<ISearchProps> = () => {
 
 	const handleSearch = async (searchStr: any) => {
 		try {
-			await dispatch(searchForServices, searchStr);
+			await searchForServices(searchStr);
 		} catch (error) {
 			Notify.error(error);
 		}
 	};
 
 	useEffect(() => {
-		dispatchToStore(setSearchQuery(debouncedSearchStr));
+		setSearchQuery(debouncedSearchStr);
 		if (debouncedSearchStr) {
 			if (debouncedSearchStr.length >= 3) {
-				handleSearch(debouncedSearchStr);
+				void handleSearch(debouncedSearchStr);
 			} else {
-				dispatchToStore(setServices([]));
+				setServices([]);
 			}
 		} else {
-			client.dispatch(getAllServices, undefined);
+			void getAllServices();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedSearchStr]);
+
 	return (
 		<form className={classes("")}>
 			<Input
 				name="search"
 				placeholder="Search"
 				value={searchStr}
-				leftIcon={<MaterialIcon icon="search" />}
+				leftIcon={<FiSearch />}
 				onChange={(e: any) => setSearchStr(e.target.value)}
 			/>
 		</form>

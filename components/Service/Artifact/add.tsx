@@ -1,24 +1,21 @@
 import { InputPrivateKey } from "@/components";
-import { libraryHelpers } from "@/context/helpers";
-import { useHttpClient, useStore } from "@/hooks";
 import { Responsive } from "@/layouts";
-import { Button, Input, MaterialIcon, Pane } from "@/library";
-import { IArtifact, ICreateArtifact } from "@/types";
-import { Notify } from "@/utils";
-import { stylesConfig } from "@/utils/functions";
+import { Button, HiddenInput, Input, Pane } from "@/library";
+import { useArtifactsStore } from "@/store";
+import { ICreateArtifact } from "@/types";
+import { Notify, SafetyUtils, stylesConfig } from "@/utils";
 import React, { useState } from "react";
 import styles from "./styles.module.scss";
 
 interface IAddNewArtifactProps {
 	onClose: () => void;
-	onAdd: () => void;
 }
 
 const classes = stylesConfig(styles, "artifact-add");
 
-const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose, onAdd }) => {
-	const { services } = useStore();
-	const { loading, dispatch } = useHttpClient<IArtifact>();
+const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose }) => {
+	const { services, createArtifact, isCreatingArtifact } =
+		useArtifactsStore();
 	const [artifactDetails, setArtifactDetails] = useState<ICreateArtifact>({
 		service: "",
 		identifier: "",
@@ -32,16 +29,19 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose, onAdd }) => {
 	};
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		try {
-			await dispatch(libraryHelpers.createArtifact, artifactDetails);
-			onAdd();
-		} catch (error) {
-			Notify.error(error);
+		const createdArtifact = await createArtifact(artifactDetails);
+		if (SafetyUtils.isNonNull(createdArtifact)) {
+			Notify.success("Artifact added successfully");
+			onClose();
 		}
 	};
 	return (
 		<Pane title="Add New Artifact" onClose={onClose}>
-			<form className={classes("")} onSubmit={handleSubmit}>
+			<form
+				autoComplete="off"
+				className={classes("")}
+				onSubmit={handleSubmit}
+			>
 				<Responsive.Row>
 					<Responsive.Col xlg={50} lg={50} md={50} sm={100} xsm={100}>
 						<Input
@@ -50,6 +50,8 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose, onAdd }) => {
 							name="service"
 							label="Service"
 							placeholder="Enter service name"
+							autoComplete="off"
+							id="add-new-artifact-service"
 							value={artifactDetails.service}
 							onChange={handleChange}
 							dropdown={{
@@ -75,6 +77,7 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose, onAdd }) => {
 							name="comment"
 							label="Comment"
 							placeholder="Enter comment"
+							id="add-new-artifact-comment"
 							value={artifactDetails.comment}
 							onChange={handleChange}
 						/>
@@ -86,20 +89,27 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose, onAdd }) => {
 							name="identifier"
 							label="Identifier"
 							placeholder="myemail@example.com or label(My iPhone)"
+							autoComplete="off"
+							id="add-new-artifact-identifier"
 							value={artifactDetails.identifier}
 							onChange={handleChange}
 						/>
 					</Responsive.Col>
 					<Responsive.Col xlg={50} lg={50} md={50} sm={100} xsm={100}>
-						<Input
+						<HiddenInput
 							className={classes("-input")}
-							type="password"
 							name="password"
 							label="Password"
 							placeholder="Enter your password"
-							leftIcon={<MaterialIcon icon="lock" />}
+							autoComplete="new-password"
+							id="add-new-artifact-password"
 							value={artifactDetails.password}
-							onChange={handleChange}
+							onChange={(value) => {
+								setArtifactDetails((prev) => ({
+									...prev,
+									password: value,
+								}));
+							}}
 						/>
 					</Responsive.Col>
 					<Responsive.Col
@@ -111,6 +121,8 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose, onAdd }) => {
 					>
 						<InputPrivateKey
 							className={classes("-input", "-input--full")}
+							autoComplete="new-password"
+							id="add-new-artifact-private-key"
 							value={artifactDetails.privateKey}
 							onChange={(value) => {
 								setArtifactDetails((prev) => ({
@@ -130,7 +142,7 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose, onAdd }) => {
 						<Button
 							type="submit"
 							variant="outlined"
-							loading={loading}
+							loading={isCreatingArtifact}
 						>
 							Add
 						</Button>

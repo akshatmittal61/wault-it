@@ -1,7 +1,7 @@
-import { Input, MaterialIcon } from "@/library";
+import { HiddenInput } from "@/library";
 import { InputProps } from "@/library/Input/types";
 import { validateKey } from "@/validations";
-import React, { useState } from "react";
+import React from "react";
 
 interface IInputPrivateKeyProps extends Omit<InputProps, "onChange"> {
 	value: string;
@@ -13,7 +13,6 @@ const InputPrivateKey: React.FC<IInputPrivateKeyProps> = ({
 	onChange,
 	...props
 }) => {
-	const [reveal, setReveal] = useState(false);
 	const validate = (key: string): string | null => {
 		try {
 			validateKey(key);
@@ -23,20 +22,12 @@ const InputPrivateKey: React.FC<IInputPrivateKeyProps> = ({
 		}
 	};
 	return (
-		<Input
-			type={reveal ? "text" : "password"}
+		<HiddenInput
 			name="privateKey"
 			label="Private Key"
 			placeholder="Enter your private key"
-			leftIcon={<MaterialIcon icon="lock" />}
-			rightIcon={
-				<MaterialIcon
-					icon={reveal ? "visibility" : "visibility_off"}
-					onClick={() => setReveal((p) => !p)}
-				/>
-			}
 			value={value}
-			onChange={(e: any) => onChange(e.target.value)}
+			onChange={onChange}
 			error={validate(value) === null}
 			errorMessage={validate(value)?.toString()}
 			{...props}

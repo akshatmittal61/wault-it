@@ -1,36 +1,43 @@
-import { authenticatedPage } from "@/client";
-import { Loader, Service } from "@/components";
-import { routes } from "@/constants";
-import { libraryHelpers } from "@/context/helpers";
-import { useHttpClient, useStore } from "@/hooks";
+import { withAuthPage } from "@/client";
+import { Service } from "@/components";
+import { useHttpClient } from "@/hooks";
 import { Masonry } from "@/layouts";
-import { Typography } from "@/library";
+import { Loader, Typography } from "@/library";
 import styles from "@/styles/pages/Room.module.scss";
-import { IArtifact, IUser, ServerSideResult } from "@/types";
-import { getNonEmptyString, stylesConfig } from "@/utils";
+import { IUser } from "@/types";
+import { CollectionUtils, Notify, StringUtils, stylesConfig } from "@/utils";
 import React, { useEffect } from "react";
+import { ArtifactsApi } from "@/api";
+import { useArtifactsStore } from "@/store";
 
 const classes = stylesConfig(styles, "room");
 
 type RoomPageProps = { user: IUser; service: string };
 
 const RoomPage: React.FC<RoomPageProps> = (props) => {
-	const { dispatch, setUser, artifacts } = useStore();
-	const client = useHttpClient<Array<IArtifact>>([]);
 	const serviceName = props.service;
+	const { artifacts } = useArtifactsStore();
+	const {
+		trigger: getArtifacts,
+		data: artifactsForService,
+		loading: gettingArtifacts,
+	} = useHttpClient({
+		trigger: ArtifactsApi.getArtifactsForService,
+		onError: Notify.error,
+		data: artifacts.filter((item) =>
+			StringUtils.equals(item.service, serviceName)
+		),
+	});
 
-	const getArtifacts = async () => {
-		await client.dispatch(
-			libraryHelpers.getArtifactsForService,
-			serviceName
-		);
+	const refreshArtifactsForService = () => {
+		void getArtifacts(serviceName);
 	};
 
 	useEffect(() => {
-		dispatch(setUser(props.user));
-		getArtifacts();
+		refreshArtifactsForService();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [serviceName]);
+
 	return (
 		<main id="room" className={classes("")}>
 			<Typography
@@ -42,22 +49,28 @@ const RoomPage: React.FC<RoomPageProps> = (props) => {
 			>
 				Room {serviceName}
 			</Typography>
-			{client.loading ? (
+			{gettingArtifacts &&
+			CollectionUtils.isEmpty(artifactsForService) ? (
 				<Loader.Spinner />
-			) : client.data.length === 0 ? (
+			) : CollectionUtils.isEmpty(artifactsForService) ? (
 				<Typography>No artifacts found for {serviceName}</Typography>
 			) : (
-				<Masonry xlg={3} className={classes("-listing")}>
-					{artifacts
-						.filter((a) => a.service === serviceName)
-						.map((artifact) => (
-							<Service.Artifact
-								key={`room-${serviceName}-${artifact.id}`}
-								artifact={artifact}
-								onUpdate={getArtifacts}
-								onDelete={getArtifacts}
-							/>
-						))}
+				<Masonry
+					xlg={4}
+					lg={4}
+					md={3}
+					sm={2}
+					xsm={1}
+					className={classes("-listing")}
+				>
+					{artifactsForService.map((artifact) => (
+						<Service.Artifact
+							key={`room-${serviceName}-${artifact.id}`}
+							artifact={artifact}
+							onUpdate={refreshArtifactsForService}
+							onDelete={refreshArtifactsForService}
+						/>
+					))}
 				</Masonry>
 			)}
 		</main>
@@ -66,39 +79,11 @@ const RoomPage: React.FC<RoomPageProps> = (props) => {
 
 export default RoomPage;
 
-export const getServerSideProps = async (
-	context: any
-): Promise<ServerSideResult<RoomPageProps>> => {
-	return await authenticatedPage(context, {
-		onLoggedInAndOnboarded(user) {
-			const serviceName = context.query.name;
-			if (!serviceName) {
-				return {
-					redirect: {
-						destination: routes.HOME,
-						permanent: false,
-					},
-				};
-			}
-			return {
-				props: { user, service: getNonEmptyString(serviceName) },
-			};
-		},
-		onLoggedInAndNotOnboarded() {
-			return {
-				redirect: {
-					destination: routes.ONBOARDING,
-					permanent: false,
-				},
-			};
-		},
-		onLoggedOut() {
-			return {
-				redirect: {
-					destination: routes.LOGIN,
-					permanent: false,
-				},
-			};
-		},
-	});
-};
+export const getServerSideProps = withAuthPage<RoomPageProps>(
+	(user, context) => {
+		const service = StringUtils.getNonEmptyString(context.query.name);
+		return {
+			props: { user, service },
+		};
+	}
+);

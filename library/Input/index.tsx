@@ -16,6 +16,7 @@ const Input: React.FC<InputProps> = ({
 	rightIcon,
 	error,
 	errorMessage,
+	onChange,
 	...props
 }) => {
 	const inputRef = useRef<any>(null);
@@ -79,7 +80,11 @@ const Input: React.FC<InputProps> = ({
 	return (
 		<div className={classes("") + ` ${className}`} style={styles?.box}>
 			{label ? (
-				<label className={classes("__label")} style={styles?.label}>
+				<label
+					htmlFor={props.id || props.name}
+					className={classes("__label")}
+					style={styles?.label}
+				>
 					{label}
 				</label>
 			) : null}
@@ -114,12 +119,15 @@ const Input: React.FC<InputProps> = ({
 											.includes(search.toLowerCase())
 								);
 								setOptionsToRender(options);
-								if (dropdown.onSearch)
+								if (dropdown.onSearch) {
 									dropdown.onSearch(search);
-								else if (props.onChange) props.onChange(e);
+								}
+								if (onChange) {
+									onChange(e);
+								}
 							};
 						} else {
-							return props.onChange;
+							return onChange;
 						}
 					})()}
 					{...props}

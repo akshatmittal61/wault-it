@@ -1,5 +1,5 @@
 import { Typography } from "@/library";
-import { stylesConfig } from "@/utils/functions";
+import { stylesConfig } from "@/utils";
 import React from "react";
 import { LuFileSymlink } from "react-icons/lu";
 import styles from "./styles.module.scss";
@@ -14,10 +14,10 @@ const ArtifactsImporterCurrent: React.FC<
 	return (
 		<>
 			<Typography as="h3" size="lg">
-				View Current Resume
+				View Current File
 			</Typography>
 			<a
-				href="https://akshatmittal61.vercel.app/resume"
+				href="https://akshatmittal61.vercel.app"
 				target="_blank"
 				rel="noreferrer"
 				className={classes("-header-link")}

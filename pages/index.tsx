@@ -1,14 +1,14 @@
-import { authenticatedPage } from "@/client";
+import { authRouterInterceptor } from "@/client";
 import { Landing } from "@/components";
 import { routes } from "@/constants";
 import styles from "@/styles/pages/Home.module.scss";
-import { ServerSideResult } from "@/types";
 import { stylesConfig } from "@/utils";
+import { GetServerSidePropsContext } from "next";
 import React from "react";
 
-const classes = stylesConfig(styles, "landing");
+const classes = stylesConfig(styles, "groups");
 
-const LandingPage: React.FC = () => {
+const HomePage: React.FC = () => {
 	return (
 		<main id="landing" className={classes("")}>
 			<Landing.Hero />
@@ -16,22 +16,14 @@ const LandingPage: React.FC = () => {
 	);
 };
 
-export default LandingPage;
+export default HomePage;
 
-export const getServerSideProps = (context: any): Promise<ServerSideResult> => {
-	return authenticatedPage(context, {
-		onLoggedInAndOnboarded() {
+export const getServerSideProps = (context: GetServerSidePropsContext) => {
+	return authRouterInterceptor(context, {
+		onLoggedIn() {
 			return {
 				redirect: {
 					destination: routes.HOME,
-					permanent: false,
-				},
-			};
-		},
-		onLoggedInAndNotOnboarded() {
-			return {
-				redirect: {
-					destination: routes.ONBOARDING,
 					permanent: false,
 				},
 			};

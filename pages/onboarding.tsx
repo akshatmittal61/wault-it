@@ -1,12 +1,18 @@
-import { authenticatedPage } from "@/client";
 import { routes } from "@/constants";
-import { useHttpClient, useStore } from "@/hooks";
 import { Avatar, Button, Input } from "@/library";
 import styles from "@/styles/pages/Auth.module.scss";
 import { IUpdateUser, IUser, ServerSideResult } from "@/types";
-import { Notify, stylesConfig } from "@/utils";
+import {
+	Notify,
+	SafetyUtils,
+	StringUtils,
+	stylesConfig,
+	UserUtils,
+} from "@/utils";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { authRouterInterceptor } from "@/client";
+import { useAuthStore } from "@/store";
 
 const classes = stylesConfig(styles, "onboarding");
 
@@ -15,8 +21,7 @@ type OnboardingPageProps = {
 };
 
 const OnboardingPage: React.FC<OnboardingPageProps> = (props) => {
-	const { dispatch, setUser, updateProfile } = useStore();
-	const client = useHttpClient<IUser>(props.user);
+	const { user, updateProfile, isUpdatingProfile } = useAuthStore();
 	const router = useRouter();
 	const [userDetails, setUserDetails] = useState<IUpdateUser>({
 		name: props.user.name,
@@ -29,20 +34,21 @@ const OnboardingPage: React.FC<OnboardingPageProps> = (props) => {
 	};
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (!userDetails.name) return Notify.error("Name is required");
-		await client.dispatch(updateProfile, userDetails);
-		router.push(routes.HOME);
+		if (StringUtils.isEmpty(userDetails.name))
+			return Notify.error("Name is required");
+		await updateProfile(userDetails);
+		void router.push(routes.HOME);
 	};
-
-	useEffect(() => {
-		dispatch(setUser(props.user));
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	return (
 		<main id="onboarding" className={classes("")}>
 			<form onSubmit={handleSubmit}>
-				<Avatar src={userDetails.avatar || ""} alt={userDetails.name} />
+				{SafetyUtils.isNonNull(user) ? (
+					<Avatar
+						src={UserUtils.getUserAvatar(user)}
+						alt={UserUtils.getNameOfUser(user)}
+					/>
+				) : null}
 				<Input
 					name="name"
 					value={userDetails.name}
@@ -59,7 +65,7 @@ const OnboardingPage: React.FC<OnboardingPageProps> = (props) => {
 					placeholder="Enter your avatar URL"
 					type="url"
 				/>
-				<Button loading={client.loading} type="submit">
+				<Button loading={isUpdatingProfile} type="submit">
 					Save
 				</Button>
 			</form>
@@ -72,7 +78,7 @@ export default OnboardingPage;
 export const getServerSideProps = async (
 	context: any
 ): Promise<ServerSideResult<OnboardingPageProps>> => {
-	return await authenticatedPage(context, {
+	return await authRouterInterceptor(context, {
 		onLoggedInAndOnboarded() {
 			return {
 				redirect: {

@@ -1,6 +1,14 @@
+@import "./shadows";
+
 @mixin responsive($breakpoint) {
 	@if $breakpoint ==phone {
 		@media (min-width: 320px) and (max-width: 671.5px) {
+			@content;
+		}
+	}
+
+	@if $breakpoint ==not-phone {
+		@media (min-width: 672px) {
 			@content;
 		}
 	}
@@ -48,7 +56,7 @@
 	}
 }
 
-@mixin theme($theme) {
+@mixin _theme($theme) {
 	// if body has no data-theme attribute, then apply the styles
 
 	@if $theme ==light {
@@ -134,19 +142,24 @@
 	left: 0;
 	z-index: 15;
 	min-width: 100%;
-	max-height: 150px;
+	max-height: 168px;
 	height: fit-content;
 	box-shadow: var(--shadow-elevation-4dp);
 	border-radius: 8px;
 	overflow: hidden;
 	overflow-y: auto;
-	background-color: var(--theme-white);
+	background-color: var(--theme-bg);
 	color: var(--color-black);
+	@include shadow(2);
 	@include hide-scrollbar();
 
 	&:active,
 	&:focus {
 		display: flex;
+	}
+
+	@include _theme(dark) {
+		box-shadow: var(--shadow-elevation-4dp-dark);
 	}
 }
 
@@ -154,8 +167,8 @@
 	width: 100%;
 	padding: 10px 8px;
 	transition: all var(--transition-time) ease-in-out;
-	background-color: var(--theme-white);
-	color: var(--color-black);
+	background-color: var(--theme-bg);
+	color: var(--theme-fg);
 	white-space: nowrap;
 	cursor: pointer;
 	user-select: none;
@@ -163,7 +176,7 @@
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: var(--theme-bg);
-		color: var(--color-black);
+		background-color: var(--theme-bg-hover);
+		color: var(--theme-fg-hover);
 	}
 }

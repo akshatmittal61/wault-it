@@ -1,14 +1,13 @@
-import { LibraryApi } from "@/connections";
+import { ArtifactsApi } from "@/api";
+import { useHttpClient } from "@/hooks";
 import { Popup, Typography } from "@/library";
 import { Logger } from "@/log";
-import { Notify, readFile } from "@/utils";
-import { stylesConfig } from "@/utils/functions";
+import { Notify, readFile, stylesConfig } from "@/utils";
 import React, { useState } from "react";
 import Form from "./form";
 import styles from "./styles.module.scss";
 import Submit from "./submit";
 import Uploading from "./uploading";
-import { useHttpClient } from "@/hooks";
 
 interface IArtifactsImporterProps {
 	onClose: () => void;
@@ -27,20 +26,22 @@ const ArtifactsImporter: React.FC<IArtifactsImporterProps> = ({
 
 	const handleImport = async (file: File) => {
 		try {
-			if (!file) throw new Error("No file found");
-			if (file.size > 40000000) {
-				throw new Error("File size should not exceed 40MB");
+			if (!file) {
+				return Notify.error("No file found");
 			}
-			const resumeFileDataUrl = await readFile(file);
-			Logger.debug("resumeFileDataUrl", resumeFileDataUrl);
-			const updatedServices = await LibraryApi.importArtifactsFromCsv(
-				resumeFileDataUrl,
+			if (file.size > 40000000) {
+				return Notify.error("File size should not exceed 40MB");
+			}
+			const fileDataUrl = await readFile(file);
+			Logger.debug("fileDataUrl", fileDataUrl);
+			const updatedServices = await ArtifactsApi.importArtifactsFromCsv(
+				fileDataUrl,
 				privateKey
 			);
-			Notify.success("Resume uploaded successfully");
+			Notify.success("File uploaded successfully");
 			onImport(updatedServices.data);
 		} catch (error: any) {
-			Notify.error(error, "Failed to upload resume");
+			Notify.error(error, "Failed to upload file");
 		}
 	};
 
@@ -103,7 +104,7 @@ const ArtifactsImporter: React.FC<IArtifactsImporterProps> = ({
 					<Form
 						file={file}
 						setFile={(f: any) => setFile(f)}
-						handleUploadResume={handleImport}
+						handleUpload={handleImport}
 						handleDragOver={handleDragOver}
 						handleDrop={handleDrop}
 						handleDragStart={handleDragStart}

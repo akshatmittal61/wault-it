@@ -258,3 +258,59 @@ export const getImageUrlFromDriveLink = (link: string): string => {
 		return link;
 	}
 };
+
+/**
+ * Tries to extract a search parameter from a given URI. The search parameter
+ * is looked up in the following order:
+ * 1. The URI is parsed as a URL and the search parameter is looked up in the
+ *    URL's searchParams.
+ * 2. If the URI is not a valid URL, the search parameter is looked up in the
+ *    query string part of the URI.
+ * @param {string | undefined} uri The URI to look up the search parameter in.
+ * @param {string} param The name of the search parameter to look up.
+ * @returns {string | null} The value of the search parameter if it exists, or
+ * null if it does not exist.
+ */
+export const getSearchParam = (
+	uri: string | undefined,
+	param: string
+): string | null => {
+	try {
+		if (uri === undefined || uri.length === 0) return null;
+		const url = (() => {
+			try {
+				return new URL(uri);
+			} catch {
+				return null;
+			}
+		})();
+		if (url !== null) {
+			const searchParams = url.searchParams;
+			const value = searchParams.get(param);
+			if (value !== null && value.length !== 0) {
+				return value;
+			}
+		}
+
+		const paramsStr = uri.split("?").length > 1 ? uri.split("?")[1] : "";
+		const params = new URLSearchParams(paramsStr);
+		return params.get(param);
+	} catch {
+		return null;
+	}
+};
+
+/**
+ * Converts a hexadecimal color code to RGB.
+ * @param {string} hex The hexadecimal color code.
+ * @returns {string} A string in the format "red, green, blue" if the conversion was successful, otherwise null.
+ */
+export const hexToRgb = (hex: string): string => {
+	const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+	hex = hex.replace(shorthandRegex, (_, r, g, b) => r + r + g + g + b + b);
+
+	const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	return result
+		? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+		: hex;
+};

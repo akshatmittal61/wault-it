@@ -1,8 +1,13 @@
-import { useHttpClient, useStore } from "@/hooks";
 import { Avatar, Button, Input } from "@/library";
-import { IUpdateUser, IUser } from "@/types";
-import { Notify } from "@/utils";
-import { stylesConfig } from "@/utils/functions";
+import { useAuthStore } from "@/store";
+import { IUpdateUser } from "@/types";
+import {
+	Notify,
+	SafetyUtils,
+	StringUtils,
+	stylesConfig,
+	UserUtils,
+} from "@/utils";
 import React, { useState } from "react";
 import styles from "./styles.module.scss";
 
@@ -13,12 +18,20 @@ interface IEditProfileProps {
 const classes = stylesConfig(styles, "edit-profile");
 
 const EditProfile: React.FC<IEditProfileProps> = ({ onEdit }) => {
-	const { user, updateProfile } = useStore();
-	const client = useHttpClient<IUser>(user);
+	const { user, updateProfile, isUpdatingProfile } = useAuthStore();
 
-	const [userDetails, setUserDetails] = useState<IUpdateUser>({
-		name: user.name,
-		avatar: user.avatar,
+	const [userDetails, setUserDetails] = useState<IUpdateUser>(() => {
+		if (SafetyUtils.isNonNull(user)) {
+			return {
+				name: user.name,
+				avatar: user.avatar,
+			};
+		} else {
+			return {
+				name: StringUtils.EMPTY,
+				avatar: StringUtils.EMPTY,
+			};
+		}
 	});
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,13 +41,18 @@ const EditProfile: React.FC<IEditProfileProps> = ({ onEdit }) => {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (!userDetails.name) return Notify.error("Name is required");
-		await client.dispatch(updateProfile, userDetails);
+		await updateProfile(userDetails);
 		onEdit();
 	};
 	return (
 		<section id="profile" className={classes("")}>
 			<form onSubmit={handleSubmit} className={classes("-form")}>
-				<Avatar src={userDetails.avatar || ""} alt={userDetails.name} />
+				{SafetyUtils.isNonNull(user) ? (
+					<Avatar
+						src={UserUtils.getUserAvatar(user)}
+						alt={UserUtils.getNameOfUser(user)}
+					/>
+				) : null}
 				<Input
 					name="name"
 					value={userDetails.name}
@@ -51,7 +69,7 @@ const EditProfile: React.FC<IEditProfileProps> = ({ onEdit }) => {
 					placeholder="Enter your avatar URL"
 					type="url"
 				/>
-				<Button loading={client.loading} type="submit">
+				<Button loading={isUpdatingProfile} type="submit">
 					Save
 				</Button>
 			</form>

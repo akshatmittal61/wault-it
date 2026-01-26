@@ -1,10 +1,16 @@
 import { routes } from "@/constants";
-import { useStore } from "@/hooks";
-import { Avatar, Button, MaterialIcon, Typography } from "@/library";
-import { Notify } from "@/utils";
-import { copyToClipboard, stylesConfig } from "@/utils/functions";
+import { Avatar, Button, Typography } from "@/library";
+import { useAuthStore } from "@/store";
+import {
+	copyToClipboard,
+	Notify,
+	SafetyUtils,
+	stylesConfig,
+	UserUtils,
+} from "@/utils";
 import { useRouter } from "next/router";
 import React from "react";
+import { FiCopy, FiLogOut } from "react-icons/fi";
 import styles from "./styles.module.scss";
 
 interface IViewProfileProps {}
@@ -13,17 +19,23 @@ const classes = stylesConfig(styles, "view-profile");
 
 const ViewProfile: React.FC<IViewProfileProps> = () => {
 	const router = useRouter();
-	const { user, logout } = useStore();
+	const { user, logout } = useAuthStore();
 
 	const logoutUser = async () => {
 		await logout();
-		router.push(routes.LOGIN);
+		void router.push(routes.LOGIN);
 	};
+
+	if (!SafetyUtils.isNonNull(user)) return null;
 	return (
 		<section id="profile" className={classes("")}>
-			<Avatar src={user.avatar || ""} alt={user.name} size="large" />
+			<Avatar
+				src={UserUtils.getUserAvatar(user)}
+				alt={UserUtils.getNameOfUser(user)}
+				size="large"
+			/>
 			<Typography as="h1" size="xxxl" className={classes("-name")}>
-				Hi, {user.name}
+				Hi, {UserUtils.getNameOfUser(user)}
 			</Typography>
 			<Typography size="lg" className={classes("-email")}>
 				{user.email}{" "}
@@ -34,14 +46,10 @@ const ViewProfile: React.FC<IViewProfileProps> = () => {
 						Notify.success("Email copied to clipboard");
 					}}
 				>
-					<MaterialIcon icon="content_copy" />
+					<FiCopy />
 				</button>
 			</Typography>
-			<Button
-				onClick={logoutUser}
-				size="large"
-				icon={<MaterialIcon icon="logout" />}
-			>
+			<Button onClick={logoutUser} size="large" icon={<FiLogOut />}>
 				Logout
 			</Button>
 		</section>

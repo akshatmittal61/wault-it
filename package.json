@@ -17,24 +17,28 @@
 		"format:check": "prettier --check .",
 		"prepare": "husky install",
 		"test": "echo \"Error: no test specified\" && exit 0",
-		"clean": "rm -rf .next/ && rm -rf node_modules && yarn"
+		"clean": "rm -rf .next/ && rm -rf dist/ && rm -rf .cache/ && rm -rf .yarn/ && rm -rf coverage/",
+		"reset": "yarn clean && rm -rf node_modules/ && rm -rf logs/"
 	},
 	"dependencies": {
-		"@reduxjs/toolkit": "^2.2.1",
-		"@types/jsonwebtoken": "^9.0.6",
 		"aos": "^2.3.4",
 		"axios": "^1.6.7",
+		"google-auth-library": "^10.5.0",
+		"jsonwebtoken": "^9.0.3",
+		"mongoose": "^8.18.0",
 		"next": "14.1.0",
+		"node-cache": "^5.1.2",
 		"react": "^18",
 		"react-dom": "^18",
 		"react-hot-toast": "^2.4.1",
 		"react-icons": "^5.0.1",
-		"react-redux": "^9.1.0"
+		"zustand": "^5.0.10"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^18.6.1",
 		"@commitlint/config-conventional": "^18.6.2",
 		"@types/aos": "^3.0.7",
+		"@types/jsonwebtoken": "^9.0.10",
 		"@types/node": "^20",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",

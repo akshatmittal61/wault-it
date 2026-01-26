@@ -1,6 +1,6 @@
-import { routes } from "@/constants";
+import { AppSeo, routes } from "@/constants";
 import { Button, Typography } from "@/library";
-import { stylesConfig } from "@/utils/functions";
+import { stylesConfig } from "@/utils";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
@@ -23,11 +23,10 @@ const LandingHero: React.FC<ILandingHeroProps> = () => {
 			/>
 			<div className={classes("-content")}>
 				<Typography size="head-1" as="h1" weight="semi-bold">
-					Wault
+					{AppSeo.title}
 				</Typography>
 				<Typography size="lg" as="p">
-					Store and secure passwords for everything, encrypted behind
-					one paraphrase that only you remember.
+					{AppSeo.description}
 				</Typography>
 				<Button
 					icon={<FiLogIn />}

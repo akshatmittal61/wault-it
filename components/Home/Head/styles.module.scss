@@ -12,9 +12,9 @@
 		display: flex;
 		justify-content: flex-end;
 		align-items: center;
-		gap: 24px;
+		gap: 12px;
 
-		@include theme(dark) {
+		@include _theme(dark) {
 			filter: invert(1);
 		}
 	}

@@ -1,54 +1,49 @@
-import { authenticatedPage } from "@/client";
-import { Home as Components, Loader, Placeholder, Service } from "@/components";
-import { routes } from "@/constants";
-import { useHttpClient, useStore } from "@/hooks";
+import { withAuthPage } from "@/client";
+import { Home as Components, Placeholder, Service } from "@/components";
+import { Loader } from "@/library";
+import { useArtifactsStore, useUiStore } from "@/store";
 import styles from "@/styles/pages/Home.module.scss";
-import { IUser, ServerSideResult } from "@/types";
-import { stylesConfig } from "@/utils";
-import React, { useEffect, useState } from "react";
+import { IUser } from "@/types";
+import { CollectionUtils, StringUtils, stylesConfig } from "@/utils";
+import React, { useState } from "react";
 
 const classes = stylesConfig(styles, "home");
 
 type HomePageProps = { user: IUser };
 
-const HomePage: React.FC<HomePageProps> = (props) => {
-	const {
-		dispatch,
-		setUser,
-		services,
-		setServices,
-		getAllServices,
-		searchQuery,
-	} = useStore();
-	const client = useHttpClient<Array<string>>();
-	const [openAddArtifactPopup, setopenAddArtifactPopup] = useState(false);
+const HomePage: React.FC<HomePageProps> = () => {
+	const [openAddArtifactPopup, setOpenAddArtifactPopup] = useState(false);
 	const [openImporterPopup, setOpenImporterPopup] = useState(false);
 
-	const getServices = async () => {
-		await client.dispatch(getAllServices, undefined);
-	};
+	const { isGettingAllServices, services, searchQuery } = useArtifactsStore({
+		syncOnMount: true,
+	});
 
-	useEffect(() => {
-		dispatch(setUser(props.user));
-		getServices();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	const { setHeaderContent } = useUiStore({
+		onMount: () => {
+			setHeaderContent(
+				<Components.Head
+					onAdd={() => setOpenAddArtifactPopup(true)}
+					onImport={() => setOpenImporterPopup(true)}
+				/>
+			);
+		},
+		onUnmount: () => {
+			setHeaderContent(null);
+		},
+	});
 
 	return (
 		<>
 			<main id="home" className={classes("")}>
-				<Components.Head
-					onAdd={() => setopenAddArtifactPopup(true)}
-					onImport={() => setOpenImporterPopup(true)}
-				/>
-				{client.loading && services.length === 0 ? (
-					<Loader.Spinner />
-				) : services.length > 0 ? (
+				{CollectionUtils.isNotEmpty(services) ? (
 					<Components.Services />
+				) : isGettingAllServices ? (
+					<Loader.Spinner />
 				) : (
 					<Placeholder
 						title={(() => {
-							if (searchQuery.length > 0) {
+							if (StringUtils.isNotEmpty(searchQuery)) {
 								if (searchQuery.length > 3) {
 									return "No results for " + searchQuery;
 								} else {
@@ -57,14 +52,18 @@ const HomePage: React.FC<HomePageProps> = (props) => {
 							}
 							return "No services found";
 						})()}
-						subtitle={searchQuery.length > 0 ? "" : "Add a service"}
+						subtitle={
+							StringUtils.isNotEmpty(searchQuery)
+								? ""
+								: "Add a service"
+						}
 						cta={(() => {
-							if (searchQuery.length > 0) {
+							if (StringUtils.isNotEmpty(searchQuery)) {
 								return undefined;
 							} else {
 								return {
 									label: "Add a service",
-									action: () => setopenAddArtifactPopup(true),
+									action: () => setOpenAddArtifactPopup(true),
 								};
 							}
 						})()}
@@ -74,18 +73,14 @@ const HomePage: React.FC<HomePageProps> = (props) => {
 			{openImporterPopup ? (
 				<Service.Importer
 					onClose={() => setOpenImporterPopup(false)}
-					onImport={(updatedServices) => {
-						dispatch(setServices(updatedServices));
+					onImport={() => {
 						setOpenImporterPopup(false);
 					}}
 				/>
 			) : null}
 			{openAddArtifactPopup ? (
 				<Service.AddArtifact
-					onClose={() => setopenAddArtifactPopup(false)}
-					onAdd={() => {
-						setopenAddArtifactPopup(false);
-					}}
+					onClose={() => setOpenAddArtifactPopup(false)}
 				/>
 			) : null}
 		</>
@@ -94,30 +89,6 @@ const HomePage: React.FC<HomePageProps> = (props) => {
 
 export default HomePage;
 
-export const getServerSideProps = async (
-	context: any
-): Promise<ServerSideResult<HomePageProps>> => {
-	return await authenticatedPage(context, {
-		onLoggedInAndOnboarded(user) {
-			return {
-				props: { user },
-			};
-		},
-		onLoggedInAndNotOnboarded() {
-			return {
-				redirect: {
-					destination: routes.ONBOARDING,
-					permanent: false,
-				},
-			};
-		},
-		onLoggedOut() {
-			return {
-				redirect: {
-					destination: routes.LOGIN,
-					permanent: false,
-				},
-			};
-		},
-	});
-};
+export const getServerSideProps = withAuthPage<HomePageProps>((user) => ({
+	props: { user },
+}));
