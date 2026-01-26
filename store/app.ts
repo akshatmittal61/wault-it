@@ -1,11 +1,20 @@
+import { appNetworkStatus, appTheme, navigation } from "@/constants";
 import {
-	appNetworkStatus,
-	appTheme,
-	sideBarNavigationLinks,
-} from "@/constants";
-import { AppNetworkStatus, AppTheme, DashboardHeader, Sidebar } from "@/types";
-import { BooleanUtils, hexToRgb, Notify, StringUtils } from "@/utils";
-import { useEffect } from "react";
+	AppNetworkStatus,
+	AppTheme,
+	DashboardHeader,
+	Navigation,
+	Sidebar,
+} from "@/types";
+import {
+	BooleanUtils,
+	CollectionUtils,
+	hexToRgb,
+	Notify,
+	SafetyUtils,
+	StringUtils,
+} from "@/utils";
+import React, { useEffect } from "react";
 import { createBaseStore, Getter, Setter } from "./base";
 
 type State = {
@@ -66,7 +75,7 @@ export const useAppStore = createBaseStore<State, Actions, Options, Extras>({
 			// since we are working with mobile-first UI
 			// we have to consider initially sidebar is closed
 			expanded: BooleanUtils.False.value,
-			navigation: sideBarNavigationLinks,
+			navigation: Object.values(navigation),
 			options: [],
 		},
 		header: {
@@ -210,3 +219,24 @@ export const useAppStore = createBaseStore<State, Actions, Options, Extras>({
 		};
 	},
 });
+
+export const useHeader = (
+	navigation: Array<Navigation> = [],
+	content: React.ReactNode = null
+) => {
+	const { setHeaderNavigation, setHeaderContent } = useAppStore();
+
+	useEffect(() => {
+		if (CollectionUtils.isNotEmpty(navigation)) {
+			setHeaderNavigation(navigation);
+		}
+		if (SafetyUtils.isNonNull(content)) {
+			setHeaderContent(content);
+		}
+		return () => {
+			setHeaderNavigation([]);
+			setHeaderContent(null);
+		}; // Reset on unmount
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [content, navigation.map((n) => n.id).join(",")]);
+};

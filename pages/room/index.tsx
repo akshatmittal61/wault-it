@@ -1,10 +1,11 @@
 import { ArtifactsApi } from "@/api";
 import { withAuthPage } from "@/client";
 import { Service } from "@/components";
+import { navigation } from "@/constants";
 import { useHttpClient } from "@/hooks";
 import { Masonry, Page } from "@/layouts";
 import { Loader, Typography } from "@/library";
-import { useArtifactsStore } from "@/store";
+import { useArtifactsStore, useHeader } from "@/store";
 import styles from "@/styles/pages/Room.module.scss";
 import { IUser } from "@/types";
 import { CollectionUtils, Notify, StringUtils, stylesConfig } from "@/utils";
@@ -32,6 +33,8 @@ const RoomPage: React.FC<RoomPageProps> = (props) => {
 	const refreshArtifactsForService = () => {
 		void getArtifacts(serviceName);
 	};
+
+	useHeader([navigation.home]);
 
 	useEffect(() => {
 		refreshArtifactsForService();
