@@ -1,6 +1,7 @@
 import { AuthApi } from "@/api";
-import { Routes } from "@/constants";
+import { AppSeo, Routes } from "@/constants";
 import { Page } from "@/layouts";
+import { Loader, Typography } from "@/library";
 import { Logger } from "@/log";
 import { useAuthStore } from "@/store";
 import styles from "@/styles/pages/Auth.module.scss";
@@ -36,13 +37,38 @@ const GoogleOAuthRedirectedPage: GoogleOAuthRedirectedPageProps = (props) => {
 
 	return (
 		<Page className={classes("")}>
-			<Image
-				src="/favicon.svg"
-				alt="logo"
-				width={400}
-				height={400}
-				className={classes("-loader")}
-			/>
+			<div className={classes("-card")}>
+				<div className={classes("-brand")}>
+					<Image
+						src={AppSeo.favicon || "/favicon.png"}
+						alt={AppSeo.title || "Wault It"}
+						width={72}
+						height={72}
+					/>
+				</div>
+				<Typography
+					as="h1"
+					family="montserrat"
+					size="xxl"
+					weight="medium"
+					className={classes("-title")}
+				>
+					Signing you in
+				</Typography>
+				<Typography
+					as="p"
+					family="montserrat"
+					size="lg"
+					weight="light"
+					className={classes("-subtitle")}
+				>
+					We&apos;re verifying your Google account and preparing your
+					vault.
+				</Typography>
+				<div className={classes("-loader")}>
+					<Loader.Spinner />
+				</div>
+			</div>
 		</Page>
 	);
 };

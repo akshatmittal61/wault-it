@@ -21,52 +21,95 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 
 	return (
 		<Page className={classes("")}>
-			<Image
-				src="/favicon.png"
-				alt="logo"
-				width={1920}
-				height={1080}
-				className={classes("-logo")}
-			/>
-			<Typography
-				as="h1"
-				family="montserrat"
-				size="xxl"
-				weight="medium"
-				className={classes("-title")}
-			>
-				Welcome to Wault It
-			</Typography>
-			<Typography
-				as="p"
-				family="montserrat"
-				size="lg"
-				weight="light"
-				className={classes("-subtitle")}
-			>
-				Store and secure passwords for everything, encrypted behind one
-				paraphrase that only you remember.
-			</Typography>
-			<Components.Button
-				onClick={() => {
-					router.push("/__/oauth/google");
-				}}
-			/>
-			<Typography size="sm" className={classes("-foot")}>
-				By continuing, you acknowledge that you understand and agree to
-				the{" "}
-				<Link href={Routes.TERMS_AND_CONDITIONS}>
-					Terms & Conditions
-				</Link>{" "}
-				and <Link href={Routes.PRIVACY_POLICY}>Privacy Policy</Link>
-			</Typography>
-			<Image
-				src="/favicon.svg"
-				alt="logo"
-				width={1920}
-				height={1080}
-				className={classes("-background")}
-			/>
+			<div className={classes("-layout")}>
+				<section className={classes("-left")} />
+				<section className={classes("-right")}>
+					<div className={classes("-right-inner")}>
+						<div className={classes("-brand")}>
+							<Image
+								src="/logo-full.png"
+								alt="logo"
+								width={220}
+								height={70}
+								priority
+							/>
+						</div>
+						<Typography
+							as="h1"
+							size="xxl"
+							weight="medium"
+							family="montserrat"
+						>
+							Sign in
+						</Typography>
+						<Typography
+							as="p"
+							size="sm"
+							className={classes("-subtitle")}
+						>
+							Use Google to continue to your vault.
+						</Typography>
+						<div className={classes("-card")}>
+							<div className={classes("-card-body")}>
+								<Components.Button
+									onClick={() => {
+										router.push("/__/oauth/google");
+									}}
+								/>
+								<Typography
+									size="xs"
+									className={classes("-foot")}
+								>
+									By continuing, you agree to the{" "}
+									<Link href={Routes.TERMS_AND_CONDITIONS}>
+										Terms & Conditions
+									</Link>{" "}
+									and{" "}
+									<Link href={Routes.PRIVACY_POLICY}>
+										Privacy Policy
+									</Link>
+								</Typography>
+							</div>
+						</div>
+						<div className={classes("-tiles")}>
+							<div className={classes("-tile")}>
+								<Typography size="sm" weight="medium">
+									Organize by service
+								</Typography>
+								<Typography
+									size="xs"
+									className={classes("-muted")}
+								>
+									LinkedIn, Google, Hotstar — grouped the way
+									you think.
+								</Typography>
+							</div>
+							<div className={classes("-tile")}>
+								<Typography size="sm" weight="medium">
+									Reveal on demand
+								</Typography>
+								<Typography
+									size="xs"
+									className={classes("-muted")}
+								>
+									Hidden by default. Copy in one click.
+								</Typography>
+							</div>
+							<div className={classes("-tile")}>
+								<Typography size="sm" weight="medium">
+									Fast search
+								</Typography>
+								<Typography
+									size="xs"
+									className={classes("-muted")}
+								>
+									Find anything instantly as your vault grows.
+								</Typography>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
 		</Page>
 	);
 };

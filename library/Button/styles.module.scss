@@ -1,4 +1,5 @@
 @import "@/styles/config/mixins";
+@import "@/styles/config/animations";
 @import "@/styles/config/typography";
 
 .btn {
@@ -8,7 +9,7 @@
 	justify-content: center;
 	align-items: center;
 	gap: 6px;
-	border-radius: 500px;
+	border-radius: var(--border-radius);
 	border: 1px solid transparent;
 	white-space: nowrap;
 	flex: 0 0 auto;
@@ -16,7 +17,6 @@
 	user-select: none;
 	transition: all 0.2s ease-in-out;
 	color: var(--theme-white);
-	border: 1px solid transparent;
 
 	&--theme {
 		&--default {
@@ -88,7 +88,6 @@
 	&--size {
 		&--medium {
 			.btn__icon {
-				font-size: 18px;
 				svg,
 				img {
 					width: 18px;
@@ -99,7 +98,6 @@
 
 		&--small {
 			.btn__icon {
-				font-size: 16px;
 				svg,
 				img {
 					width: 16px;
@@ -110,7 +108,6 @@
 
 		&--large {
 			.btn__icon {
-				font-size: 20px;
 				svg,
 				img {
 					width: 20px;
@@ -208,11 +205,5 @@
 
 	span {
 		z-index: 5;
-	}
-}
-
-@keyframes spin {
-	100% {
-		transform: rotate(360deg);
 	}
 }
