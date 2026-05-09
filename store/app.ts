@@ -11,10 +11,9 @@ import {
 	CollectionUtils,
 	hexToRgb,
 	Notify,
-	SafetyUtils,
 	StringUtils,
 } from "@/utils";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { createBaseStore, Getter, Setter } from "./base";
 
 type State = {
@@ -220,23 +219,16 @@ export const useAppStore = createBaseStore<State, Actions, Options, Extras>({
 	},
 });
 
-export const useHeader = (
-	navigation: Array<Navigation> = [],
-	content: React.ReactNode = null
-) => {
-	const { setHeaderNavigation, setHeaderContent } = useAppStore();
+export const useHeader = (navigation: Array<Navigation> = []) => {
+	const { setHeaderNavigation } = useAppStore();
 
 	useEffect(() => {
 		if (CollectionUtils.isNotEmpty(navigation)) {
 			setHeaderNavigation(navigation);
 		}
-		if (SafetyUtils.isNonNull(content)) {
-			setHeaderContent(content);
-		}
 		return () => {
 			setHeaderNavigation([]);
-			setHeaderContent(null);
 		}; // Reset on unmount
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [content, navigation.map((n) => n.id).join(",")]);
+	}, [navigation.map((n) => n.id).join(",")]);
 };

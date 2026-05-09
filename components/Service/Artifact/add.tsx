@@ -9,11 +9,15 @@ import styles from "./styles.module.scss";
 
 interface IAddNewArtifactProps {
 	onClose: () => void;
+	defaults?: Partial<ICreateArtifact>;
 }
 
 const classes = stylesConfig(styles, "artifact-add");
 
-const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose }) => {
+const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({
+	onClose,
+	defaults,
+}) => {
 	const { services, createArtifact, isCreatingArtifact } =
 		useArtifactsStore();
 	const [artifactDetails, setArtifactDetails] = useState<ICreateArtifact>({
@@ -22,6 +26,7 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({ onClose }) => {
 		comment: "",
 		password: "",
 		privateKey: "",
+		...defaults,
 	});
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;

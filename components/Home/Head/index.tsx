@@ -1,14 +1,16 @@
 import { IconButton } from "@/library";
-import { stylesConfig } from "@/utils";
+import { BooleanUtils, SafetyUtils, stylesConfig } from "@/utils";
 import React, { useEffect, useState } from "react";
 import { FiDownload, FiPlus, FiSearch } from "react-icons/fi";
 import styles from "./styles.module.scss";
 import { Search } from "@/components/Header/search";
+import { types } from "sass";
+import Boolean = types.Boolean;
 
 interface IHomeHeadProps {
-	onAdd: () => void;
-	onImport: () => void;
-	enableSearch: boolean;
+	onAdd?: () => void;
+	onImport?: () => void;
+	enableSearch?: boolean;
 }
 
 const classes = stylesConfig(styles, "home-head");
@@ -47,8 +49,10 @@ const HomeHead: React.FC<IHomeHeadProps> = ({
 	return (
 		<section id="home-head" className={classes("")}>
 			<div className={classes("-actions")}>
-				<IconButton icon={<FiDownload />} onClick={onImport} />
-				{enableSearch ? (
+				{SafetyUtils.isNonNull(onImport) ? (
+					<IconButton icon={<FiDownload />} onClick={onImport} />
+				) : null}
+				{BooleanUtils.True.equals(enableSearch) ? (
 					isSearching ? (
 						<Search onClose={() => setIsSearching(false)} />
 					) : (
@@ -58,7 +62,9 @@ const HomeHead: React.FC<IHomeHeadProps> = ({
 						/>
 					)
 				) : null}
-				<IconButton icon={<FiPlus />} onClick={onAdd} />
+				{SafetyUtils.isNonNull(onAdd) ? (
+					<IconButton icon={<FiPlus />} onClick={onAdd} />
+				) : null}
 			</div>
 		</section>
 	);

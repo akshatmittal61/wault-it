@@ -1,15 +1,15 @@
 import { ArtifactsApi } from "@/api";
 import { withAuthPage } from "@/client";
-import { Service } from "@/components";
+import { Home as Components, Home, Service } from "@/components";
 import { navigation } from "@/constants";
 import { useHttpClient } from "@/hooks";
 import { Masonry, Page } from "@/layouts";
 import { Loader, Typography } from "@/library";
-import { useArtifactsStore, useHeader } from "@/store";
+import { useAppStore, useArtifactsStore, useHeader } from "@/store";
 import styles from "@/styles/pages/Room.module.scss";
 import { IUser } from "@/types";
 import { CollectionUtils, Notify, StringUtils, stylesConfig } from "@/utils";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const classes = stylesConfig(styles, "room");
 
@@ -17,6 +17,7 @@ type RoomPageProps = { user: IUser; service: string };
 
 const RoomPage: React.FC<RoomPageProps> = (props) => {
 	const serviceName = props.service;
+	const [openAddArtifactPopup, setOpenAddArtifactPopup] = useState(false);
 	const { artifacts } = useArtifactsStore();
 	const {
 		trigger: getArtifacts,
@@ -36,47 +37,70 @@ const RoomPage: React.FC<RoomPageProps> = (props) => {
 
 	useHeader([navigation.home]);
 
+	const { setHeaderContent } = useAppStore({
+		onMount: () => {
+			setHeaderContent(
+				<Components.Head onAdd={() => setOpenAddArtifactPopup(true)} />
+			);
+		},
+		onUnmount: () => {
+			setHeaderContent(null);
+		},
+	});
+
 	useEffect(() => {
 		refreshArtifactsForService();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [serviceName]);
 
 	return (
-		<Page id="room" className={classes("")}>
-			<Typography
-				as="h1"
-				family="montserrat"
-				size="xxl"
-				weight="medium"
-				className={classes("-title")}
-			>
-				Room {serviceName}
-			</Typography>
-			{gettingArtifacts &&
-			CollectionUtils.isEmpty(artifactsForService) ? (
-				<Loader.Spinner />
-			) : CollectionUtils.isEmpty(artifactsForService) ? (
-				<Typography>No artifacts found for {serviceName}</Typography>
-			) : (
-				<Masonry
-					xlg={4}
-					lg={4}
-					md={3}
-					sm={2}
-					xsm={1}
-					className={classes("-listing")}
+		<>
+			<Page id="room" className={classes("")}>
+				<Typography
+					as="h1"
+					family="montserrat"
+					size="xxl"
+					weight="medium"
+					className={classes("-title")}
 				>
-					{artifactsForService.map((artifact) => (
-						<Service.Artifact
-							key={`room-${serviceName}-${artifact.id}`}
-							artifact={artifact}
-							onUpdate={refreshArtifactsForService}
-							onDelete={refreshArtifactsForService}
-						/>
-					))}
-				</Masonry>
-			)}
-		</Page>
+					Room {serviceName}
+				</Typography>
+				{gettingArtifacts &&
+				CollectionUtils.isEmpty(artifactsForService) ? (
+					<Loader.Spinner />
+				) : CollectionUtils.isEmpty(artifactsForService) ? (
+					<Typography>
+						No artifacts found for {serviceName}
+					</Typography>
+				) : (
+					<Masonry
+						xlg={4}
+						lg={4}
+						md={3}
+						sm={2}
+						xsm={1}
+						className={classes("-listing")}
+					>
+						{artifactsForService.map((artifact) => (
+							<Service.Artifact
+								key={`room-${serviceName}-${artifact.id}`}
+								artifact={artifact}
+								onUpdate={refreshArtifactsForService}
+								onDelete={refreshArtifactsForService}
+							/>
+						))}
+					</Masonry>
+				)}
+			</Page>
+			{openAddArtifactPopup ? (
+				<Service.AddArtifact
+					onClose={() => setOpenAddArtifactPopup(false)}
+					defaults={{
+						service: serviceName,
+					}}
+				/>
+			) : null}
+		</>
 	);
 };
 
