@@ -1,14 +1,15 @@
 import { useConfirmationModal } from "@/hooks";
-import { Button } from "@/library";
+import { Button, IconButton, Typography } from "@/library";
 import { useArtifactsStore } from "@/store";
 import { IArtifact } from "@/types";
-import { Notify, stylesConfig } from "@/utils";
+import { copyToClipboard, Notify, stylesConfig } from "@/utils";
 import React, { useState } from "react";
-import { FiEdit2, FiEye, FiTrash } from "react-icons/fi";
+import { FiCopy, FiEdit2, FiEye, FiTrash } from "react-icons/fi";
 import Block from "./block";
 import Updater from "./edit";
 import Revealer from "./revealer";
 import styles from "./styles.module.scss";
+import dayjs from "dayjs";
 
 interface IServiceArtifactProps {
 	artifact: IArtifact;
@@ -53,41 +54,44 @@ const ServiceArtifact: React.FC<IServiceArtifactProps> = ({
 		<>
 			<div className={classes("")}>
 				<div className={classes("-container")}>
-					<Block
-						label="Identifier"
-						value={artifact.identifier}
-						showCopy
-					/>
+					<Typography size="md">{artifact.identifier}</Typography>
 					{artifact.comment ? (
-						<Block label="Comment" value={artifact.comment} />
+						<Typography size="sm">{artifact.comment}</Typography>
 					) : null}
 				</div>
-				<span className={classes("-divider")} />
-				<div className={classes("-actions")}>
-					<Button
-						size="small"
-						variant="outlined"
-						icon={<FiEye />}
-						onClick={() => setShowRevealer(true)}
+				<div className={classes("-toolbar")}>
+					<div className={classes("-actions")}>
+						<IconButton
+							title="Reveal"
+							icon={<FiEye />}
+							onClick={() => setShowRevealer(true)}
+						/>
+						<IconButton
+							title="Copy ID"
+							icon={<FiCopy />}
+							onClick={() => {
+								copyToClipboard(artifact.identifier);
+								Notify.info("Copied to clipboard");
+							}}
+						/>
+						<IconButton
+							title="Edit"
+							icon={<FiEdit2 />}
+							onClick={() => setShowUpdater(true)}
+						/>
+						<IconButton
+							title="Delete"
+							icon={<FiTrash />}
+							onClick={deleteArtifactConfirmation.openPopup}
+						/>
+					</div>
+					<Typography
+						size="sm"
+						format="italics"
+						className={classes("-meta")}
 					>
-						Reveal
-					</Button>
-					<Button
-						size="small"
-						variant="outlined"
-						icon={<FiEdit2 />}
-						onClick={() => setShowUpdater(true)}
-					>
-						Edit
-					</Button>
-					<Button
-						size="small"
-						variant="outlined"
-						icon={<FiTrash />}
-						onClick={deleteArtifactConfirmation.openPopup}
-					>
-						Delete
-					</Button>
+						Edited at {dayjs(artifact.updatedAt).format("DD MMM")}
+					</Typography>
 				</div>
 			</div>
 			{showRevealer ? (

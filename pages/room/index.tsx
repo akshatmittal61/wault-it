@@ -1,6 +1,6 @@
 import { ArtifactsApi } from "@/api";
 import { withAuthPage } from "@/client";
-import { Home as Components, Home, Service } from "@/components";
+import { Home as Components, Service } from "@/components";
 import { navigation } from "@/constants";
 import { useHttpClient } from "@/hooks";
 import { Masonry, Page } from "@/layouts";

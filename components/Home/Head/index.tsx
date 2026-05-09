@@ -1,11 +1,9 @@
+import { Search } from "@/components/Header/search";
 import { IconButton } from "@/library";
 import { BooleanUtils, SafetyUtils, stylesConfig } from "@/utils";
 import React, { useEffect, useState } from "react";
 import { FiDownload, FiPlus, FiSearch } from "react-icons/fi";
 import styles from "./styles.module.scss";
-import { Search } from "@/components/Header/search";
-import { types } from "sass";
-import Boolean = types.Boolean;
 
 interface IHomeHeadProps {
 	onAdd?: () => void;

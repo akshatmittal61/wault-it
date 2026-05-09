@@ -28,6 +28,12 @@ export type FontWeight =
 	| "bold"
 	| "extra-bold";
 
+export type FontFormat =
+	| "regular"
+	| "italics"
+	| "underline"
+	| "italics-underline";
+
 export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
 	/** The font family to use */
 	family?: FontFamily;
@@ -35,6 +41,8 @@ export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
 	size?: FontSize;
 	/** The font weight to use */
 	weight?: FontWeight;
+	/** The font format styling */
+	format?: FontFormat;
 	/** The text to display */
 	children: React.ReactNode;
 	/** Node to use **/

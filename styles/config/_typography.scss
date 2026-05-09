@@ -23,7 +23,14 @@ $font-sizes: (
 
 $font-weights: ("light", "regular", "medium", "semi-bold", "bold");
 
-@mixin typography($name: "Poppins", $size: "md", $weight: "regular") {
+$font-formats: ("regular", "italics", "underline", "italics-underline");
+
+@mixin typography(
+	$name: "Poppins",
+	$size: "md",
+	$weight: "regular",
+	$format: "regular"
+) {
 	// font families
 
 	@if $name == "Montserrat" or $name == "montserrat" or $name == "m" {
@@ -87,5 +94,16 @@ $font-weights: ("light", "regular", "medium", "semi-bold", "bold");
 		font-weight: 700;
 	} @else {
 		font-weight: 400;
+	}
+
+	@if $format == "italics" {
+		font-style: italic;
+	} @else if $format == "underline" {
+		text-decoration: underline;
+	} @else if $format == "italics-underline" {
+		text-decoration: underline;
+		font-style: italic;
+	} @else {
+		font-style: normal;
 	}
 }

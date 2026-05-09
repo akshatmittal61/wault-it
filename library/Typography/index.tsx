@@ -10,6 +10,7 @@ const Typography: React.FC<TypographyProps> = ({
 	family = "poppins",
 	size = "md",
 	weight = "regular",
+	format = "regular",
 	as = "span",
 	className = "",
 	...rest
@@ -19,7 +20,8 @@ const Typography: React.FC<TypographyProps> = ({
 	return (
 		<Component
 			className={
-				classes("", `--${family}-${size}-${weight}`) + ` ${className}`
+				classes("", `--${family}-${size}-${weight}-${format}`) +
+				` ${className}`
 			}
 			{...rest}
 		>

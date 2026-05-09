@@ -7,21 +7,38 @@
 	justify-content: flex-start;
 	align-items: center;
 	flex-direction: column;
+	gap: 0.75rem;
 	background-color: var(--accent-color-100);
 	box-shadow: var(--shadow-elevation-2dp);
 	border: 1px solid var(--back-shadow-light);
 	border-radius: calc(2 * var(--border-radius));
 	overflow: hidden;
 
+	@include _theme(light) {
+		background-color: var(--accent-color-100);
+	}
+
+	@include _theme(dark) {
+		background: var(--grey-700);
+	}
+
 	&-container {
 		width: 100%;
-		padding: 1rem;
+		padding: 1rem 1rem 0 1rem;
 		display: flex;
 		justify-content: flex-start;
 		align-items: flex-start;
 		flex-direction: column;
-		gap: 24px;
+		gap: 1rem;
 		border-radius: inherit;
+
+		& > span {
+			text-wrap: balance;
+			white-space: pre-wrap;
+			max-width: calc(100% - 2.5rem);
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
 	}
 
 	&-block {
@@ -80,19 +97,52 @@
 		background-color: var(--back-shadow-light);
 	}
 
-	&-actions {
+	&-toolbar {
 		width: 100%;
 		display: flex;
-		justify-content: flex-start;
+		justify-content: space-between;
 		align-items: center;
 		overflow-x: auto;
 		overflow-y: hidden;
-		gap: 0.75rem;
-		padding: 1rem;
+		padding: 0 1rem 0.5rem 1rem;
+	}
 
-		@include _theme(dark) {
-			filter: invert(1);
+	&-actions {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		gap: 0.75rem;
+
+		button {
+			opacity: 0;
+
+			@include _theme(dark) {
+				filter: invert(1);
+			}
+
+			@include responsive(phone) {
+				opacity: 1;
+			}
 		}
+	}
+
+	&-meta {
+		opacity: 0.6;
+		text-align: right;
+		white-space: nowrap;
+		color: var(--tcolor-700);
+
+		@include responsive(phone) {
+			opacity: 0;
+		}
+	}
+
+	&:hover &-toolbar > &-actions > button {
+		opacity: 1;
+	}
+
+	&:hover &-meta {
+		opacity: 0;
 	}
 }
 

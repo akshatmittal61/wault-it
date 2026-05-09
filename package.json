@@ -24,6 +24,7 @@
 	"dependencies": {
 		"aos": "^2.3.4",
 		"axios": "^1.6.7",
+		"dayjs": "^1.11.20",
 		"google-auth-library": "^10.5.0",
 		"jsonwebtoken": "^9.0.3",
 		"mongoose": "^8.18.0",
