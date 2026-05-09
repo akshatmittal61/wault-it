@@ -9,12 +9,6 @@ export const navigation: Record<NavigationId, Navigation> = {
 		icon: <FiHome />,
 		route: Routes.HOME,
 	},
-	search: {
-		id: "search",
-		title: "Search",
-		icon: <FiSearch />,
-		route: Routes.SEARCH,
-	},
 	profile: {
 		id: "profile",
 		title: "Your Profile",

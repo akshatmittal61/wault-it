@@ -25,6 +25,7 @@ const HomePage: React.FC<HomePageProps> = () => {
 				<Components.Head
 					onAdd={() => setOpenAddArtifactPopup(true)}
 					onImport={() => setOpenImporterPopup(true)}
+					enableSearch={true}
 				/>
 			);
 		},

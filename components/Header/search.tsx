@@ -6,15 +6,22 @@ import React, { useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import styles from "./styles.module.scss";
 
-interface ISearchProps {}
+interface ISearchProps {
+	onClose: () => void;
+}
 
 const classes = stylesConfig(styles, "search");
 
-const Search: React.FC<ISearchProps> = () => {
-	const { getAllServices, searchForServices, setSearchQuery, setServices } =
-		useArtifactsStore();
+export const Search: React.FC<ISearchProps> = ({ onClose }) => {
+	const {
+		searchQuery,
+		getAllServices,
+		searchForServices,
+		setSearchQuery,
+		setServices,
+	} = useArtifactsStore();
 	const [searchStr, debouncedSearchStr, setSearchStr] = useDebounce<string>(
-		"",
+		searchQuery,
 		1000
 	);
 
@@ -48,9 +55,10 @@ const Search: React.FC<ISearchProps> = () => {
 				value={searchStr}
 				leftIcon={<FiSearch />}
 				onChange={(e: any) => setSearchStr(e.target.value)}
+				// on keyboard focus loose, call onClose
+				onBlur={onClose}
+				autoFocus={true}
 			/>
 		</form>
 	);
 };
-
-export default Search;
