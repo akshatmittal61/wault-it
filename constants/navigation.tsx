@@ -1,5 +1,5 @@
 import { Navigation, NavigationId } from "@/types";
-import { FiHome, FiSearch, FiUser } from "react-icons/fi";
+import { FiHome, FiUser } from "react-icons/fi";
 import { Routes } from "./routes";
 
 export const navigation: Record<NavigationId, Navigation> = {

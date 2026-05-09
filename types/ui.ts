@@ -2,7 +2,7 @@ import React from "react";
 
 export type AppTheme = "light" | "dark";
 export type AppNetworkStatus = "online" | "offline";
-export type NavigationId = "home" | "search" | "profile";
+export type NavigationId = "home" | "profile";
 
 export type Navigation = {
 	id: NavigationId;

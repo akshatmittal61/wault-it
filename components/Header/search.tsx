@@ -55,8 +55,12 @@ export const Search: React.FC<ISearchProps> = ({ onClose }) => {
 				value={searchStr}
 				leftIcon={<FiSearch />}
 				onChange={(e: any) => setSearchStr(e.target.value)}
-				// on keyboard focus loose, call onClose
 				onBlur={onClose}
+				onKeyDown={(e: any) => {
+					if (e.key === "Escape") {
+						onClose();
+					}
+				}}
 				autoFocus={true}
 			/>
 		</form>
