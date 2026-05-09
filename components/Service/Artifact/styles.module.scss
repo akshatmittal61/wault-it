@@ -74,12 +74,19 @@
 			white-space: nowrap;
 		}
 
-		&-icon {
-			@include init-button;
+		&-actions {
 			position: absolute;
 			top: 50%;
 			right: 0;
-			transform: translate(-25%, -50%);
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			transform: translate(-0.5rem, -50%);
+			gap: 0.5rem;
+		}
+
+		&-icon {
+			@include init-button;
 			border-radius: 500px;
 			padding: 0.25rem;
 			width: 2rem;

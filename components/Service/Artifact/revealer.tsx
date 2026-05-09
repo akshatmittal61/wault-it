@@ -50,6 +50,7 @@ const ArtifactRevealer: React.FC<IArtifactRevealerProps> = ({
 					<Block
 						label="Password"
 						value={revealedArtifact.password}
+						showRevealer
 						showCopy
 					/>
 				) : (

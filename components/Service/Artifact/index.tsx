@@ -1,15 +1,14 @@
 import { useConfirmationModal } from "@/hooks";
-import { Button, IconButton, Typography } from "@/library";
+import { IconButton, Typography } from "@/library";
 import { useArtifactsStore } from "@/store";
 import { IArtifact } from "@/types";
 import { copyToClipboard, Notify, stylesConfig } from "@/utils";
+import dayjs from "dayjs";
 import React, { useState } from "react";
 import { FiCopy, FiEdit2, FiEye, FiTrash } from "react-icons/fi";
-import Block from "./block";
 import Updater from "./edit";
 import Revealer from "./revealer";
 import styles from "./styles.module.scss";
-import dayjs from "dayjs";
 
 interface IServiceArtifactProps {
 	artifact: IArtifact;
