@@ -123,10 +123,6 @@
 		button {
 			opacity: 0;
 
-			@include _theme(dark) {
-				filter: invert(1);
-			}
-
 			@include responsive(phone) {
 				opacity: 1;
 			}

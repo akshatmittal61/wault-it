@@ -4,12 +4,13 @@ import { Home as Components, Service } from "@/components";
 import { navigation } from "@/constants";
 import { useHttpClient } from "@/hooks";
 import { Masonry, Page } from "@/layouts";
-import { Loader, Typography } from "@/library";
+import { Button, Loader, Typography } from "@/library";
 import { useAppStore, useArtifactsStore, useHeader } from "@/store";
 import styles from "@/styles/pages/Room.module.scss";
 import { IUser } from "@/types";
 import { CollectionUtils, Notify, StringUtils, stylesConfig } from "@/utils";
 import React, { useEffect, useState } from "react";
+import { FiPlus } from "react-icons/fi";
 
 const classes = stylesConfig(styles, "room");
 
@@ -56,15 +57,34 @@ const RoomPage: React.FC<RoomPageProps> = (props) => {
 	return (
 		<>
 			<Page id="room" className={classes("")}>
-				<Typography
-					as="h1"
-					family="montserrat"
-					size="xxl"
-					weight="medium"
-					className={classes("-title")}
-				>
-					Room {serviceName}
-				</Typography>
+				<div className={classes("-header")}>
+					<div className={classes("-header-content")}>
+						<Typography
+							as="h1"
+							family="montserrat"
+							size="xl"
+							weight="medium"
+						>
+							{serviceName}
+						</Typography>
+						<Typography as="h3" family="montserrat">
+							{`Total ${
+								CollectionUtils.isEmpty(artifactsForService)
+									? 0
+									: artifactsForService.length
+							} artifacts`}
+						</Typography>
+					</div>
+					<div className={classes("-header-actions")}>
+						<Button
+							onClick={() => setOpenAddArtifactPopup(true)}
+							icon={<FiPlus />}
+							iconPosition="left"
+						>
+							Create
+						</Button>
+					</div>
+				</div>
 				{gettingArtifacts &&
 				CollectionUtils.isEmpty(artifactsForService) ? (
 					<Loader.Spinner />
