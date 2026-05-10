@@ -1,0 +1,54 @@
+@import "@/styles/config/mixins";
+
+.room {
+	&-header {
+		width: calc(100% - 1rem);
+		margin: 0.5rem auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1rem;
+		border-radius: calc(2 * var(--border-radius));
+		border: 1px dashed var(--back-shadow-dark);
+
+		@include _theme(light) {
+			background-color: var(--accent-color-100);
+		}
+
+		@include _theme(dark) {
+			background-color: var(--grey-700);
+		}
+
+		&-content {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			align-items: flex-start;
+			gap: 0.5rem;
+		}
+
+		&-title {
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			gap: 0.5rem;
+			border-bottom: 1px dashed transparent;
+
+			&__view {
+				button {
+					display: none;
+				}
+				&:hover {
+					border-color: var(--back-shadow-dark);
+					button {
+						display: inline-flex;
+					}
+				}
+			}
+		}
+
+		&-title__input {
+			min-width: fit-content;
+		}
+	}
+}

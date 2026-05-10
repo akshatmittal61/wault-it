@@ -5,29 +5,36 @@ import { TypographyProps } from "./types";
 
 const classes = stylesConfig(styles, "typography");
 
-const Typography: React.FC<TypographyProps> = ({
-	children,
-	family = "poppins",
-	size = "md",
-	weight = "regular",
-	format = "regular",
-	as = "span",
-	className = "",
-	...rest
-}) => {
+const Typography: React.ForwardRefRenderFunction<
+	HTMLElement,
+	TypographyProps
+> = (
+	{
+		children,
+		family = "poppins",
+		size = "md",
+		weight = "regular",
+		format = "regular",
+		as = "span",
+		className = "",
+		...rest
+	},
+	ref
+) => {
 	const Component = as || "span";
 
 	return (
 		<Component
+			ref={ref}
+			{...rest}
 			className={
 				classes("", `--${family}-${size}-${weight}-${format}`) +
 				` ${className}`
 			}
-			{...rest}
 		>
 			{children}
 		</Component>
 	);
 };
 
-export default Typography;
+export default React.forwardRef<HTMLElement, TypographyProps>(Typography);
