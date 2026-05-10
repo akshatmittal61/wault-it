@@ -20,3 +20,6 @@ export type DeleteArtifact = null;
 export type GetServicesForUser = null;
 export type SearchByService = { query: string };
 export type ImportArtifactsFromCsv = { file: string; privateKey: string };
+
+// Room
+export type RenameRoom = { original: string; updated: string };

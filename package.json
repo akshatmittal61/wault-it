@@ -1,7 +1,7 @@
 {
 	"name": "wault-it",
 	"description": "Store and secure passwords for everything, encrypted behind one paraphrase that only you remember.",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"private": true,
 	"engines": {
 		"node": ">=18.0.0",

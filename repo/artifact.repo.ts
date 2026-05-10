@@ -11,6 +11,7 @@ import {
 } from "@/types";
 import { CollectionUtils, omitKeys, SafetyUtils } from "@/utils";
 import { BaseRepo } from "./base";
+import { Logger } from "@/log";
 
 class ArtifactRepo extends BaseRepo<Artifact, IArtifact> {
 	protected model = ArtifactModel;
@@ -290,6 +291,22 @@ class ArtifactRepo extends BaseRepo<Artifact, IArtifact> {
 			.filter(SafetyUtils.isNonNull);
 		if (parsedRes.length > 0) return parsedRes;
 		return [];
+	}
+
+	public async updateRoomNameForUser(
+		original: string,
+		updated: string,
+		userId: string
+	): Promise<number> {
+		const res = await this.model
+			.updateMany(
+				{ service: original, author: userId },
+				{ service: updated },
+				{ runValidators: true }
+			)
+			.select("-password -author")
+			.lean();
+		return res.modifiedCount;
 	}
 }
 

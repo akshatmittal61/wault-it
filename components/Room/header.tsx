@@ -1,10 +1,12 @@
-import { useOnClickOutside } from "@/hooks";
+import { useOnClickOutside, useRouter } from "@/hooks";
 import { Button, IconButton, Input, Typography } from "@/library";
 import { IArtifact } from "@/types";
 import { CollectionUtils, StringUtils, stylesConfig } from "@/utils";
 import React, { useState } from "react";
-import { FiEdit2, FiPlus, FiSave, FiX } from "react-icons/fi";
+import { FiEdit2, FiHexagon, FiPlus, FiSave, FiX } from "react-icons/fi";
 import styles from "./styles.module.scss";
+import { useArtifactsStore } from "@/store";
+import { Routes } from "@/constants";
 
 const classes = stylesConfig(styles, "room-header");
 
@@ -22,16 +24,19 @@ export const Header: React.FC<RoomHeaderProps> = ({
 	const [isRenamingRoom, setIsRenamingRoom] = useState(false);
 	const [value, setValue] = useState(serviceName);
 	const roomNameEditorContainerRef = React.useRef<HTMLHeadingElement>(null);
+	const { renameRoom, isRenamingRoom: isUpdatingRoomName } =
+		useArtifactsStore();
+	const router = useRouter();
 
-	const onSave = () => {
+	const onSave = async () => {
 		if (StringUtils.equals(value, serviceName)) {
 			setIsRenamingRoom(false);
 			setValue(serviceName);
 			return;
 		}
 
-		// TODO: call api to update the service name
-		setIsRenamingRoom(false);
+		await renameRoom(serviceName, value);
+		router.replace(Routes.ROOM(value));
 	};
 
 	const onCancel = () => {
@@ -76,15 +81,23 @@ export const Header: React.FC<RoomHeaderProps> = ({
 								}}
 							/>
 						</Typography>
-						<IconButton
-							onClick={onSave}
-							icon={<FiSave />}
-							size="small"
-						/>
+						{isUpdatingRoomName ? (
+							<IconButton
+								icon={<FiHexagon />}
+								className={classes("-title__spinner")}
+							/>
+						) : (
+							<IconButton
+								onClick={onSave}
+								icon={<FiSave />}
+								size="small"
+							/>
+						)}
 						<IconButton
 							onClick={onCancel}
 							icon={<FiX />}
 							size="small"
+							disabled={isUpdatingRoomName}
 						/>
 					</div>
 				) : (

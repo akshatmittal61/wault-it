@@ -200,4 +200,25 @@ export class ArtifactService {
 		await artifactRepo.bulkCreateForUser(artifacts, userId);
 		return ArtifactService.getServicesForUser(userId);
 	}
+
+	public static async renameRoom({
+		original,
+		updated,
+		userId,
+	}: {
+		original: string;
+		updated: string;
+		userId: string;
+	}): Promise<number> {
+		const countOfRenamedArtifacts =
+			await artifactRepo.updateRoomNameForUser(original, updated, userId);
+		if (countOfRenamedArtifacts > 0) {
+			return countOfRenamedArtifacts;
+		} else {
+			throw new ApiError(
+				HTTP.status.NOT_FOUND,
+				`Room with name ${original} not found`
+			);
+		}
+	}
 }

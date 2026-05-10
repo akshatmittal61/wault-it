@@ -92,4 +92,17 @@ export class ArtifactsApi {
 		>("/artifacts/import", { file: dataUri, privateKey }, { headers });
 		return response.data;
 	}
+
+	public static async renameRoom(
+		original: string,
+		updated: string,
+		headers?: any
+	) {
+		const response = await http.patch<ApiRes<ApiResponses.RenameRoom>>(
+			"/room",
+			{ original, updated },
+			{ headers }
+		);
+		return response.data;
+	}
 }

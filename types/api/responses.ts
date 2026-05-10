@@ -29,3 +29,6 @@ export type GetServicesForUser = Array<string>;
 export type SearchByService = Array<string>;
 // After bulk import, the response is the list of all services for the user post import
 export type ImportArtifactsFromCsv = Array<string>;
+
+// Room
+export type RenameRoom = null;

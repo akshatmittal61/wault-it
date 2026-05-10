@@ -229,4 +229,18 @@ export class ArtifactController {
 			services
 		);
 	}
+
+	public static async renameRoom(
+		req: ApiRequest<ApiRequests.RenameRoom>,
+		res: ApiResponse
+	) {
+		const userId = StringUtils.getNonEmptyString(req.user?.id);
+		const { original, updated } = req.body;
+		await ArtifactService.renameRoom({
+			original,
+			updated,
+			userId,
+		});
+		return new ApiSuccess<ApiResponses.RenameRoom>(res).send();
+	}
 }

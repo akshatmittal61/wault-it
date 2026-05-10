@@ -42,6 +42,7 @@ type Extras = {
 	isUpdatingArtifact: boolean;
 	isDeletingArtifact: boolean;
 	isSearchingServices: boolean;
+	isRenamingRoom: boolean;
 	// handlers
 	getAllServices: () => Promise<Array<string>>;
 	getAllArtifacts: () => Promise<Array<IArtifactsBucket>>;
@@ -52,6 +53,7 @@ type Extras = {
 	) => Promise<IConcealedArtifact>;
 	deleteArtifact: (_id: string) => Promise<IConcealedArtifact>;
 	searchForServices: (_query: string) => Promise<Array<string>>;
+	renameRoom: (_original: string, _updated: string) => Promise<null>;
 };
 
 export const useArtifactsStore = createBaseStore<
@@ -166,6 +168,12 @@ export const useArtifactsStore = createBaseStore<
 			onError: Notify.error,
 		});
 
+		const { trigger: renameRoom, loading: isRenamingRoom } = useHttpClient({
+			trigger: ArtifactsApi.renameRoom,
+			onSuccess: () => sync(),
+			onError: Notify.error,
+		});
+
 		useEffect(() => {
 			if (BooleanUtils.True.equals(options.syncOnMount)) {
 				void sync();
@@ -182,6 +190,7 @@ export const useArtifactsStore = createBaseStore<
 			isDeletingArtifact,
 			isSearchingServices,
 			isImportingArtifactsFromCsv,
+			isRenamingRoom,
 			getAllServices,
 			getAllArtifacts,
 			createArtifact,
@@ -189,6 +198,7 @@ export const useArtifactsStore = createBaseStore<
 			deleteArtifact,
 			searchForServices,
 			importArtifactsFromCsv,
+			renameRoom,
 		};
 	},
 });
