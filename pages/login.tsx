@@ -21,52 +21,49 @@ const LoginPage: React.FC<LoginPageProps> = () => {
 
 	return (
 		<Page className={classes("")}>
-			<Image
-				src="/favicon.png"
-				alt="logo"
-				width={1920}
-				height={1080}
-				className={classes("-logo")}
-			/>
-			<Typography
-				as="h1"
-				family="montserrat"
-				size="xxl"
-				weight="medium"
-				className={classes("-title")}
-			>
-				Welcome to Wault It
-			</Typography>
-			<Typography
-				as="p"
-				family="montserrat"
-				size="lg"
-				weight="light"
-				className={classes("-subtitle")}
-			>
-				Store and secure passwords for everything, encrypted behind one
-				paraphrase that only you remember.
-			</Typography>
-			<Components.Button
-				onClick={() => {
-					router.push("/__/oauth/google");
-				}}
-			/>
-			<Typography size="sm" className={classes("-foot")}>
-				By continuing, you acknowledge that you understand and agree to
-				the{" "}
-				<Link href={Routes.TERMS_AND_CONDITIONS}>
-					Terms & Conditions
-				</Link>{" "}
-				and <Link href={Routes.PRIVACY_POLICY}>Privacy Policy</Link>
-			</Typography>
-			<Image
-				src="/favicon.svg"
-				alt="logo"
-				width={1920}
-				height={1080}
-				className={classes("-background")}
-			/>
+			<div className={classes("-container")}>
+				<div className={classes("-card")}>
+					<Image
+						src="/favicon.png"
+						alt="logo"
+						width={64}
+						height={64}
+						className={classes("-logo")}
+					/>
+					<Typography
+						as="h1"
+						family="montserrat"
+						size="xxl"
+						weight="semi-bold"
+						className={classes("-title")}
+					>
+						Welcome Back
+					</Typography>
+					<Typography
+						as="p"
+						family="montserrat"
+						size="lg"
+						weight="light"
+						className={classes("-subtitle")}
+					>
+						Sign in to access your secure vault.
+					</Typography>
+					<div className={classes("-action")}>
+						<Components.Button
+							onClick={() => {
+								router.push("/__/oauth/google");
+							}}
+						/>
+					</div>
+					<Typography size="xs" className={classes("-foot")}>
+						By continuing, you agree to our{" "}
+						<Link href={Routes.TERMS_AND_CONDITIONS}>Terms</Link>{" "}
+						and{" "}
+						<Link href={Routes.PRIVACY_POLICY}>Privacy Policy</Link>
+						.
+					</Typography>
+				</div>
+			</div>
 		</Page>
 	);
 };
