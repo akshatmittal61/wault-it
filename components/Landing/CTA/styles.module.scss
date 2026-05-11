@@ -1,0 +1,55 @@
+@import "@/styles/config/mixins";
+
+.landing-cta {
+	width: 100%;
+	padding: 120px 24px;
+	background: radial-gradient(
+		circle at center,
+		rgba(var(--theme-primary-rgb), 0.1) 0%,
+		transparent 70%
+	);
+
+	&-container {
+		max-width: 900px;
+		margin: 0 auto;
+		background: rgba(var(--theme-white-rgb), 0.05);
+		border: 1px solid rgba(var(--theme-fg-rgb), 0.1);
+		border-radius: 40px;
+		padding: 80px 40px;
+		text-align: center;
+		backdrop-filter: blur(20px);
+
+		@include responsive(phone) {
+			padding: 60px 24px;
+		}
+	}
+
+	&-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 32px;
+	}
+
+	&-title {
+		font-size: 4rem !important;
+		line-height: 1.1;
+
+		span {
+			color: var(--theme-primary);
+		}
+
+		@include responsive(phone) {
+			font-size: 2.5rem !important;
+		}
+	}
+
+	&-description {
+		color: var(--theme-grey);
+		max-width: 500px;
+	}
+
+	&-actions {
+		margin-top: 16px;
+	}
+}

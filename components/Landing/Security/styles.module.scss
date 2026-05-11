@@ -1,0 +1,149 @@
+@import "@/styles/config/mixins";
+
+.landing-security {
+	width: 100%;
+	padding: 100px 24px;
+	background: var(--theme-fg);
+	color: var(--theme-bg);
+
+	&-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		display: flex;
+		align-items: center;
+		gap: 80px;
+
+		@include responsive(phone) {
+			flex-direction: column;
+			text-align: center;
+		}
+	}
+
+	&-content {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+	}
+
+	&-title {
+		font-size: 3.5rem !important;
+		line-height: 1.2;
+		color: var(--theme-bg);
+
+		span {
+			color: var(--theme-primary);
+		}
+
+		@include responsive(phone) {
+			font-size: 2.5rem !important;
+		}
+	}
+
+	&-description {
+		color: var(--theme-light-grey);
+		max-width: 500px;
+		line-height: 1.8;
+	}
+
+	&-stats {
+		display: flex;
+		gap: 48px;
+
+		@include responsive(phone) {
+			justify-content: center;
+		}
+	}
+
+	&-stat {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	&-visual {
+		flex: 1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&-box {
+		width: 300px;
+		height: 300px;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 40px;
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		&::before {
+			content: "";
+			position: absolute;
+			width: 120%;
+			height: 120%;
+			border: 1px solid rgba(255, 255, 255, 0.05);
+			border-radius: 60px;
+		}
+	}
+
+	&-circle {
+		width: 100px;
+		height: 100px;
+		background: radial-gradient(
+			circle,
+			var(--theme-primary) 0%,
+			transparent 70%
+		);
+		border-radius: 50%;
+		filter: blur(20px);
+		animation: pulse 4s infinite ease-in-out;
+	}
+
+	&-line {
+		position: absolute;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			var(--theme-primary),
+			transparent
+		);
+		height: 1px;
+		width: 100%;
+
+		&:nth-child(1) {
+			top: 30%;
+			animation: scan 3s infinite linear;
+		}
+		&:nth-child(2) {
+			top: 50%;
+			animation: scan 3s infinite linear 1s;
+		}
+		&:nth-child(3) {
+			top: 70%;
+			animation: scan 3s infinite linear 2s;
+		}
+	}
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		transform: scale(1);
+		opacity: 0.5;
+	}
+	50% {
+		transform: scale(1.2);
+		opacity: 0.8;
+	}
+}
+
+@keyframes scan {
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(100%);
+	}
+}

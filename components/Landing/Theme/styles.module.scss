@@ -1,0 +1,52 @@
+@import "@/styles/config/mixins";
+@import "@/styles/config/shadows";
+
+.landing-theme {
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	z-index: 50;
+
+	button {
+		all: unset;
+		box-sizing: border-box;
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+		border-radius: 500px;
+		border: 1px solid transparent;
+		white-space: nowrap;
+		flex: 0 0 auto;
+		cursor: pointer;
+		user-select: none;
+		transition: all 0.2s ease-in-out;
+		color: var(--theme-white);
+		border: 2px solid #455a64;
+		background-color: #78909c;
+		padding: 8px;
+		border-radius: 500px;
+		position: relative;
+
+		&::after {
+			content: "";
+			position: absolute;
+			height: 90%;
+			aspect-ratio: 1/1;
+			background-color: #f0f0f0;
+			border-radius: 500px;
+			transition: all 200ms ease-in-out;
+			@include shadow(4);
+
+			@include _theme(light) {
+				left: 2px;
+				transform: translate(0, 0);
+			}
+
+			@include _theme(dark) {
+				left: calc(100% - 2px);
+				transform: translate(-100%, 0);
+			}
+		}
+	}
+}

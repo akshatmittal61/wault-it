@@ -26,6 +26,9 @@ const Footer: React.FC = () => {
 				</div>
 				<nav className={classes("-navigation")}>
 					<Link href={Routes.PRIVACY_POLICY}>Privacy Policy</Link>
+					<Link href={Routes.TERMS_AND_CONDITIONS}>
+						Terms and Conditions
+					</Link>
 				</nav>
 			</div>
 			<hr className={classes("-divider")} />

@@ -1,1 +1,5 @@
-export { default as Hero } from "./Hero";
+export * from "./CTA";
+export * from "./Features";
+export * from "./Hero";
+export * from "./Security";
+export * from "./Theme";

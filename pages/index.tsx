@@ -13,6 +13,10 @@ const HomePage: React.FC = () => {
 	return (
 		<Page id="landing" className={classes("")}>
 			<Landing.Hero />
+			<Landing.Features />
+			<Landing.Security />
+			<Landing.CTA />
+			<Landing.Theme />
 		</Page>
 	);
 };
