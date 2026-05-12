@@ -12,6 +12,11 @@ import {
 import { SafetyUtils } from "@/utils";
 
 export class CacheService {
+	private static invalidate(key: string) {
+		Logger.debug(`Invalidating cache for ${key}`);
+		Cache.invalidate(key);
+	}
+
 	/**
 	 * Fetches a value from the cache by key,
 	 * or executes a callback to retrieve the value if it's not cached
@@ -159,7 +164,7 @@ export class CacheService {
 	}
 
 	public static invalidateUser(keyGen: CachePayloadGenerator<"USER">) {
-		Cache.invalidate(this.getKey(cacheParameter.USER, keyGen));
+		this.invalidate(this.getKey(cacheParameter.USER, keyGen));
 	}
 
 	public static clearAllCacheData() {
@@ -187,7 +192,7 @@ export class CacheService {
 	public static invalidateAuthMapping(
 		keyGen: CachePayloadGenerator<"AUTH_MAPPING">
 	) {
-		Cache.invalidate(this.getKey(cacheParameter.AUTH_MAPPING, keyGen));
+		this.invalidate(this.getKey(cacheParameter.AUTH_MAPPING, keyGen));
 	}
 
 	public static setArtifacts(
@@ -229,11 +234,11 @@ export class CacheService {
 	public static invalidateArtifact(
 		keyGen: CachePayloadGenerator<"ARTIFACT">
 	) {
-		Cache.invalidate(this.getKey(cacheParameter.ARTIFACT, keyGen));
+		this.invalidate(this.getKey(cacheParameter.ARTIFACT, keyGen));
 	}
 
 	public static invalidateAllArtifactsForUser(userId: string) {
-		Cache.invalidate(this.getKey(cacheParameter.ARTIFACTS, { userId }));
+		this.invalidate(this.getKey(cacheParameter.ARTIFACTS, { userId }));
 	}
 
 	public static removeArtifact(keyGen: CachePayloadGenerator<"ARTIFACT">) {
@@ -265,7 +270,7 @@ export class CacheService {
 	public static invalidateArtifactsByService(
 		keyGen: CachePayloadGenerator<"ARTIFACTS_BY_SERVICE">
 	) {
-		Cache.invalidate(
+		this.invalidate(
 			this.getKey(cacheParameter.ARTIFACTS_BY_SERVICE, keyGen)
 		);
 	}
