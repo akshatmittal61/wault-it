@@ -1,4 +1,3 @@
-import { Cache } from "@/cache";
 import { jwtSecret, oauth_google } from "@/config";
 import {
 	AuthConstants,
@@ -67,19 +66,11 @@ export class OAuthService {
 			StringUtils.notEquals(authMapping.user.id, user.id)
 		) {
 			await authRepo.update({ id: authMapping.id }, { user: user.id });
-			Cache.set(
-				CacheService.getKey(cacheParameter.AUTH_MAPPING, {
-					identifier: email,
-					provider: authMappingProvider.google,
-				}),
+			CacheService.setAuthMapping(
+				{ identifier: email, provider: authMappingProvider.google },
 				authMapping
 			);
-			Cache.set(
-				CacheService.getKey(cacheParameter.AUTH_MAPPING, {
-					id: authMapping.id,
-				}),
-				authMapping
-			);
+			CacheService.setAuthMapping({ id: authMapping.id }, authMapping);
 		}
 		Logger.debug(
 			"Attempting to create oauth validator token",

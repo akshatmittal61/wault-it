@@ -11,4 +11,7 @@ export const MAX_KEYS = 20000;
 export const cacheParameter = getEnumeration<CacheParameter>([
 	"USER",
 	"AUTH_MAPPING",
+	"ARTIFACT",
+	"ARTIFACTS",
+	"ARTIFACTS_BY_SERVICE",
 ]);

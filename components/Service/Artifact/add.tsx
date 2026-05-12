@@ -2,12 +2,13 @@ import { InputPrivateKey } from "@/components";
 import { Responsive } from "@/layouts";
 import { Button, HiddenInput, Input, Pane } from "@/library";
 import { useArtifactsStore } from "@/store";
-import { ICreateArtifact } from "@/types";
+import { IConcealedArtifact, ICreateArtifact } from "@/types";
 import { Notify, SafetyUtils, stylesConfig } from "@/utils";
 import React, { useState } from "react";
 import styles from "./styles.module.scss";
 
 interface IAddNewArtifactProps {
+	onAdd: (artifact: IConcealedArtifact) => void;
 	onClose: () => void;
 	defaults?: Partial<ICreateArtifact>;
 }
@@ -15,6 +16,7 @@ interface IAddNewArtifactProps {
 const classes = stylesConfig(styles, "artifact-add");
 
 const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({
+	onAdd,
 	onClose,
 	defaults,
 }) => {
@@ -37,6 +39,7 @@ const AddNewArtifact: React.FC<IAddNewArtifactProps> = ({
 		const createdArtifact = await createArtifact(artifactDetails);
 		if (SafetyUtils.isNonNull(createdArtifact)) {
 			Notify.success("Artifact added successfully");
+			onAdd(createdArtifact);
 			onClose();
 		}
 	};
