@@ -41,6 +41,7 @@ export class AuthService {
 		authMappingId: string
 	): Promise<IUser | null> {
 		// TODO: Find a better way to optimize this instead of caching on auth mapping id
+		// because if user details are changed, then auth mapping cache would return the old details
 		/* const foundAuthMapping = await CacheService.fetch(
 			CacheService.getKey(cacheParameter.AUTH_MAPPING, {
 				id: authMappingId,

@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import styles from "./styles.module.scss";
 
 interface IAddNewArtifactProps {
-	onAdd: (artifact: IConcealedArtifact) => void;
+	onAdd: (_artifact: IConcealedArtifact) => void;
 	onClose: () => void;
 	defaults?: Partial<ICreateArtifact>;
 }
