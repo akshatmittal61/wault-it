@@ -1,8 +1,8 @@
 import { HTTP } from "@/constants";
 import { ApiError } from "@/errors";
-import { userRepo } from "@/repo";
+import { authRepo, userRepo } from "@/repo";
 import { CreateModel, IUpdateUser, IUser, User } from "@/types";
-import { SafetyUtils, StringUtils } from "@/utils";
+import { CollectionUtils, SafetyUtils, StringUtils } from "@/utils";
 import { CacheService } from "./cache.service";
 
 export class UserService {
@@ -86,6 +86,17 @@ export class UserService {
 		}
 		CacheService.invalidateUser({ id });
 		CacheService.invalidateUser({ email: foundUser.email });
+		// we need to invalidate any cached auth mappings
+		// the auth mappings store user data in cache for faster access
+		// it needs to be async to not block the response of the update user API
+		authRepo.find({ user: id }).then((authMappings) => {
+			if (CollectionUtils.isEmpty(authMappings)) {
+				return;
+			}
+			authMappings.forEach((authMapping) => {
+				CacheService.invalidateAuthMapping({ id: authMapping.id });
+			});
+		});
 		return updatedUser;
 	}
 }

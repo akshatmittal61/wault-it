@@ -90,6 +90,7 @@ const RoomPage: React.FC<RoomPageProps> = (props) => {
 			</Page>
 			{openAddArtifactPopup ? (
 				<Service.AddArtifact
+					onAdd={refreshArtifactsForService}
 					onClose={() => setOpenAddArtifactPopup(false)}
 					defaults={{
 						service: serviceName,

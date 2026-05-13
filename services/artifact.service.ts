@@ -1,13 +1,23 @@
 import { HTTP } from "@/constants";
 import { ApiError } from "@/errors";
 import { artifactRepo } from "@/repo";
-import { CreateArtifactModel, IArtifactsBucket, UpdateArtifact } from "@/types";
-import { SafetyUtils, StringUtils } from "@/utils";
+import {
+	CreateArtifactModel,
+	IArtifactsBucket,
+	IConcealedArtifact,
+	UpdateArtifact,
+} from "@/types";
+import { CollectionUtils, SafetyUtils, StringUtils } from "@/utils";
+import { CacheService } from "./cache.service";
 import { VaultService } from "./vault.service";
 
 export class ArtifactService {
 	public static async getAllArtifactBucketsForUser(userId: string) {
-		const userArtifacts = await artifactRepo.findAllForUser(userId);
+		const userArtifacts = await CacheService.fetchArtifacts(
+			{ userId },
+			() => artifactRepo.findAllForUser(userId)
+		);
+		if (CollectionUtils.isEmpty(userArtifacts)) return [];
 		const artifactsMap = new Map();
 		// group artifacts by service
 		for (const artifact of userArtifacts) {
@@ -31,7 +41,14 @@ export class ArtifactService {
 		userId: string;
 		artifactId: string;
 	}) {
-		return await artifactRepo.findByIdForUser(artifactId, userId);
+		const artifact = await CacheService.fetchArtifact(
+			{ userId, artifactId },
+			() => artifactRepo.findByIdForUser(artifactId, userId)
+		);
+		if (!SafetyUtils.isNonNull(artifact)) {
+			throw new ApiError(HTTP.status.NOT_FOUND, "Artifact not found");
+		}
+		return artifact;
 	}
 
 	public static async getArtifactsByServiceForUser({
@@ -40,9 +57,15 @@ export class ArtifactService {
 	}: {
 		service: string;
 		userId: string;
-	}) {
-		const artifacts = await artifactRepo.findForUser({ service }, userId);
-		return artifacts || [];
+	}): Promise<Array<IConcealedArtifact>> {
+		const artifacts = await CacheService.fetchArtifactsByService(
+			{ userId, service },
+			() => artifactRepo.findForUser({ service }, userId)
+		);
+		if (!SafetyUtils.isNonNull(artifacts)) {
+			return [];
+		}
+		return artifacts;
 	}
 
 	public static async revealArtifactForUser({
@@ -90,7 +113,13 @@ export class ArtifactService {
 				"Similar artifact already exists"
 			);
 		}
-		return await artifactRepo.createForUser(payload);
+		const createdArtifact = await artifactRepo.createForUser(payload);
+		CacheService.invalidateAllArtifactsForUser(userId);
+		CacheService.invalidateArtifactsByService({
+			userId,
+			service: body.service,
+		});
+		return createdArtifact;
 	}
 
 	public static async updateArtifactForUser({
@@ -119,6 +148,12 @@ export class ArtifactService {
 			userId
 		);
 		if (SafetyUtils.isNonNull(updatedArtifact)) {
+			CacheService.invalidateArtifact({ userId, artifactId });
+			CacheService.invalidateAllArtifactsForUser(userId);
+			CacheService.invalidateArtifactsByService({
+				userId,
+				service: updatedArtifact.service,
+			});
 			return updatedArtifact;
 		} else {
 			throw new ApiError(HTTP.status.NOT_FOUND, "Artifact not found");
@@ -137,6 +172,12 @@ export class ArtifactService {
 			userId
 		);
 		if (SafetyUtils.isNonNull(deletedArtifact)) {
+			CacheService.removeArtifact({ userId, artifactId });
+			CacheService.invalidateAllArtifactsForUser(userId);
+			CacheService.invalidateArtifactsByService({
+				userId,
+				service: deletedArtifact.service,
+			});
 			return deletedArtifact;
 		} else {
 			throw new ApiError(HTTP.status.NOT_FOUND, "Artifact not found");
@@ -198,6 +239,16 @@ export class ArtifactService {
 				};
 			});
 		await artifactRepo.bulkCreateForUser(artifacts, userId);
+		CacheService.invalidateAllArtifactsForUser(userId);
+		const uniqueServiceNames = Array.from(
+			new Set(artifacts.map((artifact) => artifact.service))
+		);
+		for (const serviceName of uniqueServiceNames) {
+			CacheService.invalidateArtifactsByService({
+				userId,
+				service: serviceName,
+			});
+		}
 		return ArtifactService.getServicesForUser(userId);
 	}
 
@@ -213,6 +264,15 @@ export class ArtifactService {
 		const countOfRenamedArtifacts =
 			await artifactRepo.updateRoomNameForUser(original, updated, userId);
 		if (countOfRenamedArtifacts > 0) {
+			CacheService.invalidateAllArtifactsForUser(userId);
+			CacheService.invalidateArtifactsByService({
+				userId,
+				service: original,
+			});
+			CacheService.invalidateArtifactsByService({
+				userId,
+				service: updated,
+			});
 			return countOfRenamedArtifacts;
 		} else {
 			throw new ApiError(

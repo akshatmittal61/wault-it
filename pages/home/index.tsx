@@ -81,6 +81,7 @@ const HomePage: React.FC<HomePageProps> = () => {
 			) : null}
 			{openAddArtifactPopup ? (
 				<Service.AddArtifact
+					onAdd={() => setOpenAddArtifactPopup(false)}
 					onClose={() => setOpenAddArtifactPopup(false)}
 				/>
 			) : null}
