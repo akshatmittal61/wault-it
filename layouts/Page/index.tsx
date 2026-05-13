@@ -6,6 +6,7 @@ import { BooleanUtils } from "@/utils";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { PageProps } from "./types";
+import { Logger } from "@/log";
 
 export const Page = <T extends PageProps = PageProps>({
 	children,
@@ -19,16 +20,15 @@ export const Page = <T extends PageProps = PageProps>({
 		sync: syncAuth,
 		setUser,
 		getIsLoggedIn,
-	} = useAuthStore({
-		syncOnMount: Routes.isProtected(router.pathname),
-	});
+	} = useAuthStore({ syncOnMount: false });
 
 	useEffect(() => {
 		// if server side props have sent user -> update auth store
 		// else if user visits a protected route, but store is in logged out state
 		// try to sync, if it fails, user will be redirected to LOGIN page
 		// for handling of redirecting to LOGIN page, ref: client/http.ts
-		// for handling of redirecting to LOGIN page, ref: client/http.ts
+		Logger.debug("User from Page Props", user);
+		Logger.debug("Is logged in? ", getIsLoggedIn());
 		if (user) {
 			setUser(user);
 		}
