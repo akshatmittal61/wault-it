@@ -6,7 +6,6 @@ import { BooleanUtils, Notify, SafetyUtils, UserUtils } from "@/utils";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { createBaseStore, Getter, Setter } from "./base";
-import { Logger } from "@/log";
 
 type State = {
 	user: IUser | null;
@@ -88,7 +87,6 @@ export const useAuthStore = createBaseStore<State, Action, Options, Extras>({
 
 		useEffect(() => {
 			if (BooleanUtils.True.equals(options.syncOnMount)) {
-				Logger.debug("Syncing auth state on mount");
 				void sync();
 			}
 			// eslint-disable-next-line react-hooks/exhaustive-deps
