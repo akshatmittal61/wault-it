@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { nodeEnv } from "@/config";
+import { enableDebugging, nodeEnv } from "@/config";
 import { NODE_ENV, serviceName } from "@/constants";
 
 type LOG_LEVEL =
@@ -104,6 +104,7 @@ export class Logger {
 	}
 
 	public static debug(...messages: Array<any>) {
+		if (!enableDebugging) return;
 		Logger.logMessages("debug", messages);
 	}
 
